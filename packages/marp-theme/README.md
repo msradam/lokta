@@ -47,6 +47,34 @@ npm run build:deck       # renders deck.html and lokta-deck.pdf
 
 PDF rendering needs a Chromium or Chrome install (Marp drives it under the hood).
 
+## Mermaid
+
+The theme carries the `.mermaid` rules that give diagrams the Lokta look (square
+nodes, ink strokes, mono edge labels). Two ways to get a diagram into a deck:
+
+- Pre-render to SVG and embed it. Reliable in HTML and PDF, and what the example
+  deck does (`lokta-pipeline.svg`):
+
+  ```sh
+  mmdc -c ../mermaid/lokta-mermaid.json -C ../mermaid/lokta-mermaid.print.css \
+    -i diagram.mmd -o lokta-pipeline.svg
+  ```
+
+  ```markdown
+  ![w:900](lokta-pipeline.svg)
+  ```
+
+- Live in an HTML deck. Render with `marp.config.mjs` (it turns ```mermaid fences
+  into `<div class="mermaid">`), then include mermaid and initialize it with
+  `@lokta/mermaid`:
+
+  ```sh
+  marp example-deck.md --config-file marp.config.mjs --theme lokta.marp.css -o deck.html
+  ```
+
+  Live diagrams render in the browser, not in PDF, so use the pre-rendered SVG
+  when a deck must also export to PDF.
+
 ## Fonts
 
 Self-hosted in `fonts/` (SIL OFL): Archivo, Spline Sans Mono, Source Serif 4,

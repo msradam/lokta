@@ -1,0 +1,21 @@
+{
+  "name": "@lokta/typst",
+  "version": "0.1.0",
+  "description": "Lokta editorial document themes for Typst, with vendored static fonts.",
+  "license": "MIT",
+  "files": [
+    "lokta.typ",
+    "typst.toml",
+    "example.typ",
+    "example-recipe.typ",
+    "example-cover.typ",
+    "example-editorial.typ",
+    "example-bulletin.typ",
+    "example-letter.typ",
+    "example-report.typ",
+    "fonts"
+  ],
+  "scripts": {
+    "build": "node ../../scripts/build-typst.mjs"
+  }
+}

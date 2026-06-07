@@ -1,0 +1,11 @@
+/* Lokta Mermaid rules for print (mermaid-cli / SVG export). mmdc renders the
+   diagram as a bare <svg class="flowchart"> with no .mermaid ancestor, so these
+   are the same rules unscoped. Pass with: mmdc -C lokta-mermaid.print.css */
+.node rect, .node polygon, .cluster rect, rect.actor, .labelBox, .note { rx: 0 !important; ry: 0 !important; }
+/* No font-weight override in print: mermaid-cli measures node boxes before the
+   CSS applies, so a heavier weight would overflow. The web CSS keeps the 600. */
+.nodeLabel, .actor, .stateLabel { font-family: "Archivo", sans-serif !important; }
+.edgeLabel, .edgeLabel *, .messageText, .noteText { font-family: "Spline Sans Mono", monospace !important; font-size: 11px !important; }
+.edgeLabel { background: #F4F1DF !important; }
+.flowchart-link, .messageLine0, .messageLine1, .transition { stroke-width: 1.5px !important; }
+.marker, marker path { fill: #2A2620 !important; stroke: #2A2620 !important; }

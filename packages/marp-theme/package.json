@@ -6,6 +6,8 @@
   "files": [
     "lokta.marp.css",
     "example-deck.md",
+    "marp.config.mjs",
+    "lokta-pipeline.svg",
     "fonts.css",
     "fonts"
   ],

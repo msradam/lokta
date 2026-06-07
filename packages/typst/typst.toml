@@ -1,0 +1,14 @@
+[package]
+name = "lokta"
+version = "0.1.0"
+entrypoint = "lokta.typ"
+authors = ["Adam Munawar Rahman"]
+license = "MIT"
+description = "Lokta editorial document themes for Typst: technical report, editorial report, article, bulletin, letter, cover, and recipe."
+repository = "https://github.com/msradam/lokta"
+keywords = ["editorial", "report", "template", "design-system"]
+categories = ["report"]
+
+# Fonts are vendored in the repo for local builds (--font-path fonts) but are not
+# shipped in the package archive; Typst Universe provides fonts at compile time.
+exclude = ["fonts/**", "dist/**", "example*.typ", "package.json", "README.md"]

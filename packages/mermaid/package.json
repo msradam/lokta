@@ -1,0 +1,38 @@
+{
+  "name": "@lokta/mermaid",
+  "version": "0.1.0",
+  "description": "Lokta theme for Mermaid diagrams: square nodes, ink strokes, straight edges, mono edge labels.",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.mjs",
+  "module": "index.mjs",
+  "exports": {
+    ".": "./index.mjs",
+    "./config": "./lokta-mermaid.json",
+    "./css": "./lokta-mermaid.css",
+    "./print.css": "./lokta-mermaid.print.css"
+  },
+  "files": [
+    "index.mjs",
+    "lokta-mermaid.json",
+    "lokta-mermaid.css",
+    "lokta-mermaid.print.css",
+    "example.mmd",
+    "example.svg"
+  ],
+  "peerDependencies": {
+    "mermaid": ">=10"
+  },
+  "peerDependenciesMeta": {
+    "mermaid": {
+      "optional": true
+    }
+  },
+  "keywords": [
+    "mermaid",
+    "diagram",
+    "theme",
+    "lokta",
+    "design-system"
+  ]
+}

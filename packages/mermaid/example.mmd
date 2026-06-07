@@ -1,0 +1,9 @@
+flowchart LR
+  A[Intake]:::hero --> B[Validate]
+  B --> C{Dedupe?}:::dec
+  C -->|new| D[(Event store)]:::store
+  C -->|dup| E[Drop]:::danger
+  classDef hero fill:#FBBC0E,stroke:#1F1C13,stroke-width:1.5px,color:#1F1C13
+  classDef dec fill:#2E3E5C,stroke:#1F1C13,stroke-width:1.5px,color:#FAF8EA
+  classDef store fill:#6E8B6F,stroke:#1F1C13,stroke-width:1.5px,color:#FAF8EA
+  classDef danger fill:#C23A26,stroke:#1F1C13,stroke-width:1.5px,color:#FAF8EA

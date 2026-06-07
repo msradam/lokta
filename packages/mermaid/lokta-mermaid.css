@@ -1,0 +1,12 @@
+/* Lokta Mermaid rules for the web. Same rules as in lokta.marp.css. They force
+   the hard edges and the mono edge labels that mermaid's themeVariables cannot
+   reach. Scoped to .mermaid (mermaid renders into a <div class="mermaid">).
+   Token vars resolve when a Lokta theme is loaded; literals are the fallback. */
+.mermaid .node rect, .mermaid .node polygon, .mermaid .cluster rect,
+.mermaid rect.actor, .mermaid .labelBox, .mermaid .note { rx: 0 !important; ry: 0 !important; }
+.mermaid .nodeLabel, .mermaid .actor, .mermaid .stateLabel { font-family: "Archivo", sans-serif !important; font-weight: 600; }
+.mermaid .edgeLabel, .mermaid .edgeLabel *, .mermaid .messageText, .mermaid .noteText {
+  font-family: "Spline Sans Mono", monospace !important; font-size: 11px !important; }
+.mermaid .edgeLabel { background: var(--paper-01, #F4F1DF) !important; }
+.mermaid .flowchart-link, .mermaid .messageLine0, .mermaid .messageLine1, .mermaid .transition { stroke-width: 1.5px !important; }
+.mermaid .marker, .mermaid marker path { fill: var(--ink-80, #2A2620) !important; stroke: var(--ink-80, #2A2620) !important; }

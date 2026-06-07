@@ -26,7 +26,13 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   density, radius, grain, stock) and forced-colors support.
 - Self-hosted fonts (SIL OFL): Archivo, Spline Sans Mono, Source Serif 4,
   Noto Sans JP, Anek Bangla.
-- `@lokta/marp-theme`: a Marp presentation theme and a sample deck.
+- `@lokta/marp-theme`: a Marp presentation theme and a sample deck, with Mermaid
+  styling and a `marp.config.mjs` for live diagram fences.
+- `@lokta/typst`: editorial document themes for Typst (technical report, editorial
+  report, article, bulletin, letter, cover, recipe), with vendored static fonts.
+- `@lokta/mermaid`: a Mermaid diagram theme for the web (an ESM that initializes
+  Mermaid and injects the hard-edge CSS) and for print and Typst (an SVG path via
+  mermaid-cli).
 - A static documentation site with a four-stock theme switcher and a tokens
   reference generated from the JSON.
 - A GitHub Pages workflow that builds the tokens, renders the deck, builds the

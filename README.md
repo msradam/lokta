@@ -29,22 +29,49 @@ static documentation site deployed to GitHub Pages.
 
 ## Packages
 
+Each package is plug and play and can be installed on its own.
+
 | Package | What it is |
 | --- | --- |
 | `@lokta/tokens` | Design tokens built to CSS, SCSS, and JS, one file per stock plus a combined `lokta.css`. |
 | `@lokta/css` | The component layer, built on the semantic token layer so it themes automatically. |
-| `@lokta/marp-theme` | A Marp presentation theme and a sample deck. |
+| `@lokta/marp-theme` | A Marp presentation theme and a sample deck, with Mermaid styling. |
+| `@lokta/typst` | Editorial document themes for Typst: report, article, bulletin, letter, cover, recipe. |
+| `@lokta/mermaid` | A Mermaid diagram theme for the web and for print/Typst SVGs. |
 
 ## Install
+
+Web (tokens plus components):
 
 ```
 npm install @lokta/tokens @lokta/css
 ```
 
-For decks:
+Decks and diagrams:
 
 ```
-npm install @lokta/marp-theme
+npm install @lokta/marp-theme @lokta/mermaid
+```
+
+Print, with Typst. Typst does not embed package fonts, so install the local
+package (it vendors static fonts) and pass `--font-path`:
+
+```
+npm run install:typst
+typst compile --font-path "<printed path>/fonts" your-doc.typ
+```
+
+Zero install on the web: the docs site hosts the consumable files, so you can load
+them straight from a URL.
+
+```html
+<link rel="stylesheet" href="https://msradam.github.io/lokta/lokta.tokens.css">
+<link rel="stylesheet" href="https://msradam.github.io/lokta/lokta.css">
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  import { initLoktaMermaid } from "https://msradam.github.io/lokta/lokta.mermaid.mjs";
+  initLoktaMermaid(mermaid);
+</script>
 ```
 
 ## Consume a theme

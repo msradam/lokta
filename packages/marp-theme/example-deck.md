@@ -53,6 +53,14 @@ Rules stop short of the margin and close with a hatched end-mark, lifted straigh
 
 ---
 
+## Diagrams have a house style
+
+![w:900](lokta-pipeline.svg)
+
+Square nodes, ink strokes, straight edges, mono edge labels. Marigold marks the one node to read first. The same theme renders on the web and into Typst.
+
+---
+
 <!-- _class: invert -->
 
 ## Four paper stocks

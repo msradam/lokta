@@ -88,3 +88,16 @@ section.marigold header, section.marigold footer, section.marigold::after { colo
 /* PEACH heritage ground */
 section.peach { background: var(--peach); color: var(--ink-90); }
 section.peach h1, section.peach h2, section.peach strong { color: var(--ink-90); }
+
+/* ── MERMAID (opinionated Lokta diagrams) ──────────────────────────────────
+ * Render decks with: marp deck.md --theme lokta.marp.css (mermaid enabled).
+ * Pass lokta-mermaid.json to mermaid.initialize(); these rules force hard edges
+ * and the mono edge labels the themeVariables can't reach. */
+.mermaid .node rect, .mermaid .node polygon, .mermaid .cluster rect,
+.mermaid rect.actor, .mermaid .labelBox, .mermaid .note { rx: 0 !important; ry: 0 !important; }
+.mermaid .nodeLabel, .mermaid .actor, .mermaid .stateLabel { font-family: "Archivo", sans-serif !important; font-weight: 600; }
+.mermaid .edgeLabel, .mermaid .edgeLabel *, .mermaid .messageText, .mermaid .noteText {
+  font-family: "Spline Sans Mono", monospace !important; font-size: 11px !important; }
+.mermaid .edgeLabel { background: var(--paper-01) !important; }
+.mermaid .flowchart-link, .mermaid .messageLine0, .mermaid .messageLine1, .mermaid .transition { stroke-width: 1.5px !important; }
+.mermaid .marker, .mermaid marker path { fill: var(--ink-80) !important; stroke: var(--ink-80) !important; }

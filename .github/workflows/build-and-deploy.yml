@@ -18,12 +18,17 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20, cache: npm }
+      - uses: typst-community/setup-typst@v4
       - run: npm ci
       # 1. Build design tokens (Style Dictionary -> dist/css, scss, js) and verify.
       - run: npm run build:tokens
-      # 2. Build the static docs site (copies token CSS, components, and fonts into site/).
+      # 2. Compile the Typst document examples to PDF (uses the vendored fonts).
+      - run: npm run build:typst
+      # 3. Build the static docs site (copies token CSS, components, fonts, the
+      #    Mermaid theme, the deck diagram SVG, and the Typst PDFs into site/).
       - run: npm run build:site
-      # 3. Render the Marp deck to HTML + PDF into the site. Fonts resolve from site/fonts.
+      # 4. Render the Marp deck to HTML + PDF into the site. Fonts and the diagram
+      #    SVG resolve from site/, which build:site populated.
       - run: npx @marp-team/marp-cli@latest packages/marp-theme/example-deck.md --theme packages/marp-theme/lokta.marp.css --html --allow-local-files -o site/deck.html
       - run: npx @marp-team/marp-cli@latest packages/marp-theme/example-deck.md --theme packages/marp-theme/lokta.marp.css --pdf --allow-local-files -o site/lokta-deck.pdf
       - uses: actions/upload-pages-artifact@v3

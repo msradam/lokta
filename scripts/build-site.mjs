@@ -21,8 +21,25 @@ const copies = [
   ['packages/css/fonts.css', 'fonts.css'],
   ['packages/css/lokta-base.css', 'lokta-base.css'],
   ['packages/css/lokta-components.css', 'lokta-components.css'],
+  ['packages/css/lokta.css', 'lokta.css'],
+  // Mermaid: theme config, web ESM, CSS, and the pre-rendered demo diagram.
+  ['packages/mermaid/index.mjs', 'lokta.mermaid.mjs'],
+  ['packages/mermaid/lokta-mermaid.json', 'lokta-mermaid.json'],
+  ['packages/mermaid/lokta-mermaid.css', 'lokta-mermaid.css'],
+  ['packages/mermaid/example.svg', 'diagram-demo.svg'],
+  // The deck render (CI) references this beside deck.html.
+  ['packages/marp-theme/lokta-pipeline.svg', 'lokta-pipeline.svg'],
 ];
 for (const [from, to] of copies) await cp(join(root, from), join(site, to));
+
+// Typst example PDFs, if built (build:typst runs first in the pipeline).
+const typstPdfs = ['example', 'example-recipe', 'example-cover'];
+const typstHere = {};
+for (const name of typstPdfs) {
+  const src = join(root, 'packages/typst/dist', `${name}.pdf`);
+  typstHere[name] = await access(src).then(() => true, () => false);
+  if (typstHere[name]) await cp(src, join(site, `${name}.pdf`));
+}
 
 // ── helpers ─────────────────────────────────────────────────────────────────
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -159,6 +176,59 @@ const deckLinks = `
   </div>
   ${deckHere ? '' : '<p class="muted">The deck is rendered into this site by the Pages workflow. To preview locally, run <code>npm run build:deck</code> and copy <code>deck.html</code> plus <code>lokta-deck.pdf</code> into <code>site/</code>.</p>'}`;
 
+// ── diagrams (Mermaid) ──────────────────────────────────────────────────────
+const MERMAID_CLASSES = [
+  ['hero', 'marigold', 'the one node to read first'],
+  ['store', 'celadon', 'a datastore'],
+  ['dec', 'indigo', 'a decision'],
+  ['danger', 'cinnabar', 'a failure or drop'],
+  ['muted', 'paper', 'secondary'],
+];
+const diagramsSection = `
+  <p class="muted">The same diagram theme renders live in the browser and pre-renders to SVG for print and Typst. Square nodes, 1.5px ink strokes, straight edges, Archivo labels, Spline Sans Mono edge labels. Load a token theme and the colours track the active stock.</p>
+  <div class="comp-demo" style="justify-content:center"><img src="diagram-demo.svg" alt="Lokta-themed flowchart: Intake to Validate to a Dedupe decision, then to an event store or a drop." style="max-width:100%"></div>
+  <h3 class="sub-h">Node classes</h3>
+  <table class="lk-table" style="max-width:520px"><thead><tr><th>Class</th><th>Pigment</th><th>Use</th></tr></thead><tbody>
+    ${MERMAID_CLASSES.map(([c, pig, use]) => `<tr><td><code>${c}</code></td><td>${pig}</td><td>${esc(use)}</td></tr>`).join('')}
+  </tbody></table>
+  <h3 class="sub-h">Use it</h3>
+  <pre class="lk-code">// web
+import mermaid from "mermaid";
+import { initLoktaMermaid } from "@lokta/mermaid";
+initLoktaMermaid(mermaid);
+
+// print / Typst
+mmdc -c lokta-mermaid.json -C lokta-mermaid.print.css -i d.mmd -o d.svg</pre>
+  <p class="muted">Zero install on the web: import <code>https://msradam.github.io/lokta/lokta.mermaid.mjs</code> and the theme JSON beside it.</p>`;
+
+// ── documents (Typst) ───────────────────────────────────────────────────────
+const TYPST_TEMPLATES = [
+  ['lokta-tech', 'White technical report'],
+  ['lokta-report', 'Cream editorial report'],
+  ['lokta-article', 'Long-form editorial'],
+  ['lokta-bulletin', 'Single-sheet notice'],
+  ['lokta-letter', 'Correspondence'],
+  ['lokta-cover', 'Pigment ground with the vertical spine'],
+  ['lokta-recipe', 'After the cookbook page'],
+];
+const typstPdf = (name, label) =>
+  typstHere[name]
+    ? `<a class="lk-btn" href="${name}.pdf">${esc(label)} (PDF)</a>`
+    : `<a class="lk-btn" aria-disabled="true">${esc(label)} (PDF)</a>`;
+const documentsSection = `
+  <p class="muted">The print arm of the system: Typst document themes that carry the same cream stock, hatched rules, mono labels, and right-aligned grotesk titles onto the page. Built with the vendored static fonts.</p>
+  <div class="lk-row">
+    ${typstPdf('example', 'Technical report')}
+    ${typstPdf('example-recipe', 'Recipe')}
+    ${typstPdf('example-cover', 'Cover')}
+  </div>
+  <table class="lk-table" style="max-width:560px;margin-top:20px"><thead><tr><th>Template</th><th>What it is</th></tr></thead><tbody>
+    ${TYPST_TEMPLATES.map(([t, d]) => `<tr><td><code>${t}</code></td><td>${esc(d)}</td></tr>`).join('')}
+  </tbody></table>
+  <h3 class="sub-h">Use it</h3>
+  <pre class="lk-code">#import "@local/lokta:0.1.0": *
+#show: lokta-recipe.with(title: "Dashi Broth", film: "Spirited Away", ..)</pre>`;
+
 // ── page ────────────────────────────────────────────────────────────────────
 const html = `<!doctype html>
 <html lang="en" data-theme="paper">
@@ -177,11 +247,13 @@ const html = `<!doctype html>
 <a class="lk-sr-only" href="#main">Skip to content</a>
 
 <header class="topbar">
-  <div class="brand"><span class="lk-label">Lokta</span> <span class="muted">Paper on Screen · v0.1</span></div>
+  <div class="brand"><span class="lk-label">Lokta</span> <span class="muted">An editorial UI system · v0.1</span></div>
   <nav class="topnav" aria-label="Sections">
     <a href="#overview">Overview</a>
     <a href="#foundations">Foundations</a>
     <a href="#components">Components</a>
+    <a href="#diagrams">Diagrams</a>
+    <a href="#documents">Documents</a>
     <a href="#deck">Deck</a>
     <a href="#tokens">Tokens</a>
   </nav>
@@ -356,6 +428,16 @@ const html = `<!doctype html>
         <div class="lk-colophon"><span>Lokta</span><span>Set in Archivo &amp; Spline Sans Mono</span></div>
         <div class="lk-folio">012</div>
       </div>`)}
+  </section>
+
+  <section id="diagrams">
+    <h2 class="sec-h">Diagrams</h2>
+    ${diagramsSection}
+  </section>
+
+  <section id="documents">
+    <h2 class="sec-h">Documents</h2>
+    ${documentsSection}
   </section>
 
   <section id="deck">
