@@ -9,6 +9,16 @@ against the right margin, labels turned up the gutter, and full-bleed marigold
 grounds on the film-opener spreads. Lokta carries that grammar onto the screen
 and holds every text role to WCAG 2.2 AA.
 
+![The Lokta overview: a cream page with a tracked label, the wordmark Lokta, an italic lede, and a measured rule.](docs/overview.png)
+
+It runs across surfaces from one set of tokens: web components, a Marp slide
+theme, Typst document themes, and a Mermaid diagram theme.
+
+| | |
+| --- | --- |
+| ![Lokta components.](docs/components.png) | ![A Lokta-themed Mermaid flowchart.](docs/mermaid.png) |
+| ![A Typst recipe document.](docs/typst-recipe.png) | ![A Lokta slide with a diagram.](docs/deck.png) |
+
 A second thread runs through the dark stocks and the peach grounds: Professor
 Siddika Kabir's *Ranna Khaddo Pushti*, the standard household cookbook of
 Bangladesh, and the Bengali type that sits beside it.
@@ -27,52 +37,52 @@ static documentation site deployed to GitHub Pages.
 - **Stocks:** Paper (light, default), Ink (warm dark), Bone (cool light),
   Indigo (cool dark). Every text role clears WCAG 2.2 AA on each.
 
-## Packages
+## Repos
 
-Each package is plug and play and can be installed on its own.
+This is the source and docs hub. Each surface also ships as its own standalone,
+plug-and-play repo you can install on its own.
 
-| Package | What it is |
-| --- | --- |
-| `@lokta/tokens` | Design tokens built to CSS, SCSS, and JS, one file per stock plus a combined `lokta.css`. |
-| `@lokta/css` | The component layer, built on the semantic token layer so it themes automatically. |
-| `@lokta/marp-theme` | A Marp presentation theme and a sample deck, with Mermaid styling. |
-| `@lokta/typst` | Editorial document themes for Typst: report, article, bulletin, letter, cover, recipe. |
-| `@lokta/mermaid` | A Mermaid diagram theme for the web and for print/Typst SVGs. |
+| Repo | What it is | Install |
+| --- | --- | --- |
+| [lokta-css](https://github.com/msradam/lokta-css) | Tokens (four stocks) and component CSS, self-hosted fonts. | `npm install github:msradam/lokta-css` |
+| [lokta-marp](https://github.com/msradam/lokta-marp) | Marp slide theme with per-slide Mermaid theming. | `npm install github:msradam/lokta-marp` |
+| [lokta-typst](https://github.com/msradam/lokta-typst) | Editorial document themes for Typst. | `git clone` + `node install.mjs` |
+| [lokta-mermaid](https://github.com/msradam/lokta-mermaid) | Mermaid diagram theme, web and print. | `npm install github:msradam/lokta-mermaid` |
+
+This repo also builds the same surfaces as workspace packages under `packages/`
+(`@lokta/tokens`, `@lokta/css`, `@lokta/marp-theme`, `@lokta/typst`,
+`@lokta/mermaid`) and deploys the docs site to GitHub Pages.
 
 ## Install
 
-Web (tokens plus components):
+The web layer, from its repo:
 
 ```
-npm install @lokta/tokens @lokta/css
+npm install github:msradam/lokta-css
 ```
 
-Decks and diagrams:
-
-```
-npm install @lokta/marp-theme @lokta/mermaid
+```css
+@import "lokta-css/lokta.css";
 ```
 
-Print, with Typst. Typst does not embed package fonts, so install the local
-package (it vendors static fonts) and pass `--font-path`:
-
-```
-npm run install:typst
-typst compile --font-path "<printed path>/fonts" your-doc.typ
-```
-
-Zero install on the web: the docs site hosts the consumable files, so you can load
-them straight from a URL.
+Or zero install, straight from the CDN:
 
 ```html
-<link rel="stylesheet" href="https://msradam.github.io/lokta/lokta.tokens.css">
-<link rel="stylesheet" href="https://msradam.github.io/lokta/lokta.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/msradam/lokta-css@main/lokta.css">
+```
+
+Diagrams:
+
+```html
 <script type="module">
   import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-  import { initLoktaMermaid } from "https://msradam.github.io/lokta/lokta.mermaid.mjs";
+  import { initLoktaMermaid } from "https://cdn.jsdelivr.net/gh/msradam/lokta-mermaid@main/index.mjs";
   initLoktaMermaid(mermaid);
 </script>
 ```
+
+Slides and documents: see [lokta-marp](https://github.com/msradam/lokta-marp) and
+[lokta-typst](https://github.com/msradam/lokta-typst).
 
 ## Consume a theme
 
