@@ -1,12 +1,21 @@
 /* @theme lokta
- * Lokta. Paper on Screen. A Marp theme drawn from the Lokta design system.
- * Light (default), .invert (Ink dark stock), .marigold and .peach feature grounds.
- * Usage in a deck:  ---  marp: true  theme: lokta  ---
+ * Lokta. A Marp theme drawn from the Lokta design system.
+ *
+ * Per-slide classes (`<!-- _class: NAME -->` or `class:` in front matter):
+ *   Stocks:   (default = paper) · invert / ink · bone · indigo
+ *   Grounds:  marigold · peach · lavender · aubergine · cinnabar · celadon · night
+ *   Layout:   lead (cover slide)
+ *
+ * Dials (override with the `style:` directive):
+ *   Fonts:  --display · --mono · --serif
+ *   Colors: --paper-00..04 · --ink-40..100 · --marigold · --peach · --lavender
+ *           --aubergine · --cinnabar · --celadon · --indigo · --night
  *
  * Fonts are self-hosted (SIL OFL): no Google Fonts CDN, which would send viewer
  * IPs to Google (a GDPR exposure in the EU). The woff2 files live in ./fonts and
  * resolve relative to the rendered HTML, so render with the fonts alongside the
- * output (the repo's build does this). Run `npm run fonts` to vendor them.
+ * output (the repo's build does this). For a standalone, engine-embedded version
+ * see github.com/msradam/lokta-marp.
  */
 @font-face { font-family: "Archivo"; font-weight: 400; font-display: swap; src: url("fonts/archivo-latin-400-normal.woff2") format("woff2"); }
 @font-face { font-family: "Archivo"; font-weight: 500; font-display: swap; src: url("fonts/archivo-latin-500-normal.woff2") format("woff2"); }
@@ -17,19 +26,23 @@
 @font-face { font-family: "Spline Sans Mono"; font-weight: 600; font-display: swap; src: url("fonts/spline-sans-mono-latin-600-normal.woff2") format("woff2"); }
 @font-face { font-family: "Source Serif 4"; font-style: italic; font-weight: 400; font-display: swap; src: url("fonts/source-serif-4-latin-400-italic.woff2") format("woff2"); }
 @font-face { font-family: "Source Serif 4"; font-style: italic; font-weight: 500; font-display: swap; src: url("fonts/source-serif-4-latin-500-italic.woff2") format("woff2"); }
-@font-face { font-family: "Noto Sans JP"; font-weight: 700; font-display: swap; src: url("fonts/noto-sans-jp-japanese-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Noto Sans JP"; font-weight: 400; font-display: swap; src: url("fonts/noto-sans-jp-japanese-400-normal.woff2") format("woff2"); }
 
 :root {
   --paper-00: #FAF8EA; --paper-01: #F4F1DF; --paper-02: #EAE6D2; --paper-04: #C2B89C;
+  --bone: #EFEEE7;
   --ink-100: #16140E; --ink-90: #1F1C13; --ink-80: #2A2620; --ink-60: #5C564B; --ink-50: #6E665A; --ink-40: #8E867A;
-  --marigold: #FBBC0E; --peach: #E7A079; --cinnabar: #C23A26; --celadon-ink: #4F6B50; --aubergine: #6B4E8E; --night: #070D0E;
-  --mono: "Spline Sans Mono", ui-monospace, monospace;
+  --marigold: #FBBC0E; --peach: #E7A079; --lavender: #A99CB3; --aubergine: #6B4E8E;
+  --cinnabar: #C23A26; --celadon: #6E8B6F; --indigo: #2E3E5C; --night: #070D0E;
+  --indigo-page: #1B2230; --indigo-text: #E2E1D6; --indigo-head: #EDECE3; --indigo-mut: #AEB4C2;
+  --mono: "Spline Sans Mono", "Noto Sans JP", ui-monospace, monospace;
   --display: "Archivo", "Helvetica Neue", "Noto Sans JP", sans-serif;
+  --serif: "Source Serif 4", Georgia, serif;
 }
 
 section {
   width: 1280px; height: 720px;
-  padding: 64px 80px;
+  padding: 60px 80px;
   background: var(--paper-01);
   color: var(--ink-80);
   font-family: var(--display);
@@ -44,7 +57,7 @@ h2 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.
 h3 { font-size: 24px; font-weight: 700; color: var(--ink-90); margin: 0 0 8px; }
 p  { text-wrap: pretty; margin: 0 0 14px; max-width: 60ch; }
 strong { font-weight: 700; color: var(--ink-90); }
-em { font-family: "Source Serif 4", Georgia, serif; }
+em { font-family: var(--serif); }
 a { color: var(--aubergine); text-decoration: underline; text-underline-offset: 3px; }
 ul, ol { max-width: 60ch; }
 li { margin: 0 0 8px; }
@@ -52,13 +65,13 @@ li::marker { color: var(--ink-40); }
 code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-02); border: 1px solid var(--paper-04); padding: 1px 5px; }
 pre { background: var(--ink-90); color: var(--paper-00); padding: 20px 22px; font-family: var(--mono); font-size: 18px; line-height: 1.6; }
 pre code { background: none; border: none; color: inherit; padding: 0; }
-blockquote { font-family: "Source Serif 4", Georgia, serif; font-style: italic; font-size: 30px; line-height: 1.35; color: var(--ink-90); border-left: 2px solid var(--marigold); padding-left: 20px; margin: 0 0 16px; }
+blockquote { font-family: var(--serif); font-style: italic; font-size: 30px; line-height: 1.35; color: var(--ink-90); border-left: 2px solid var(--marigold); padding-left: 20px; margin: 0 0 16px; }
 table { border-collapse: collapse; font-size: 20px; }
 th { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-60); text-align: left; border-bottom: 2px solid var(--ink-90); padding: 8px 14px; }
 td { border-bottom: 1px solid var(--paper-04); padding: 8px 14px; }
 
 /* Running head + colophon (Marp header/footer) */
-header { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-60); top: 28px; left: 80px; right: 80px; border-bottom: 1px solid var(--ink-90); padding-bottom: 8px; }
+header { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-60); left: 80px; right: 80px; border-bottom: 1px solid var(--ink-90); padding-bottom: 10px; margin-bottom: 32px; }
 footer { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; color: var(--ink-60); bottom: 28px; left: 80px; }
 section::after { /* page number, bottom-right */ font-family: var(--mono); font-size: 13px; color: var(--ink-60); right: 80px; bottom: 28px; }
 
@@ -72,30 +85,71 @@ hr { border: 0; height: 8px; margin: 18px 0; background-image: repeating-linear-
 section.lead { display: flex; flex-direction: column; justify-content: center; }
 section.lead h1 { font-size: 104px; letter-spacing: -0.045em; }
 
-/* INK dark stock */
-section.invert { background: var(--ink-90); color: var(--paper-01); }
-section.invert h1, section.invert h2, section.invert h3, section.invert strong { color: var(--paper-00); }
-section.invert header, section.invert footer, section.invert::after { color: var(--paper-04); border-color: var(--paper-04); }
-section.invert code { background: var(--ink-100); border-color: var(--ink-60); color: var(--paper-00); }
-section.invert a { color: #A98FC9; }
-section.invert hr { background-image: repeating-linear-gradient(-45deg, var(--paper-04) 0, var(--paper-04) 1px, transparent 1px, transparent 4px); }
+/* ════ STOCKS ═══════════════════════════════════════════════════════════════
+ * Four stocks re-point the whole slide. paper is the default. */
 
-/* MARIGOLD feature ground (always dark text) */
-section.marigold { background: var(--marigold); color: var(--ink-90); }
-section.marigold h1, section.marigold h2, section.marigold h3, section.marigold strong { color: var(--ink-90); }
-section.marigold header, section.marigold footer, section.marigold::after { color: rgba(7,13,14,0.7); border-color: rgba(7,13,14,0.4); }
+/* BONE (cool light stock) */
+section.bone { background: var(--bone); }
 
-/* PEACH heritage ground */
-section.peach { background: var(--peach); color: var(--ink-90); }
-section.peach h1, section.peach h2, section.peach strong { color: var(--ink-90); }
+/* ── Dark grounds: light text. Stocks (ink, indigo) and dark pigment grounds. */
+section.invert, section.ink, section.indigo,
+section.aubergine, section.cinnabar, section.celadon, section.night {
+  color: var(--paper-01);
+}
+section.invert h1, section.invert h2, section.invert h3, section.invert strong,
+section.ink h1, section.ink h2, section.ink h3, section.ink strong,
+section.indigo h1, section.indigo h2, section.indigo h3, section.indigo strong,
+section.aubergine h1, section.aubergine h2, section.aubergine h3, section.aubergine strong,
+section.cinnabar h1, section.cinnabar h2, section.cinnabar h3, section.cinnabar strong,
+section.celadon h1, section.celadon h2, section.celadon h3, section.celadon strong,
+section.night h1, section.night h2, section.night h3, section.night strong { color: var(--paper-00); }
+section.invert header, section.invert footer, section.invert::after,
+section.ink header, section.ink footer, section.ink::after,
+section.indigo header, section.indigo footer, section.indigo::after,
+section.aubergine header, section.aubergine footer, section.aubergine::after,
+section.cinnabar header, section.cinnabar footer, section.cinnabar::after,
+section.celadon header, section.celadon footer, section.celadon::after,
+section.night header, section.night footer, section.night::after { color: var(--paper-04); border-color: var(--paper-04); }
+section.invert code, section.ink code, section.indigo code, section.aubergine code,
+section.cinnabar code, section.celadon code, section.night code { background: rgba(0,0,0,0.28); border-color: rgba(255,255,255,0.3); color: var(--paper-00); }
+section.invert a, section.ink a, section.indigo a, section.aubergine a,
+section.cinnabar a, section.celadon a, section.night a { color: #C9B8DC; }
+section.invert hr, section.ink hr, section.indigo hr, section.aubergine hr,
+section.cinnabar hr, section.celadon hr, section.night hr {
+  background-image: repeating-linear-gradient(-45deg, var(--paper-04) 0, var(--paper-04) 1px, transparent 1px, transparent 4px); }
+
+/* INK (warm dark stock) */
+section.invert, section.ink { background: var(--ink-90); }
+section.invert code, section.ink code { background: var(--ink-100); border-color: var(--ink-60); }
+/* INDIGO (cool dark stock) */
+section.indigo { background: var(--indigo-page); color: var(--indigo-text); }
+section.indigo h1, section.indigo h2, section.indigo h3, section.indigo strong { color: var(--indigo-head); }
+
+/* ════ PIGMENT GROUNDS (full-bleed feature slides) ══════════════════════════ */
+
+/* Dark-text grounds */
+section.marigold { background: var(--marigold); }
+section.peach { background: var(--peach); }
+section.lavender { background: var(--lavender); }
+section.marigold, section.peach, section.lavender { color: var(--ink-90); }
+section.marigold h1, section.marigold h2, section.marigold h3, section.marigold strong,
+section.peach h1, section.peach h2, section.peach h3, section.peach strong,
+section.lavender h1, section.lavender h2, section.lavender h3, section.lavender strong { color: var(--ink-90); }
+section.marigold header, section.marigold footer, section.marigold::after,
+section.peach header, section.peach footer, section.peach::after,
+section.lavender header, section.lavender footer, section.lavender::after { color: rgba(7,13,14,0.7); border-color: rgba(7,13,14,0.4); }
+
+/* Light-text grounds (backgrounds set here; text handled by the dark-grounds rule above) */
+section.aubergine { background: var(--aubergine); }
+section.cinnabar { background: var(--cinnabar); }
+section.celadon { background: var(--celadon); }
+section.night { background: var(--night); }
 
 /* ── MERMAID (opinionated Lokta diagrams) ──────────────────────────────────
- * Render decks with: marp deck.md --theme lokta.marp.css (mermaid enabled).
- * Pass lokta-mermaid.json to mermaid.initialize(); these rules force hard edges
- * and the mono edge labels the themeVariables can't reach. */
+ * The theme carries these so live ```mermaid fences (via a Marp engine) or
+ * pre-rendered SVGs both get hard edges and mono edge labels. */
 .mermaid .node rect, .mermaid .node polygon, .mermaid .cluster rect,
 .mermaid rect.actor, .mermaid .labelBox, .mermaid .note { rx: 0 !important; ry: 0 !important; }
-.mermaid .nodeLabel, .mermaid .actor, .mermaid .stateLabel { font-family: "Archivo", sans-serif !important; font-weight: 600; }
 .mermaid .edgeLabel, .mermaid .edgeLabel *, .mermaid .messageText, .mermaid .noteText {
   font-family: "Spline Sans Mono", monospace !important; font-size: 11px !important; }
 .mermaid .edgeLabel { background: var(--paper-01) !important; }
