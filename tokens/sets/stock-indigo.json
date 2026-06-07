@@ -1,0 +1,98 @@
+{
+  "surface": {
+    "page": {
+      "$type": "color",
+      "$value": "#1B2230"
+    },
+    "raised": {
+      "$type": "color",
+      "$value": "#232C3D"
+    },
+    "sunken": {
+      "$type": "color",
+      "$value": "#141A25"
+    },
+    "inset": {
+      "$type": "color",
+      "$value": "#2B3547"
+    },
+    "inverse": {
+      "$type": "color",
+      "$value": "#EFEEE7"
+    }
+  },
+  "text": {
+    "primary": {
+      "$type": "color",
+      "$value": "#EDECE3",
+      "$description": "14.0:1"
+    },
+    "body": {
+      "$type": "color",
+      "$value": "#E2E1D6",
+      "$description": "12.2:1"
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "#AEB4C2",
+      "$description": "7.6:1"
+    },
+    "muted": {
+      "$type": "color",
+      "$value": "#8A93A6",
+      "$description": "5.2:1 — AA"
+    },
+    "disabled": {
+      "$type": "color",
+      "$value": "#5E6675"
+    }
+  },
+  "border": {
+    "strong": {
+      "$type": "color",
+      "$value": "#AEB4C2"
+    },
+    "default": {
+      "$type": "color",
+      "$value": "#4A5365"
+    },
+    "hairline": {
+      "$type": "color",
+      "$value": "#343E4F"
+    }
+  },
+  "accent": {
+    "success": {
+      "$type": "color",
+      "$value": "{dark-accent.success}"
+    },
+    "danger": {
+      "$type": "color",
+      "$value": "{dark-accent.danger}"
+    },
+    "feature": {
+      "$type": "color",
+      "$value": "{dark-accent.feature}"
+    }
+  },
+  "field": {
+    "bg": {
+      "$type": "color",
+      "$value": "#141A25"
+    },
+    "border": {
+      "$type": "color",
+      "$value": "#4A5365"
+    },
+    "placeholder": {
+      "$type": "color",
+      "$value": "#8A93A6"
+    }
+  },
+  "focus": {
+    "ring": {
+      "$type": "color",
+      "$value": "#EDECE3"
+    }
+  }
+}

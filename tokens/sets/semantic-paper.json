@@ -1,0 +1,130 @@
+{
+  "surface": {
+    "page": {
+      "$type": "color",
+      "$value": "{paper.01}"
+    },
+    "raised": {
+      "$type": "color",
+      "$value": "{paper.00}"
+    },
+    "sunken": {
+      "$type": "color",
+      "$value": "{paper.02}"
+    },
+    "inset": {
+      "$type": "color",
+      "$value": "{paper.03}"
+    },
+    "inverse": {
+      "$type": "color",
+      "$value": "{ink.90}"
+    }
+  },
+  "text": {
+    "primary": {
+      "$type": "color",
+      "$value": "{ink.90}"
+    },
+    "body": {
+      "$type": "color",
+      "$value": "{ink.80}"
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "{ink.60}"
+    },
+    "muted": {
+      "$type": "color",
+      "$value": "{ink.50}"
+    },
+    "disabled": {
+      "$type": "color",
+      "$value": "{ink.40}"
+    },
+    "on-fill": {
+      "$type": "color",
+      "$value": "{paper.00}"
+    },
+    "on-marigold": {
+      "$type": "color",
+      "$value": "{ink.90}"
+    }
+  },
+  "border": {
+    "strong": {
+      "$type": "color",
+      "$value": "{ink.80}"
+    },
+    "default": {
+      "$type": "color",
+      "$value": "{ink.40}"
+    },
+    "hairline": {
+      "$type": "color",
+      "$value": "{ink.20}"
+    }
+  },
+  "accent": {
+    "success": {
+      "$type": "color",
+      "$value": "{pigment.celadon-ink}"
+    },
+    "success-fill": {
+      "$type": "color",
+      "$value": "{pigment.celadon}"
+    },
+    "danger": {
+      "$type": "color",
+      "$value": "{pigment.cinnabar-ink}"
+    },
+    "danger-fill": {
+      "$type": "color",
+      "$value": "{pigment.cinnabar}"
+    },
+    "feature": {
+      "$type": "color",
+      "$value": "{pigment.aubergine-ink}"
+    },
+    "feature-fill": {
+      "$type": "color",
+      "$value": "{pigment.aubergine}"
+    },
+    "warning-fill": {
+      "$type": "color",
+      "$value": "{pigment.marigold}"
+    },
+    "info-fill": {
+      "$type": "color",
+      "$value": "{pigment.indigo}"
+    }
+  },
+  "field": {
+    "bg": {
+      "$type": "color",
+      "$value": "{paper.00}"
+    },
+    "border": {
+      "$type": "color",
+      "$value": "{ink.80}"
+    },
+    "placeholder": {
+      "$type": "color",
+      "$value": "{ink.50}"
+    }
+  },
+  "focus": {
+    "ring": {
+      "$type": "color",
+      "$value": "{ink.100}"
+    },
+    "width": {
+      "$type": "dimension",
+      "$value": "{rule.2}"
+    },
+    "offset": {
+      "$type": "dimension",
+      "$value": "2px"
+    }
+  }
+}

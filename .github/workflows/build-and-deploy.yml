@@ -1,0 +1,39 @@
+# Build tokens, render the deck, build the docs site, and deploy to GitHub Pages.
+name: build-and-deploy
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      # 1. Build design tokens (Style Dictionary -> dist/css, scss, js) and verify.
+      - run: npm run build:tokens
+      # 2. Build the static docs site (copies token CSS, components, and fonts into site/).
+      - run: npm run build:site
+      # 3. Render the Marp deck to HTML + PDF into the site. Fonts resolve from site/fonts.
+      - run: npx @marp-team/marp-cli@latest packages/marp-theme/example-deck.md --theme packages/marp-theme/lokta.marp.css --html --allow-local-files -o site/deck.html
+      - run: npx @marp-team/marp-cli@latest packages/marp-theme/example-deck.md --theme packages/marp-theme/lokta.marp.css --pdf --allow-local-files -o site/lokta-deck.pdf
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: site }
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

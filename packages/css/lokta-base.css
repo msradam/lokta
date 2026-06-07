@@ -1,0 +1,91 @@
+/* Lokta base layer.
+   Design constants that are not colour/size tokens (easing, durations, type
+   styles, interaction state), plus the brand customisation layer and
+   forced-colors support. Load order: tokens CSS, then this, then components.
+
+   Depends on the semantic token layer from @lokta/tokens (e.g. --surface-inset,
+   --rule-2). Load a theme file (lokta.paper.css) or the combined lokta.css first. */
+
+:root {
+  /* Motion. Paper does not bounce. */
+  --ease-paper: cubic-bezier(0.2, 0, 0.1, 1);
+  --ease-productive: cubic-bezier(0.2, 0, 0.38, 0.9);
+  --ease-expressive: cubic-bezier(0.4, 0.14, 0.3, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+
+  /* Type styles. Each size pairs a line-height, weight, and tracking. */
+  --lh-tight: 1.05;
+  --lh-snug: 1.2;
+  --lh-normal: 1.45;
+  --lh-relaxed: 1.6;
+  --wt-regular: 400;
+  --wt-medium: 500;
+  --wt-semibold: 600;
+  --wt-bold: 700;
+  --wt-black: 800;
+  --track-tight: -0.03em;
+  --track-snug: -0.01em;
+  --track-label: 0.12em;
+
+  /* Interaction state. Resolves per theme via the surface tokens. */
+  --state-hover: var(--surface-inset);
+  --state-selected: var(--surface-sunken);
+  --state-disabled-opacity: 0.45;
+
+  /* Reference component classes name the focus width --focus-ring-width; the
+     token pipeline emits --focus-width. Alias so both resolve. */
+  --focus-ring-width: var(--focus-width, var(--rule-2));
+
+  /* Brand customisation layer. Apps may override these. Everything else
+     (type scale, 8px grid, AA rules, hard-edged character) is locked.
+     - accent pigment: --lk-accent
+     - control radius: --lk-radius (0 to 3px)
+     - density: [data-density="compact"]
+     - grain: [data-grain="off"]
+     - stock: [data-theme="…"] */
+  --lk-accent: var(--accent-feature-ground, var(--pigment-marigold));
+  --lk-radius: 0px;
+  --lk-density-step: 0px;
+}
+
+/* Density. Compact tightens control heights and gutters by one step. */
+[data-density="compact"] {
+  --lk-density-step: 4px;
+}
+
+/* Grain off. Disables the paper grain texture on .lk-sheet. */
+[data-grain="off"] .lk-sheet::before {
+  display: none;
+}
+
+/* Forced colors (Windows High Contrast). Keep keylines and focus visible by
+   mapping to system colours; let the OS own the palette. */
+@media (forced-colors: active) {
+  .lk-btn,
+  .lk-input,
+  .lk-tag,
+  .lk-card,
+  .lk-table th,
+  .lk-table td {
+    border-color: ButtonText;
+  }
+  .lk-btn-primary,
+  .lk-tag-filled {
+    background: ButtonText;
+    color: ButtonFace;
+    border-color: ButtonText;
+  }
+  .lk-btn:focus-visible,
+  .lk-input:focus-visible,
+  .lk-tag:focus-visible,
+  .lk-focus:focus-visible,
+  a:focus-visible {
+    outline-color: Highlight;
+  }
+  /* Status glyphs carry meaning when hue is stripped; keep them. */
+  .lk-status::before {
+    forced-color-adjust: none;
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "@lokta/css",
+  "version": "0.1.0",
+  "description": "Lokta component CSS, built on the semantic token layer.",
+  "license": "MIT",
+  "files": [
+    "lokta-base.css",
+    "lokta-components.css",
+    "lokta.css",
+    "fonts.css",
+    "fonts"
+  ],
+  "scripts": {
+    "build": "node ../../scripts/fetch-fonts.mjs"
+  }
+}

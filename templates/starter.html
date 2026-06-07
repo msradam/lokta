@@ -1,0 +1,33 @@
+<!doctype html>
+<!--
+  Lokta starter page. A ready-to-use starting point wired to the built packages.
+  Adjust the stylesheet paths to your install (node_modules or a CDN), then set
+  data-theme on <html> to pick a stock: paper (default), ink, bone, indigo.
+-->
+<html lang="en" data-theme="paper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lokta starter</title>
+  <link rel="stylesheet" href="../packages/css/fonts.css">
+  <link rel="stylesheet" href="../packages/tokens/dist/css/lokta.css">
+  <link rel="stylesheet" href="../packages/css/lokta-base.css">
+  <link rel="stylesheet" href="../packages/css/lokta-components.css">
+</head>
+<body class="lk lk-sheet" style="min-height:100vh">
+  <main style="max-width:720px;margin:0 auto;padding:48px 24px">
+    <div class="lk-running-head"><span>Lokta · Starter</span><span>Paper on Screen</span></div>
+    <p class="lk-label" style="margin-top:24px">An editorial design system</p>
+    <h1 style="font-size:var(--type-2xl);font-weight:800;letter-spacing:-0.03em;color:var(--text-primary)">Hello, paper.</h1>
+    <p>Build on the semantic layer and theming comes for free. Switch the
+      <code class="lk-code-inline">data-theme</code> on the html element to feel another stock.</p>
+    <div class="lk-measure"><span class="lk-measure-line" style="width:120px"></span><span class="lk-measure-gap"></span><span class="lk-measure-hatch"></span></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px">
+      <button class="lk-btn lk-btn-primary" type="button">Primary</button>
+      <button class="lk-btn" type="button">Default</button>
+      <span class="lk-tag lk-tag-pigment">Pigment</span>
+      <span class="lk-status lk-status-done">Done</span>
+    </div>
+  </main>
+</body>
+</html>

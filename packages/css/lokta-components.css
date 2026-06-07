@@ -1,0 +1,655 @@
+/* Lokta components.
+   Built on the semantic token layer so they theme automatically and inherit AA.
+   Load order: tokens CSS, then lokta-base.css, then this file.
+   Flat (no shadows except the modal's single hard offset), hard-edged
+   (square caps, miter joins), editorial. Controls honour --lk-radius (default 0)
+   and [data-density="compact"]. */
+
+/* ── TYPE FAMILIES ──────────────────────────────────────────────────────── */
+.lk {
+  font-family: "Archivo", "Helvetica Neue", "Arial", "Noto Sans JP", sans-serif;
+  font-size: var(--type-base);
+  line-height: 1.45;
+  color: var(--text-body);
+  background: var(--surface-page);
+  font-feature-settings: "ss01";
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+.lk-mono {
+  font-family: "Spline Sans Mono", "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  font-feature-settings: "zero", "ss02";
+  letter-spacing: 0;
+}
+
+.lk-serif {
+  font-family: "Source Serif 4", "Source Serif Pro", "Iowan Old Style", "Georgia", serif;
+  font-feature-settings: "kern", "liga";
+}
+
+.lk-cjk-jp {
+  font-family: "Archivo", "Hiragino Kaku Gothic Pro", "Yu Gothic", "Noto Sans JP", sans-serif;
+}
+
+/* Bengali. Anek Bangla, a contemporary grotesque that sits beside Archivo. */
+.lk-bn {
+  font-family: "Anek Bangla", "Noto Sans Bengali", "Archivo", sans-serif;
+}
+
+/* TRACKED LABEL. Small, uppercase, letter-spaced. The most-used label. */
+.lk-label {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* ── SHEET ──────────────────────────────────────────────────────────────── */
+.lk-sheet {
+  background: var(--surface-page);
+  position: relative;
+}
+.lk-sheet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 15% 30%, rgba(22, 20, 14, 0.018) 0px, transparent 1px),
+    radial-gradient(circle at 70% 60%, rgba(22, 20, 14, 0.015) 0px, transparent 1.5px),
+    radial-gradient(circle at 40% 80%, rgba(22, 20, 14, 0.012) 0px, transparent 1px);
+  background-size: 7px 7px, 11px 11px, 13px 13px;
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+}
+
+/* ── RULES ──────────────────────────────────────────────────────────────── */
+.lk-rule {
+  border: 0;
+  border-top: var(--rule-1) solid var(--text-primary);
+  margin: 0;
+}
+.lk-rule-hair {
+  border: 0;
+  border-top: var(--rule-hairline) solid var(--border-default);
+  margin: 0;
+}
+.lk-rule-thick {
+  border: 0;
+  border-top: var(--rule-2) solid var(--text-primary);
+  margin: 0;
+}
+.lk-rule-double {
+  border: 0;
+  border-top: var(--rule-1) solid var(--text-primary);
+  border-bottom: var(--rule-1) solid var(--text-primary);
+  height: 4px;
+  margin: 0;
+}
+
+/* MEASURED RULE. Line shorter than container; the rest is a hatched breath. */
+.lk-measure {
+  display: flex;
+  align-items: center;
+  height: 8px;
+  width: 100%;
+  gap: 0;
+}
+.lk-measure-line {
+  height: 1px;
+  background: var(--text-primary);
+  flex: 0 0 auto;
+}
+.lk-measure-hatch {
+  flex: 1 1 auto;
+  height: 6px;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--text-body) 0,
+    var(--text-body) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  opacity: 0.85;
+}
+.lk-measure-gap {
+  flex: 1 1 auto;
+}
+.lk-endmark {
+  display: inline-block;
+  width: 56px;
+  height: 6px;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--text-body) 0,
+    var(--text-body) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+/* ── TAG ────────────────────────────────────────────────────────────────── */
+.lk-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 3px 7px;
+  border: var(--rule-1) solid var(--border-strong);
+  border-radius: var(--lk-radius);
+  color: var(--text-body);
+  background: transparent;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.lk-tag-filled {
+  background: var(--border-strong);
+  color: var(--surface-raised);
+  border-color: var(--border-strong);
+}
+.lk-tag-pigment {
+  background: var(--accent-feature-fill);
+  color: var(--text-on-fill);
+  border-color: var(--accent-feature-fill);
+}
+
+/* ── BUTTON ─────────────────────────────────────────────────────────────── */
+.lk-btn {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  min-height: calc(36px - var(--lk-density-step));
+  padding: 0 14px;
+  border: var(--rule-1) solid var(--border-strong);
+  border-radius: var(--lk-radius);
+  background: var(--field-bg);
+  color: var(--text-body);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-paper);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 500;
+}
+.lk-btn:hover { background: var(--surface-inset); }
+.lk-btn:active { background: var(--border-strong); color: var(--surface-raised); }
+.lk-btn-primary {
+  background: var(--text-primary);
+  color: var(--surface-raised);
+  border-color: var(--text-primary);
+}
+.lk-btn-primary:hover { background: var(--ink-100); }
+.lk-btn-lg { min-height: calc(44px - var(--lk-density-step)); padding: 0 20px; font-size: 12px; }
+.lk-btn:disabled,
+.lk-btn[aria-disabled="true"] {
+  color: var(--text-disabled);
+  border-color: var(--border-default);
+  background: var(--surface-sunken);
+  cursor: not-allowed;
+}
+
+/* ── INPUT ──────────────────────────────────────────────────────────────── */
+.lk-input,
+.lk-select,
+.lk-textarea {
+  font-family: "Archivo", "Helvetica Neue", sans-serif;
+  font-size: var(--type-base);
+  min-height: calc(36px - var(--lk-density-step));
+  padding: 8px 10px;
+  border: var(--rule-1) solid var(--field-border);
+  border-radius: var(--lk-radius);
+  background: var(--field-bg);
+  color: var(--text-primary);
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+.lk-textarea { min-height: 88px; resize: vertical; }
+.lk-input::placeholder,
+.lk-textarea::placeholder { color: var(--field-placeholder); opacity: 1; }
+.lk-input:disabled,
+.lk-select:disabled,
+.lk-textarea:disabled {
+  color: var(--text-disabled);
+  background: var(--surface-sunken);
+  cursor: not-allowed;
+}
+.lk-field { display: flex; flex-direction: column; gap: 6px; }
+
+/* CHECKBOX + RADIO. Square caps; radio reads with an inner filled square. */
+.lk-check,
+.lk-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: calc(36px - var(--lk-density-step));
+  cursor: pointer;
+  color: var(--text-body);
+}
+.lk-check input,
+.lk-radio input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  border: var(--rule-2) solid var(--border-strong);
+  border-radius: var(--lk-radius);
+  background: var(--field-bg);
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+}
+.lk-check input::before { content: "\2714"; font-size: 12px; line-height: 1; color: var(--surface-raised); transform: scale(0); }
+.lk-check input:checked { background: var(--text-primary); border-color: var(--text-primary); }
+.lk-check input:checked::before { transform: scale(1); }
+.lk-radio input::before { content: ""; width: 8px; height: 8px; background: var(--surface-raised); transform: scale(0); }
+.lk-radio input:checked { background: var(--text-primary); border-color: var(--text-primary); }
+.lk-radio input:checked::before { transform: scale(1); }
+
+/* FOCUS. One visible ring for every interactive element (keyboard only). */
+.lk-btn:focus-visible,
+.lk-input:focus-visible,
+.lk-select:focus-visible,
+.lk-textarea:focus-visible,
+.lk-tag:focus-visible,
+.lk-check input:focus-visible,
+.lk-radio input:focus-visible,
+.lk-tab:focus-visible,
+.lk-page:focus-visible,
+.lk-slider:focus-visible,
+.lk-focus:focus-visible,
+a:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+/* ── STATUS ─────────────────────────────────────────────────────────────── */
+/* Colour is paired with a glyph so meaning never relies on hue alone (1.4.1). */
+.lk-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+.lk-status::before { font-size: 10px; line-height: 1; }
+.lk-status-done { color: var(--accent-success); }
+.lk-status-done::before { content: "\2714"; }
+.lk-status-alert { color: var(--accent-danger); }
+.lk-status-alert::before { content: "\26A0"; }
+.lk-status-pending { color: var(--text-muted); }
+.lk-status-pending::before { content: "\25CB"; }
+
+/* ── INLINE NOTIFICATION ────────────────────────────────────────────────── */
+.lk-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--surface-raised);
+  border: var(--rule-1) solid var(--border-default);
+  border-left: var(--rule-3) solid var(--border-strong);
+  color: var(--text-body);
+}
+.lk-note::before {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 600;
+  flex: 0 0 auto;
+}
+.lk-note-title { font-weight: 600; color: var(--text-primary); }
+.lk-note-success { border-left-color: var(--accent-success); }
+.lk-note-success::before { content: "\2714"; color: var(--accent-success); }
+.lk-note-danger { border-left-color: var(--accent-danger); }
+.lk-note-danger::before { content: "\26A0"; color: var(--accent-danger); }
+.lk-note-info { border-left-color: var(--accent-feature); }
+.lk-note-info::before { content: "\2139"; color: var(--accent-feature); }
+
+/* ── TABS ───────────────────────────────────────────────────────────────── */
+.lk-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: var(--rule-2) solid var(--border-strong);
+}
+.lk-tab {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  min-height: calc(36px - var(--lk-density-step));
+  padding: 0 14px;
+  border: 0;
+  border-bottom: var(--rule-2) solid transparent;
+  margin-bottom: -2px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.lk-tab:hover { color: var(--text-primary); }
+.lk-tab[aria-selected="true"] {
+  color: var(--text-primary);
+  border-bottom-color: var(--text-primary);
+}
+
+/* ── ACCORDION ──────────────────────────────────────────────────────────── */
+.lk-accordion { border-top: var(--rule-1) solid var(--border-default); }
+.lk-accordion details { border-bottom: var(--rule-1) solid var(--border-default); }
+.lk-accordion summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 10px 4px;
+  cursor: pointer;
+  list-style: none;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.lk-accordion summary::-webkit-details-marker { display: none; }
+.lk-accordion summary::after {
+  content: "+";
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  color: var(--text-secondary);
+}
+.lk-accordion details[open] summary::after { content: "\2013"; }
+.lk-accordion .lk-accordion-body { padding: 0 4px 14px; color: var(--text-body); }
+
+/* ── BREADCRUMB ─────────────────────────────────────────────────────────── */
+.lk-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+}
+.lk-breadcrumb li { display: flex; align-items: center; gap: 8px; }
+.lk-breadcrumb li + li::before { content: "/"; color: var(--text-muted); }
+.lk-breadcrumb a { color: var(--text-secondary); text-decoration: none; }
+.lk-breadcrumb a:hover { color: var(--text-primary); text-decoration: underline; }
+.lk-breadcrumb [aria-current="page"] { color: var(--text-primary); }
+
+/* ── PAGINATION ─────────────────────────────────────────────────────────── */
+.lk-pagination { display: inline-flex; }
+.lk-page {
+  min-width: calc(36px - var(--lk-density-step));
+  min-height: calc(36px - var(--lk-density-step));
+  padding: 0 8px;
+  margin-left: -1px;
+  border: var(--rule-1) solid var(--border-strong);
+  border-radius: var(--lk-radius);
+  background: var(--field-bg);
+  color: var(--text-body);
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.lk-page:hover { background: var(--surface-inset); }
+.lk-page[aria-current="page"] {
+  background: var(--text-primary);
+  color: var(--surface-raised);
+  border-color: var(--text-primary);
+  position: relative;
+  z-index: 1;
+}
+.lk-page:disabled { color: var(--text-disabled); cursor: not-allowed; }
+
+/* ── PROGRESS ───────────────────────────────────────────────────────────── */
+.lk-progress {
+  height: 8px;
+  background: var(--surface-inset);
+  border: var(--rule-1) solid var(--border-default);
+  overflow: hidden;
+}
+.lk-progress-bar {
+  height: 100%;
+  background: var(--text-primary);
+  transition: width var(--dur-base) var(--ease-productive);
+}
+
+/* ── SLIDER ─────────────────────────────────────────────────────────────── */
+.lk-slider {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 36px;
+  background: transparent;
+  cursor: pointer;
+}
+.lk-slider::-webkit-slider-runnable-track { height: 2px; background: var(--border-strong); }
+.lk-slider::-moz-range-track { height: 2px; background: var(--border-strong); }
+.lk-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 18px;
+  margin-top: -8px;
+  background: var(--text-primary);
+  border: 0;
+  border-radius: var(--lk-radius);
+}
+.lk-slider::-moz-range-thumb {
+  width: 14px;
+  height: 18px;
+  background: var(--text-primary);
+  border: 0;
+  border-radius: var(--lk-radius);
+}
+
+/* ── TOOLTIP ────────────────────────────────────────────────────────────── */
+.lk-has-tooltip { position: relative; }
+.lk-has-tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: var(--surface-inverse);
+  color: var(--surface-raised);
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 4px 8px;
+  border: var(--rule-1) solid var(--border-strong);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease-paper);
+}
+.lk-has-tooltip:hover::after,
+.lk-has-tooltip:focus-visible::after { opacity: 1; }
+.lk-tooltip {
+  display: inline-block;
+  background: var(--surface-inverse);
+  color: var(--surface-raised);
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 4px 8px;
+  border: var(--rule-1) solid var(--border-strong);
+}
+
+/* ── CODE BLOCK ─────────────────────────────────────────────────────────── */
+.lk-code {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-sm);
+  line-height: 1.6;
+  background: var(--surface-sunken);
+  border: var(--rule-1) solid var(--border-default);
+  color: var(--text-body);
+  padding: 12px 14px;
+  overflow: auto;
+}
+.lk-code-inline {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 0.9em;
+  background: var(--surface-sunken);
+  border: var(--rule-1) solid var(--border-hairline);
+  padding: 1px 5px;
+}
+
+/* ── CARD ───────────────────────────────────────────────────────────────── */
+.lk-card {
+  background: var(--surface-raised);
+  border: var(--rule-1) solid var(--border-default);
+  padding: 16px;
+}
+
+/* ── DATA TABLE ─────────────────────────────────────────────────────────── */
+.lk-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--type-sm);
+  font-variant-numeric: tabular-nums;
+}
+.lk-table th {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  text-align: left;
+  color: var(--text-secondary);
+  border-bottom: var(--rule-2) solid var(--border-strong);
+  padding: 8px 12px;
+}
+.lk-table td {
+  border-bottom: var(--rule-hairline) solid var(--border-hairline);
+  color: var(--text-body);
+  padding: 8px 12px;
+}
+.lk-table tbody tr:nth-child(even) { background: var(--surface-sunken); }
+.lk-table-num { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ── MODAL ──────────────────────────────────────────────────────────────── */
+/* The one place the system uses a shadow: a single hard offset, no blur. */
+.lk-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 13, 14, 0.55);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+.lk-modal {
+  background: var(--surface-raised);
+  border: var(--rule-2) solid var(--border-strong);
+  box-shadow: 8px 8px 0 0 var(--border-strong);
+  padding: 24px;
+  max-width: 520px;
+  width: 100%;
+}
+.lk-modal-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: var(--rule-1) solid var(--text-primary);
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+}
+.lk-modal-title { font-weight: 700; color: var(--text-primary); font-size: var(--type-lg); }
+.lk-modal-foot { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+
+/* ── FOLIO / RUNNING HEAD / COLOPHON ────────────────────────────────────── */
+.lk-folio {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-sm);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.lk-running-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+  padding: 8px 0;
+  border-bottom: var(--rule-1) solid var(--text-primary);
+}
+.lk-colophon {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 12px;
+  background: var(--surface-inverse);
+  color: var(--surface-raised);
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* ── DROP CAP ───────────────────────────────────────────────────────────── */
+.lk-dropcap::first-letter {
+  font-family: "Source Serif 4", "Iowan Old Style", "Georgia", serif;
+  font-size: 4.5em;
+  line-height: 0.85;
+  float: left;
+  padding: 0.05em 0.08em 0 0;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ── SCROLLBAR ──────────────────────────────────────────────────────────── */
+.lk-scroll::-webkit-scrollbar { width: 10px; height: 10px; }
+.lk-scroll::-webkit-scrollbar-track { background: var(--surface-sunken); }
+.lk-scroll::-webkit-scrollbar-thumb { background: var(--border-default); border: 2px solid var(--surface-sunken); }
+.lk-scroll::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+/* ── UTILITY ────────────────────────────────────────────────────────────── */
+.lk-tabular { font-variant-numeric: tabular-nums; }
+.lk-num { font-feature-settings: "tnum"; font-variant-numeric: tabular-nums; }
+.lk-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── MOTION ─────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* ── POLISH ─────────────────────────────────────────────────────────────── */
+.lk h1, .lk h2, .lk h3, .lk-balance { text-wrap: balance; }
+.lk p, .lk-pretty { text-wrap: pretty; }
+::selection { background: var(--pigment-marigold); color: var(--ink-100); }
+::-moz-selection { background: var(--pigment-marigold); color: var(--ink-100); }
+.lk-num, .lk-tabular, .lk-folio, .lk-mono { font-variant-numeric: tabular-nums; }

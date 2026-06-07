@@ -1,0 +1,660 @@
+/* Lokta — Paper on Screen
+   A design system for web apps that treats the screen as a printed page.
+   Inspired by editorial books (Prestel, Phaidon) and terminal UIs.
+
+   v0.1 — Accessibility-remediated (WCAG 2.2 AA).
+   ───────────────────────────────────────────────────────────────────────
+   ARCHITECTURE
+   1. PRIMITIVES   raw values, never reference them directly in product UI
+   2. SEMANTIC     role-based aliases (text-*, surface-*, border-*, accent-*)
+   3. THEMES       [data-theme="paper"] (default) · [data-theme="ink"] (dark)
+   Build UI against the SEMANTIC layer so both themes + a11y come for free.
+*/
+
+/* ════════════════════════════════════════════════════════════════════════
+   1 · PRIMITIVES
+   ════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* PAPER — warm greenish cream, matched to the source book stock. Never pure white. */
+  --paper-00: #FAF8EA;   /* deckle, top sheet */
+  --paper-01: #F4F1DF;   /* page, primary surface */
+  --paper-02: #EAE6D2;   /* page shadow, sidebar */
+  --paper-03: #DBD3BB;   /* inset, table stripe */
+  --paper-04: #C2B89C;   /* divider, plate edge */
+
+  /* INK — warm-tinted blacks. Prefer ink-80 for body.
+     Contrast vs paper-01 noted; AA needs 4.5:1 (text <18px) / 3:1 (large/UI). */
+  --ink-100: #16140E;    /* 14.8:1  full black, rare */
+  --ink-90:  #1F1C13;    /* 13.9:1  headlines */
+  --ink-80:  #2A2620;    /* 13.1:1  body text */
+  --ink-60:  #5C564B;    /*  6.3:1  secondary text — AA ✓ */
+  --ink-50:  #6E665A;    /*  4.9:1  muted text — AA ✓  (NEW — replaces ink-40 for small text) */
+  --ink-40:  #8E867A;    /*  3.1:1  borders / large / disabled ONLY — not body text */
+  --ink-20:  #B8B0A1;    /*  1.9:1  hairlines / fills ONLY — never text */
+
+  /* PIGMENT — saturated panels. FILL role: full-bleed section/feature grounds.
+     marigold is the book's HERO ground (film-intro spreads); always DARK text. */
+  --pigment-marigold:  #FBBC0E;   /* HERO feature ground (dark text only — white fails badly) */
+  --pigment-peach:     #E7A079;   /* HERITAGE salmon (Kabir cookbook) — pairs with night, dark text */
+  --pigment-lavender:  #A99CB3;   /* cover / brand tone (dark text) */
+  --pigment-aubergine: #6B4E8E;   /* feature panel  (white text ✓ 6.2:1) */
+  --pigment-cinnabar:  #C23A26;   /* danger fill    (white text ✓) */
+  --pigment-celadon:   #6E8B6F;   /* success fill   (white text ✓) */
+  --pigment-indigo:    #2E3E5C;   /* info / deep blue (white text ✓) */
+  --pigment-night:     #070D0E;   /* dramatic section-opener ground (cool near-black) */
+
+  /* PIGMENT · INK — AA-safe variants for using a pigment AS TEXT/ICON on paper. */
+  --pigment-celadon-ink:  #4F6B50;  /* 5.2:1 — success text/check on paper ✓ */
+  --pigment-cinnabar-ink: #C23A26;  /* 4.7:1 — danger text on paper ✓ */
+  --pigment-aubergine-ink:#6B4E8E;  /* 4.6:1 — feature text on paper ✓ */
+
+  /* RULES — line weights for editorial dividers */
+  --rule-hairline: 0.5px;
+  --rule-1: 1px;
+  --rule-2: 2px;
+  --rule-3: 4px;
+
+  /* TYPE SCALE — based on book typography, not web defaults */
+  --type-xs:   11px;   /* tracked labels, footnotes */
+  --type-sm:   13px;   /* meta, captions */
+  --type-base: 15px;   /* body */
+  --type-md:   18px;   /* lead-in */
+  --type-lg:   24px;   /* deck, subheadline */
+  --type-xl:   32px;   /* recipe title */
+  --type-2xl:  48px;   /* section header */
+  --type-3xl:  72px;   /* book cover */
+
+  /* SPACING — paper measure, generous gutters */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* TARGETS — minimum interactive sizes (WCAG 2.5.8) */
+  --target-min: 24px;   /* pointer minimum (AA) */
+  --target-touch: 44px; /* comfortable touch (use lk-btn-lg in touch contexts) */
+
+  /* TRANSITIONS — paper doesn't bounce. Productive = UI feedback, expressive = entrances. */
+  --ease-paper: cubic-bezier(0.2, 0, 0.1, 1);
+  --ease-productive: cubic-bezier(0.2, 0, 0.38, 0.9);
+  --ease-expressive: cubic-bezier(0.4, 0.14, 0.3, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+
+  /* TYPE STYLES — every size pairs a line-height + weight + tracking (a real type set,
+     not loose sizes). Reference these so vertical rhythm stays consistent. */
+  --lh-tight:   1.05;   /* display / headline */
+  --lh-snug:    1.2;    /* titles, KPIs, tags */
+  --lh-normal:  1.45;   /* body */
+  --lh-relaxed: 1.6;    /* long-form reading */
+  --wt-regular: 400;
+  --wt-medium:  500;
+  --wt-semibold:600;
+  --wt-bold:    700;
+  --wt-black:   800;
+  --track-tight: -0.03em;  /* 48px+ display */
+  --track-snug:  -0.01em;  /* 24–32px titles */
+  --track-label:  0.12em;  /* tracked mono labels */
+
+  /* STATE — interaction layers. Resolve per-theme because they reference surface tokens. */
+  --state-hover:    var(--surface-inset);
+  --state-selected: var(--surface-sunken);
+  --state-disabled-opacity: 0.45;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   2 · SEMANTIC  (default = paper / light)
+   ════════════════════════════════════════════════════════════════════════ */
+:root,
+[data-theme="paper"] {
+  /* Surfaces */
+  --surface-page:    var(--paper-01);
+  --surface-raised:  var(--paper-00);
+  --surface-sunken:  var(--paper-02);
+  --surface-inset:   var(--paper-03);
+  --surface-inverse: var(--ink-90);
+
+  /* Text — all AA-compliant against surface-page */
+  --text-primary:    var(--ink-90);   /* headlines */
+  --text-body:       var(--ink-80);   /* paragraphs */
+  --text-secondary:  var(--ink-60);   /* captions, meta */
+  --text-muted:      var(--ink-50);   /* de-emphasised — still AA */
+  --text-disabled:   var(--ink-40);   /* inactive only; never essential info */
+  --text-on-fill:    var(--paper-00); /* light text on a dark/pigment fill */
+  --text-on-marigold:var(--ink-90);   /* marigold demands dark text */
+  --text-on-peach:   var(--ink-90);   /* peach demands dark text */
+
+  /* Borders */
+  --border-strong:   var(--ink-80);   /* keylines, inputs, buttons */
+  --border-default:  var(--ink-40);   /* component dividers (3:1 UI) */
+  --border-hairline: var(--ink-20);   /* faint table rules (decorative) */
+
+  /* Accents — text-safe roles map to *-ink, fill roles to base pigment */
+  --accent-success:        var(--pigment-celadon-ink);
+  --accent-success-fill:   var(--pigment-celadon);
+  --accent-danger:         var(--pigment-cinnabar-ink);
+  --accent-danger-fill:    var(--pigment-cinnabar);
+  --accent-feature:        var(--pigment-aubergine-ink);
+  --accent-feature-fill:   var(--pigment-aubergine);
+  --accent-feature-ground: var(--pigment-marigold);  /* full-bleed film/section ground (dark text) */
+  --accent-warning-fill:   var(--pigment-marigold);
+  --accent-info-fill:      var(--pigment-indigo);
+
+  /* Fields */
+  --field-bg:          var(--paper-00);
+  --field-border:      var(--ink-80);
+  --field-placeholder: var(--ink-50);  /* AA — was ink-40, which failed */
+
+  /* Focus — visible ring, 3:1+ against both states (WCAG 2.4.11) */
+  --focus-ring:       var(--ink-100);
+  --focus-ring-width: var(--rule-2);
+  --focus-offset:     2px;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   3 · THEME · INK  (dark "ink page")
+   Re-points the semantic layer; all text checked AA against ink-90 surface.
+   ════════════════════════════════════════════════════════════════════════ */
+[data-theme="ink"] {
+  --surface-page:    var(--ink-90);
+  --surface-raised:  var(--ink-80);
+  --surface-sunken:  var(--ink-100);
+  --surface-inset:   #26221A;
+  --surface-inverse: var(--paper-01);
+
+  --text-primary:    var(--paper-00);  /* 13.7:1 */
+  --text-body:       var(--paper-01);  /* 12.9:1 */
+  --text-secondary:  var(--paper-04);  /*  8.2:1 */
+  --text-muted:      var(--ink-20);    /*  7.5:1 */
+  --text-disabled:   var(--ink-40);
+  --text-on-fill:    var(--paper-00);
+  --text-on-marigold:var(--ink-100);
+
+  --border-strong:   var(--paper-04);
+  --border-default:  var(--ink-40);
+  --border-hairline: var(--ink-60);
+
+  --accent-success:      #8FB088;  /* 6.7:1 on ink */
+  --accent-success-fill: var(--pigment-celadon);
+  --accent-danger:       #E2654F;  /* 4.8:1 on ink */
+  --accent-danger-fill:  var(--pigment-cinnabar);
+  --accent-feature:      #A98FC9;  /* 7.5:1 on ink */
+  --accent-feature-fill: var(--pigment-aubergine);
+  --accent-warning-fill: var(--pigment-marigold);
+  --accent-info-fill:    var(--pigment-indigo);
+
+  --field-bg:          var(--ink-100);
+  --field-border:      var(--paper-04);
+  --field-placeholder: var(--ink-20);
+
+  --focus-ring:       var(--paper-00);
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   3b · STOCK · BONE  (cool neutral near-white — for when cream reads too warm)
+   ════════════════════════════════════════════════════════════════════════ */
+[data-theme="bone"] {
+  --surface-page:    #EFEEE7;
+  --surface-raised:  #F7F6F1;
+  --surface-sunken:  #E4E3DB;
+  --surface-inset:   #D8D7CE;
+  --surface-inverse: var(--ink-90);
+
+  --text-primary:    var(--ink-90);   /* 13.5:1 */
+  --text-body:       var(--ink-80);   /* 12.8:1 */
+  --text-secondary:  var(--ink-60);   /*  6.2:1 */
+  --text-muted:      var(--ink-50);   /*  4.8:1 — AA */
+  --text-disabled:   var(--ink-40);
+  --text-on-fill:    #F7F6F1;
+  --text-on-marigold:var(--ink-90);
+
+  --border-strong:   var(--ink-80);
+  --border-default:  var(--ink-40);
+  --border-hairline: var(--ink-20);
+
+  --accent-success:        var(--pigment-celadon-ink);
+  --accent-success-fill:   var(--pigment-celadon);
+  --accent-danger:         var(--pigment-cinnabar-ink);
+  --accent-danger-fill:    var(--pigment-cinnabar);
+  --accent-feature:        var(--pigment-aubergine-ink);
+  --accent-feature-fill:   var(--pigment-aubergine);
+  --accent-feature-ground: var(--pigment-marigold);
+  --accent-warning-fill:   var(--pigment-marigold);
+  --accent-info-fill:      var(--pigment-indigo);
+
+  --field-bg:          #F7F6F1;
+  --field-border:      var(--ink-80);
+  --field-placeholder: var(--ink-50);
+
+  --focus-ring:       var(--ink-100);
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   3c · STOCK · INDIGO  (cool dark — an alternative to the warm Ink page)
+   All text checked AA against the #1B2230 surface.
+   ════════════════════════════════════════════════════════════════════════ */
+[data-theme="indigo"] {
+  --surface-page:    #1B2230;
+  --surface-raised:  #232C3D;
+  --surface-sunken:  #141A25;
+  --surface-inset:   #2B3547;
+  --surface-inverse: #EFEEE7;
+
+  --text-primary:    #EDECE3;   /* 14.0:1 */
+  --text-body:       #E2E1D6;   /* 12.2:1 */
+  --text-secondary:  #AEB4C2;   /*  7.6:1 */
+  --text-muted:      #8A93A6;   /*  5.2:1 — AA */
+  --text-disabled:   #5E6675;
+  --text-on-fill:    #EDECE3;
+  --text-on-marigold:var(--ink-100);
+
+  --border-strong:   #AEB4C2;
+  --border-default:  #4A5365;
+  --border-hairline: #343E4F;
+
+  --accent-success:        #8FB088;  /* 6.4:1 on indigo */
+  --accent-success-fill:   var(--pigment-celadon);
+  --accent-danger:         #E2654F;  /* 4.6:1 on indigo */
+  --accent-danger-fill:    var(--pigment-cinnabar);
+  --accent-feature:        #A98FC9;  /* 7.0:1 on indigo */
+  --accent-feature-fill:   var(--pigment-aubergine);
+  --accent-feature-ground: var(--pigment-marigold);
+  --accent-warning-fill:   var(--pigment-marigold);
+  --accent-info-fill:      var(--pigment-indigo);
+
+  --field-bg:          #141A25;
+  --field-border:      #4A5365;
+  --field-placeholder: #8A93A6;
+
+  --focus-ring:       #EDECE3;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   3d · STOCK · PINE  (deep green dark) · 3e · STOCK · MULBERRY (deep wine dark)
+   Non-blue dark stocks. Text roles mirror Indigo's AA structure.
+   ════════════════════════════════════════════════════════════════════════ */
+[data-theme="pine"] {
+  --surface-page:    #16231C;
+  --surface-raised:  #1E2E25;
+  --surface-sunken:  #101A14;
+  --surface-inset:   #24382C;
+  --surface-inverse: #F3F0E6;
+  --text-primary:    #EEEFE6;
+  --text-body:       #E0E4D9;
+  --text-secondary:  #AFBBA8;
+  --text-muted:      #889184;
+  --text-disabled:   #5E665C;
+  --text-on-fill:    #EEEFE6;
+  --text-on-marigold:var(--ink-100);
+  --border-strong:   #AFBBA8;
+  --border-default:  #495449;
+  --border-hairline: #2E3A32;
+  --accent-success:      #9DC08F;
+  --accent-success-fill: var(--pigment-celadon);
+  --accent-danger:       #E2654F;
+  --accent-danger-fill:  var(--pigment-cinnabar);
+  --accent-feature:      #D8B36A;
+  --accent-feature-fill: var(--pigment-aubergine);
+  --accent-feature-ground: var(--pigment-marigold);
+  --accent-warning-fill: var(--pigment-marigold);
+  --accent-info-fill:    var(--pigment-indigo);
+  --field-bg:          #101A14;
+  --field-border:      #495449;
+  --field-placeholder: #889184;
+  --focus-ring:       #EEEFE6;
+}
+[data-theme="mulberry"] {
+  --surface-page:    #241620;
+  --surface-raised:  #2E1E29;
+  --surface-sunken:  #1A0F16;
+  --surface-inset:   #382433;
+  --surface-inverse: #F3EEEF;
+  --text-primary:    #F0E9EC;
+  --text-body:       #E5DBDF;
+  --text-secondary:  #C0AEB7;
+  --text-muted:      #9A8791;
+  --text-disabled:   #6A5A63;
+  --text-on-fill:    #F0E9EC;
+  --text-on-marigold:var(--ink-100);
+  --border-strong:   #C0AEB7;
+  --border-default:  #574A52;
+  --border-hairline: #3A2C35;
+  --accent-success:      #8FB088;
+  --accent-success-fill: var(--pigment-celadon);
+  --accent-danger:       #E2654F;
+  --accent-danger-fill:  var(--pigment-cinnabar);
+  --accent-feature:      #D199C2;
+  --accent-feature-fill: var(--pigment-aubergine);
+  --accent-feature-ground: var(--pigment-marigold);
+  --accent-warning-fill: var(--pigment-marigold);
+  --accent-info-fill:    var(--pigment-indigo);
+  --field-bg:          #1A0F16;
+  --field-border:      #574A52;
+  --field-placeholder: #9A8791;
+  --focus-ring:       #F0E9EC;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   TYPE FAMILIES
+   - Display/Body: Archivo — neutral editorial grotesk (free, Figma-native)
+   - Mono: Spline Sans Mono · Serif: Source Serif 4 · CJK: Noto Sans JP
+   ════════════════════════════════════════════════════════════════════════ */
+.lk {
+  font-family: "Archivo", "Helvetica Neue", "Arial", "Noto Sans JP", sans-serif;
+  font-size: var(--type-base);
+  line-height: 1.45;
+  color: var(--text-body);
+  background: var(--surface-page);
+  font-feature-settings: "ss01";
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+}
+
+.lk-mono {
+  font-family: "Spline Sans Mono", "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  font-feature-settings: "zero", "ss02";
+  letter-spacing: 0;
+}
+
+.lk-serif {
+  font-family: "Source Serif 4", "Source Serif Pro", "Iowan Old Style", "Georgia", serif;
+  font-feature-settings: "kern", "liga";
+}
+
+.lk-cjk-jp {
+  font-family: "Archivo", "Hiragino Kaku Gothic Pro", "Yu Gothic", "Noto Sans JP", sans-serif;
+}
+
+/* Bengali — Anek Bangla, a contemporary grotesque that sits naturally beside Archivo.
+   Used for the heritage thread (after Siddika Kabir's cookbook). */
+.lk-bn {
+  font-family: "Anek Bangla", "Noto Sans Bengali", "Archivo", sans-serif;
+}
+
+/* TRACKED LABEL — small, uppercase, letter-spaced. The system's most-used label. */
+.lk-label {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* SHEET — the canonical paper container. Has a subtle grain. */
+.lk-sheet {
+  background: var(--surface-page);
+  position: relative;
+}
+.lk-sheet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 15% 30%, rgba(22,20,14,0.018) 0px, transparent 1px),
+    radial-gradient(circle at 70% 60%, rgba(22,20,14,0.015) 0px, transparent 1.5px),
+    radial-gradient(circle at 40% 80%, rgba(22,20,14,0.012) 0px, transparent 1px);
+  background-size: 7px 7px, 11px 11px, 13px 13px;
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+}
+
+/* RULE — editorial divider. Strokes, not full-width dividers. */
+.lk-rule {
+  border: 0;
+  border-top: var(--rule-1) solid var(--text-primary);
+  margin: 0;
+}
+.lk-rule-hair {
+  border: 0;
+  border-top: var(--rule-hairline) solid var(--border-default);
+  margin: 0;
+}
+.lk-rule-thick {
+  border: 0;
+  border-top: var(--rule-2) solid var(--text-primary);
+  margin: 0;
+}
+.lk-rule-double {
+  border: 0;
+  border-top: var(--rule-1) solid var(--text-primary);
+  border-bottom: var(--rule-1) solid var(--text-primary);
+  height: 4px;
+  margin: 0;
+}
+
+/* MEASURED RULE — line shorter than container; rest is a hatched "breath". */
+.lk-measure {
+  display: flex;
+  align-items: center;
+  height: 8px;
+  width: 100%;
+  gap: 0;
+}
+.lk-measure-line {
+  height: 1px;
+  background: var(--text-primary);
+  flex: 0 0 auto;
+}
+.lk-measure-hatch {
+  flex: 1 1 auto;
+  height: 6px;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--text-body) 0,
+    var(--text-body) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  opacity: 0.85;
+}
+.lk-measure-gap {
+  flex: 1 1 auto;
+}
+.lk-endmark {
+  display: inline-block;
+  width: 56px;
+  height: 6px;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--text-body) 0,
+    var(--text-body) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+/* TAG — hard-cornered metadata pill */
+.lk-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 3px 7px;
+  border: var(--rule-1) solid var(--border-strong);
+  color: var(--text-body);
+  background: transparent;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.lk-tag-filled {
+  background: var(--border-strong);
+  color: var(--surface-raised);
+  border-color: var(--border-strong);
+}
+.lk-tag-pigment {
+  background: var(--accent-feature-fill);
+  color: var(--text-on-fill);
+  border-color: var(--accent-feature-fill);
+}
+
+/* BUTTON — paper-button, looks like a printed key. min target 36px (>AA 24px). */
+.lk-btn {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  min-height: 36px;
+  padding: 0 14px;
+  border: var(--rule-1) solid var(--border-strong);
+  background: var(--field-bg);
+  color: var(--text-body);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-paper);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 500;
+}
+.lk-btn:hover { background: var(--surface-inset); }
+.lk-btn:active { background: var(--border-strong); color: var(--surface-raised); }
+.lk-btn-primary {
+  background: var(--text-primary);
+  color: var(--surface-raised);
+  border-color: var(--text-primary);
+}
+.lk-btn-primary:hover { background: var(--ink-100); }
+.lk-btn-lg { min-height: 44px; padding: 0 20px; font-size: 12px; }
+.lk-btn:disabled,
+.lk-btn[aria-disabled="true"] {
+  color: var(--text-disabled);
+  border-color: var(--border-default);
+  background: var(--surface-sunken);
+  cursor: not-allowed;
+}
+
+/* INPUT */
+.lk-input {
+  font-family: "Archivo", "Helvetica Neue", sans-serif;
+  font-size: var(--type-base);
+  min-height: 36px;
+  padding: 8px 10px;
+  border: var(--rule-1) solid var(--field-border);
+  background: var(--field-bg);
+  color: var(--text-primary);
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+.lk-input::placeholder { color: var(--field-placeholder); opacity: 1; }
+
+/* FOCUS — single visible ring for every interactive element (keyboard only). */
+.lk-btn:focus-visible,
+.lk-input:focus-visible,
+.lk-tag:focus-visible,
+.lk-focus:focus-visible,
+a:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+/* STATUS — color is paired with a glyph so it never relies on hue alone (1.4.1) */
+.lk-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+.lk-status::before { font-size: 10px; line-height: 1; }
+.lk-status-done    { color: var(--accent-success); }
+.lk-status-done::before    { content: "\2714"; }      /* ✔ */
+.lk-status-alert   { color: var(--accent-danger); }
+.lk-status-alert::before   { content: "\26A0"; }      /* ⚠ */
+.lk-status-pending { color: var(--text-muted); }
+.lk-status-pending::before { content: "\25CB"; }      /* ○ */
+
+/* PAGE NUMBER — bottom corner, like a book */
+.lk-folio {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-sm);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* RUNNING HEAD — top-of-page strap */
+.lk-running-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+  padding: 8px 0;
+  border-bottom: var(--rule-1) solid var(--text-primary);
+}
+
+/* COLOPHON FOOTER — bottom-of-page strap */
+.lk-colophon {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 12px;
+  background: var(--surface-inverse);
+  color: var(--surface-raised);
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* DROP CAP — for the reading app */
+.lk-dropcap::first-letter {
+  font-family: "Source Serif 4", "Iowan Old Style", "Georgia", serif;
+  font-size: 4.5em;
+  line-height: 0.85;
+  float: left;
+  padding: 0.05em 0.08em 0 0;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* SCROLLBAR — paper-friendly */
+.lk-scroll::-webkit-scrollbar { width: 10px; height: 10px; }
+.lk-scroll::-webkit-scrollbar-track { background: var(--surface-sunken); }
+.lk-scroll::-webkit-scrollbar-thumb { background: var(--border-default); border: 2px solid var(--surface-sunken); }
+.lk-scroll::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+/* UTILITY */
+.lk-tabular { font-variant-numeric: tabular-nums; }
+.lk-num { font-feature-settings: "tnum"; font-variant-numeric: tabular-nums; }
+
+/* MOTION — respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+/* SR-ONLY — visually hidden but available to assistive tech */
+.lk-sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
+}
+
+/* ── POLISH ────────────────────────────────────────────────────────────────
+   Craft layer. Balanced headings stop awkward single-word last lines; pretty
+   body wrap evens the rag and kills orphans; selection wears the house marigold. */
+.lk h1, .lk h2, .lk h3, .lk-balance { text-wrap: balance; }
+.lk p, .lk-pretty { text-wrap: pretty; }
+::selection { background: var(--pigment-marigold); color: var(--ink-100); }
+::-moz-selection { background: var(--pigment-marigold); color: var(--ink-100); }
+/* Hairlines stay crisp at any DPR; numerals stay tabular by default in data UI. */
+.lk { -webkit-text-size-adjust: 100%; }
+.lk-num, .lk-tabular, .lk-folio, .lk-mono { font-variant-numeric: tabular-nums; }

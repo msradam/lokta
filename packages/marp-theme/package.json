@@ -1,0 +1,21 @@
+{
+  "name": "@lokta/marp-theme",
+  "version": "0.1.0",
+  "description": "Lokta presentation theme for Marp, with a sample deck.",
+  "license": "MIT",
+  "files": [
+    "lokta.marp.css",
+    "example-deck.md",
+    "fonts.css",
+    "fonts"
+  ],
+  "scripts": {
+    "fonts": "node ../../scripts/fetch-fonts.mjs",
+    "build": "npm run deck:html && npm run deck:pdf",
+    "deck:html": "marp example-deck.md --theme lokta.marp.css --html --allow-local-files -o deck.html",
+    "deck:pdf": "marp example-deck.md --theme lokta.marp.css --pdf --allow-local-files -o lokta-deck.pdf"
+  },
+  "devDependencies": {
+    "@marp-team/marp-cli": "^4.1.2"
+  }
+}

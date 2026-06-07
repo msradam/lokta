@@ -1,0 +1,47 @@
+{
+  "$themes": [
+    {
+      "id": "paper",
+      "name": "Paper (light)",
+      "selectedTokenSets": {
+        "primitives": "source",
+        "semantic-paper": "enabled",
+        "semantic-ink": "disabled"
+      }
+    },
+    {
+      "id": "ink",
+      "name": "Ink (dark)",
+      "selectedTokenSets": {
+        "primitives": "source",
+        "semantic-ink": "enabled",
+        "semantic-paper": "disabled"
+      }
+    },
+    {
+      "id": "bone",
+      "name": "Bone (cool stock)",
+      "selectedTokenSets": {
+        "primitives": "source",
+        "stock-bone": "enabled"
+      }
+    },
+    {
+      "id": "indigo",
+      "name": "Indigo (dark stock)",
+      "selectedTokenSets": {
+        "primitives": "source",
+        "stock-indigo": "enabled"
+      }
+    }
+  ],
+  "$metadata": {
+    "tokenSetOrder": [
+      "primitives",
+      "semantic-paper",
+      "semantic-ink",
+      "stock-bone",
+      "stock-indigo"
+    ]
+  }
+}

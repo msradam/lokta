@@ -1,0 +1,492 @@
+// Build the static Lokta docs site into site/. Plain HTML plus the built token
+// CSS and the component layer. Copies fonts, generates the page (overview,
+// foundations, components, tokens reference), and leaves room for the rendered
+// Marp deck (deck.html + lokta-deck.pdf) that CI drops alongside.
+import { readFile, writeFile, mkdir, cp, rm, access } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
+const here = dirname(fileURLToPath(import.meta.url));
+const root = join(here, '..');
+const site = join(root, 'site');
+
+const tokens = JSON.parse(await readFile(join(root, 'tokens/lokta.tokens.json'), 'utf8'));
+
+// ── copy assets ───────────────────────────────────────────────────────────
+await rm(site, { recursive: true, force: true });
+await mkdir(site, { recursive: true });
+await cp(join(root, 'packages/css/fonts'), join(site, 'fonts'), { recursive: true });
+const copies = [
+  ['packages/tokens/dist/css/lokta.css', 'lokta.tokens.css'],
+  ['packages/css/fonts.css', 'fonts.css'],
+  ['packages/css/lokta-base.css', 'lokta-base.css'],
+  ['packages/css/lokta-components.css', 'lokta-components.css'],
+];
+for (const [from, to] of copies) await cp(join(root, from), join(site, to));
+
+// ── helpers ─────────────────────────────────────────────────────────────────
+const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const swatch = (name, value, note) => `
+  <figure class="sw">
+    <div class="sw-chip" style="background:${esc(value)}"></div>
+    <figcaption>
+      <code>${esc(name)}</code>
+      <span class="sw-hex">${esc(value)}</span>
+      ${note ? `<span class="sw-note">${esc(note)}</span>` : ''}
+    </figcaption>
+  </figure>`;
+
+// ── colour ──────────────────────────────────────────────────────────────────
+const p = tokens.primitives;
+const paperSwatches = Object.entries(p.paper).map(([k, v]) => swatch(`paper.${k}`, v.$value, v.$description)).join('');
+const inkSwatches = Object.entries(p.ink).map(([k, v]) => swatch(`ink.${k}`, v.$value, v.$description)).join('');
+const pigmentSwatches = Object.entries(p.pigment).map(([k, v]) => swatch(`pigment.${k}`, v.$value, v.$description)).join('');
+
+const STOCKS = [
+  { id: 'paper', name: 'Paper', sub: 'light, default' },
+  { id: 'ink', name: 'Ink', sub: 'warm dark' },
+  { id: 'bone', name: 'Bone', sub: 'cool light' },
+  { id: 'indigo', name: 'Indigo', sub: 'cool dark' },
+];
+const stockCards = STOCKS.map(
+  (s) => `
+  <div class="stock-card" data-theme="${s.id}">
+    <div class="lk-label">${esc(s.name)} · ${esc(s.sub)}</div>
+    <p class="stock-h">Headline primary</p>
+    <p class="stock-b">Body text on the page surface, AA across every role.</p>
+    <p class="stock-s">Secondary · muted</p>
+    <div class="stock-row">
+      <span class="lk-status lk-status-done">Done</span>
+      <span class="lk-status lk-status-alert">Alert</span>
+      <button class="lk-btn lk-btn-primary" type="button">Action</button>
+    </div>
+  </div>`,
+).join('');
+
+// ── type set ──────────────────────────────────────────────────────────────
+const TYPE_ROLES = [
+  ['Display', 'type-3xl', '72 / 1.05', '800', '-0.03em', 'Book cover'],
+  ['Section', 'type-2xl', '48 / 1.05', '700', '-0.03em', 'Section opener'],
+  ['Title', 'type-xl', '32 / 1.2', '700', '-0.01em', 'Recipe title'],
+  ['Subhead', 'type-lg', '24 / 1.2', '600', '-0.01em', 'Deck'],
+  ['Lead', 'type-md', '18 / 1.45', '400', '0', 'Lead-in'],
+  ['Body', 'type-base', '15 / 1.45', '400', '0', 'Paragraphs'],
+  ['Caption', 'type-sm', '13 / 1.45', '400', '0', 'Meta, captions'],
+  ['Label', 'type-xs', '11 / 1.2', '500', '0.12em', 'Tracked mono label'],
+];
+const typeRows = TYPE_ROLES.map(
+  ([role, tok, lh, wt, track, use]) => `
+  <tr>
+    <td><span style="font-size:var(--${tok});font-weight:${wt};letter-spacing:${track};line-height:1;color:var(--text-primary)">${esc(role)}</span></td>
+    <td><code>--${tok}</code></td>
+    <td class="lk-table-num">${esc(lh)}</td>
+    <td class="lk-table-num">${esc(wt)}</td>
+    <td class="lk-table-num">${esc(track)}</td>
+    <td>${esc(use)}</td>
+  </tr>`,
+).join('');
+
+// ── spacing ─────────────────────────────────────────────────────────────────
+const spaceRows = Object.entries(p.space)
+  .map(
+    ([k, v]) => `
+  <div class="space-row">
+    <code>space-${k}</code>
+    <span class="space-bar" style="width:${v.$value}"></span>
+    <span class="space-val">${v.$value}</span>
+  </div>`,
+  )
+  .join('');
+
+// ── motion ──────────────────────────────────────────────────────────────────
+const MOTION = [
+  ['--ease-paper', 'cubic-bezier(0.2, 0, 0.1, 1)', 'UI feedback'],
+  ['--ease-productive', 'cubic-bezier(0.2, 0, 0.38, 0.9)', 'State changes'],
+  ['--ease-expressive', 'cubic-bezier(0.4, 0.14, 0.3, 1)', 'Entrances'],
+  ['--dur-fast', '120ms', 'Hover, press'],
+  ['--dur-base', '200ms', 'Most transitions'],
+  ['--dur-slow', '320ms', 'Overlays'],
+];
+const motionRows = MOTION.map(([n, v, u]) => `<tr><td><code>${esc(n)}</code></td><td class="lk-mono">${esc(v)}</td><td>${esc(u)}</td></tr>`).join('');
+
+// ── icon (square-capped Tabler-style strokes) ───────────────────────────────
+const icon = (paths) =>
+  `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter">${paths}</svg>`;
+const icons = [
+  icon('<path d="M5 12h14M13 6l6 6-6 6"/>'),
+  icon('<rect x="4" y="4" width="16" height="16"/><path d="M9 12l2 2 4-4"/>'),
+  icon('<path d="M12 3v18M3 12h18"/>'),
+  icon('<path d="M4 6h16M4 12h16M4 18h10"/>'),
+];
+
+// ── tokens reference table (generated from the JSON) ────────────────────────
+const SETS = ['primitives', 'semantic-paper', 'semantic-ink', 'stock-bone', 'stock-indigo'];
+function flatten(obj, prefix = []) {
+  const rows = [];
+  for (const [k, v] of Object.entries(obj)) {
+    if (k.startsWith('$')) continue;
+    if (v && typeof v === 'object' && '$value' in v) {
+      rows.push({ path: [...prefix, k].join('.'), type: v.$type || '', value: v.$value, note: v.$description || '' });
+    } else if (v && typeof v === 'object') {
+      rows.push(...flatten(v, [...prefix, k]));
+    }
+  }
+  return rows;
+}
+const isRef = (v) => typeof v === 'string' && v.startsWith('{');
+const tokenTables = SETS.map((set) => {
+  const rows = flatten(tokens[set])
+    .map(
+      (r) => `<tr>
+        <td><code>${esc(r.path)}</code></td>
+        <td>${esc(r.type)}</td>
+        <td>${isRef(r.value) ? `<code>${esc(r.value)}</code>` : `<span class="tok-val"><span class="tok-chip" style="background:${esc(r.value)}"></span>${esc(r.value)}</span>`}</td>
+        <td>${esc(r.note)}</td>
+      </tr>`,
+    )
+    .join('');
+  return `<h3 class="tok-set"><code>${esc(set)}</code></h3>
+    <table class="lk-table tok-table"><thead><tr><th>Token</th><th>Type</th><th>Value</th><th>Notes</th></tr></thead><tbody>${rows}</tbody></table>`;
+}).join('');
+
+// ── deck link (rendered by CI; degrade gracefully when absent) ──────────────
+const deckHere = await access(join(site, 'deck.html')).then(() => true, () => false);
+const deckLinks = `
+  <p>The Lokta Marp theme renders this brief as slides, with the same fonts and pigments.</p>
+  <div class="lk-row">
+    <a class="lk-btn lk-btn-primary" href="deck.html">View deck (HTML)</a>
+    <a class="lk-btn" href="lokta-deck.pdf">Download PDF</a>
+  </div>
+  ${deckHere ? '' : '<p class="muted">The deck is rendered into this site by the Pages workflow. To preview locally, run <code>npm run build:deck</code> and copy <code>deck.html</code> plus <code>lokta-deck.pdf</code> into <code>site/</code>.</p>'}`;
+
+// ── page ────────────────────────────────────────────────────────────────────
+const html = `<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lokta · Paper on Screen</title>
+<meta name="description" content="Lokta, an editorial design system that treats the screen as a printed page.">
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="lokta.tokens.css">
+<link rel="stylesheet" href="lokta-base.css">
+<link rel="stylesheet" href="lokta-components.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="lk lk-sheet">
+<a class="lk-sr-only" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="brand"><span class="lk-label">Lokta</span> <span class="muted">Paper on Screen · v0.1</span></div>
+  <nav class="topnav" aria-label="Sections">
+    <a href="#overview">Overview</a>
+    <a href="#foundations">Foundations</a>
+    <a href="#components">Components</a>
+    <a href="#deck">Deck</a>
+    <a href="#tokens">Tokens</a>
+  </nav>
+  <div class="switcher" role="group" aria-label="Theme">
+    ${STOCKS.map((s) => `<button class="lk-btn theme-btn" type="button" data-set-theme="${s.id}" aria-pressed="${s.id === 'paper'}">${esc(s.name)}</button>`).join('')}
+  </div>
+</header>
+
+<main id="main" class="wrap">
+
+  <section id="overview" class="cover">
+    <div class="lk-running-head"><span>映画の料理 · LOKTA</span><span>WCAG 2.2 AA</span></div>
+    <p class="lk-label" style="margin-top:24px">An editorial design system</p>
+    <h1 class="cover-title">Lokta</h1>
+    <p class="cover-lede lk-serif">The screen as a printed page. Running heads, folios, hard rules, hatched end-marks, tracked mono labels, and generous gutters, applied to dense interfaces. Flat by intent: layering comes from borders and surface tokens, not shadows.</p>
+    <div class="lk-measure"><span class="lk-measure-line" style="width:120px"></span><span class="lk-measure-gap"></span><span class="lk-measure-hatch"></span></div>
+    <div class="cover-grid">
+      <div><span class="lk-label">Type</span><p>Archivo, Spline Sans Mono, Source Serif 4, Noto Sans JP, Anek Bangla. All SIL OFL, self-hosted.</p></div>
+      <div><span class="lk-label">Color</span><p>Warm paper surfaces, warm-tinted ink text, saturated pigment grounds. Marigold is the hero.</p></div>
+      <div><span class="lk-label">Stocks</span><p>Paper, Ink, Bone, Indigo. Every text role clears AA on each.</p></div>
+      <div><span class="lk-label">Tokens</span><p>Three tiers (primitives, semantic, stocks) built with Style Dictionary to CSS, SCSS, and JS.</p></div>
+    </div>
+  </section>
+
+  <section id="foundations">
+    <h2 class="sec-h">Foundations</h2>
+
+    <h3 class="sub-h">Color</h3>
+    <p class="muted">Never pure white, never pure black. Contrast ratios are noted against paper-01. Every text role clears WCAG 2.2 AA on its surface in every stock.</p>
+    <div class="lk-label rule-label">Paper · surfaces</div>
+    <div class="sw-grid">${paperSwatches}</div>
+    <div class="lk-label rule-label">Ink · text</div>
+    <div class="sw-grid">${inkSwatches}</div>
+    <div class="lk-label rule-label">Pigment · grounds</div>
+    <div class="sw-grid">${pigmentSwatches}</div>
+    <div class="lk-label rule-label">Stocks</div>
+    <div class="stock-grid">${stockCards}</div>
+
+    <h3 class="sub-h">Type</h3>
+    <p class="muted">A real type set: every size pairs a line-height, weight, and tracking.</p>
+    <table class="lk-table"><thead><tr><th>Role</th><th>Token</th><th>Size / LH</th><th>Weight</th><th>Tracking</th><th>Use</th></tr></thead><tbody>${typeRows}</tbody></table>
+    <div class="type-families">
+      <div class="lk-card"><span class="lk-label">Display / Body</span><p style="font-size:var(--type-lg)">Archivo. A neutral editorial grotesk.</p></div>
+      <div class="lk-card"><span class="lk-label">Mono</span><p class="lk-mono" style="font-size:var(--type-lg)">Spline Sans Mono 0123</p></div>
+      <div class="lk-card"><span class="lk-label">Serif</span><p class="lk-serif" style="font-size:var(--type-lg);font-style:italic">Source Serif 4 pull quote</p></div>
+      <div class="lk-card"><span class="lk-label">CJK</span><p class="lk-cjk-jp" style="font-size:var(--type-lg)">映画の料理</p></div>
+      <div class="lk-card"><span class="lk-label">Bengali</span><p class="lk-bn" style="font-size:var(--type-lg)">রান্না খাদ্য পুষ্টি</p></div>
+    </div>
+
+    <h3 class="sub-h">Spacing</h3>
+    <p class="muted">An 8px grid with a 4px half-step. Generous gutters, paper measure.</p>
+    <div class="space-scale">${spaceRows}</div>
+
+    <h3 class="sub-h">Grid</h3>
+    <p class="muted">Twelve columns, 24px gutters (space-5), on an 8px base. Body measure caps near 72ch for readability. Breakpoints: 480 · 768 · 1024 · 1440.</p>
+    <div class="grid-demo">${Array.from({ length: 12 }, () => '<span></span>').join('')}</div>
+
+    <h3 class="sub-h">Motion</h3>
+    <p class="muted">Paper does not bounce. Productive easing for feedback, expressive for entrances. Honors <code>prefers-reduced-motion</code>.</p>
+    <table class="lk-table"><thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead><tbody>${motionRows}</tbody></table>
+
+    <h3 class="sub-h">Icons</h3>
+    <p class="muted">Tabler as the base, sharpened: square line caps, miter joins, 2px stroke. Myna UI is the alternative set. Icons match the hard-edged geometry of the controls.</p>
+    <div class="icon-row">${icons.join('')}</div>
+  </section>
+
+  <section id="components">
+    <h2 class="sec-h">Components</h2>
+    <p class="muted">Built on the semantic layer, so they theme with the switcher above. Use it to feel every stock.</p>
+
+    ${component('Buttons', 'Printed keys. 36px minimum target, square caps, optional radius via --lk-radius.', `
+      <button class="lk-btn" type="button">Default</button>
+      <button class="lk-btn lk-btn-primary" type="button">Primary</button>
+      <button class="lk-btn lk-btn-lg" type="button">Large</button>
+      <button class="lk-btn" type="button" disabled>Disabled</button>`)}
+
+    ${component('Tags', 'Hard-cornered metadata pills.', `
+      <span class="lk-tag">Outline</span>
+      <span class="lk-tag lk-tag-filled">Filled</span>
+      <span class="lk-tag lk-tag-pigment">Pigment</span>`)}
+
+    ${component('Inputs', 'Text, select, textarea, with placeholder and disabled states.', `
+      <div class="lk-field" style="max-width:320px">
+        <label class="lk-label" for="d-in">Field</label>
+        <input class="lk-input" id="d-in" placeholder="Placeholder text">
+      </div>
+      <div class="lk-field" style="max-width:320px">
+        <label class="lk-label" for="d-sel">Select</label>
+        <select class="lk-select" id="d-sel"><option>Paper</option><option>Ink</option></select>
+      </div>
+      <input class="lk-input" style="max-width:320px" value="Disabled" disabled>`)}
+
+    ${component('Checkbox &amp; radio', 'Square caps; the radio reads with an inner filled square.', `
+      <label class="lk-check"><input type="checkbox" checked> Checked</label>
+      <label class="lk-check"><input type="checkbox"> Unchecked</label>
+      <label class="lk-radio"><input type="radio" name="d-r" checked> Selected</label>
+      <label class="lk-radio"><input type="radio" name="d-r"> Option</label>`)}
+
+    ${component('Tabs', 'Bottom keyline marks the active tab.', `
+      <div class="lk-tabs" role="tablist">
+        <button class="lk-tab" role="tab" aria-selected="true">Overview</button>
+        <button class="lk-tab" role="tab" aria-selected="false">Detail</button>
+        <button class="lk-tab" role="tab" aria-selected="false">History</button>
+      </div>`)}
+
+    ${component('Accordion', 'Editorial rules between rows.', `
+      <div class="lk-accordion" style="max-width:520px">
+        <details open><summary>What is a stock?</summary><div class="lk-accordion-body">A stock re-points the semantic layer: Paper, Ink, Bone, Indigo.</div></details>
+        <details><summary>Is it accessible?</summary><div class="lk-accordion-body">Every text role clears WCAG 2.2 AA on its surface.</div></details>
+      </div>`)}
+
+    ${component('Inline notifications', 'Color is paired with a glyph, so meaning never relies on hue.', `
+      <div class="lk-note lk-note-success" style="max-width:520px"><div><span class="lk-note-title">Saved</span><div>The page was written to the press.</div></div></div>
+      <div class="lk-note lk-note-danger" style="max-width:520px"><div><span class="lk-note-title">Failed</span><div>The plate did not register.</div></div></div>
+      <div class="lk-note lk-note-info" style="max-width:520px"><div><span class="lk-note-title">Note</span><div>Marigold demands dark text.</div></div></div>`)}
+
+    ${component('Breadcrumb', '', `
+      <ol class="lk-breadcrumb"><li><a href="#">Library</a></li><li><a href="#">Stocks</a></li><li aria-current="page">Paper</li></ol>`)}
+
+    ${component('Pagination', '', `
+      <div class="lk-pagination">
+        <button class="lk-page" type="button">Prev</button>
+        <button class="lk-page" aria-current="page" type="button">1</button>
+        <button class="lk-page" type="button">2</button>
+        <button class="lk-page" type="button">3</button>
+        <button class="lk-page" type="button">Next</button>
+      </div>`)}
+
+    ${component('Progress', '', `
+      <div class="lk-progress" style="max-width:420px" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100"><div class="lk-progress-bar" style="width:64%"></div></div>`)}
+
+    ${component('Slider', '', `<input class="lk-slider" type="range" min="0" max="100" value="40" style="max-width:420px" aria-label="Demo slider">`)}
+
+    ${component('Tooltip', 'Hover or focus the button.', `
+      <button class="lk-btn lk-has-tooltip" type="button" data-tooltip="Hatched end-mark">Hover me</button>
+      <span class="lk-tooltip">Static tooltip</span>`)}
+
+    ${component('Status', '', `
+      <span class="lk-status lk-status-done">Done</span>
+      <span class="lk-status lk-status-alert">Alert</span>
+      <span class="lk-status lk-status-pending">Pending</span>`)}
+
+    ${component('Code', '', `
+      <pre class="lk-code">npm install @lokta/tokens @lokta/css</pre>
+      <p>Inline <code class="lk-code-inline">--surface-page</code> too.</p>`)}
+
+    ${component('Data table', 'Tracked mono headers, hairline rules, striped rows, tabular figures.', `
+      <table class="lk-table" style="max-width:520px"><thead><tr><th>Stock</th><th>Surface</th><th class="lk-table-num">Roles</th></tr></thead>
+      <tbody><tr><td>Paper</td><td><code>paper-01</code></td><td class="lk-table-num">12</td></tr>
+      <tr><td>Ink</td><td><code>ink-90</code></td><td class="lk-table-num">12</td></tr>
+      <tr><td>Indigo</td><td><code>#1B2230</code></td><td class="lk-table-num">12</td></tr></tbody></table>`)}
+
+    ${component('Modal', 'The one shadow in the system: a single hard offset, no blur.', `
+      <div class="lk-modal" style="position:static">
+        <div class="lk-modal-head"><span class="lk-modal-title">Set the stock</span><button class="lk-btn" type="button" aria-label="Close">✕</button></div>
+        <p>Choose a paper for the run. The choice re-points every semantic token.</p>
+        <div class="lk-modal-foot"><button class="lk-btn" type="button">Cancel</button><button class="lk-btn lk-btn-primary" type="button">Confirm</button></div>
+      </div>`)}
+
+    ${component('Editorial marks', 'Rules, the measured rule, and the hatched end-mark.', `
+      <div style="display:grid;gap:14px;max-width:520px">
+        <hr class="lk-rule">
+        <hr class="lk-rule-thick">
+        <hr class="lk-rule-double">
+        <div class="lk-measure"><span class="lk-measure-line" style="width:160px"></span><span class="lk-measure-gap"></span><span class="lk-measure-hatch"></span></div>
+        <span class="lk-endmark"></span>
+      </div>`)}
+
+    ${component('Page furniture', 'Running head, colophon, folio.', `
+      <div style="display:grid;gap:14px;max-width:520px">
+        <div class="lk-running-head"><span>Chapter · Stocks</span><span>p. 12</span></div>
+        <div class="lk-colophon"><span>Lokta</span><span>Set in Archivo &amp; Spline Sans Mono</span></div>
+        <div class="lk-folio">012</div>
+      </div>`)}
+  </section>
+
+  <section id="deck">
+    <h2 class="sec-h">Deck</h2>
+    ${deckLinks}
+  </section>
+
+  <section id="tokens">
+    <h2 class="sec-h">Tokens reference</h2>
+    <p class="muted">Generated from <code>tokens/lokta.tokens.json</code>. References like <code>{ink.90}</code> resolve through the semantic layer at build time.</p>
+    ${tokenTables}
+  </section>
+
+</main>
+
+<footer class="colophon-foot">
+  <div class="lk-measure"><span class="lk-measure-hatch"></span><span class="lk-measure-gap"></span><span class="lk-measure-line" style="width:120px"></span></div>
+  <p class="muted">Lokta · v0.1 · MIT. Drawn from the Studio Ghibli cookbook <em class="lk-serif">Cuisine on Screen</em> (Prestel) and Professor Siddika Kabir's <em class="lk-serif">Ranna Khaddo Pushti</em>, as design inspiration, not reproduction.</p>
+</footer>
+
+<script>
+  const root = document.documentElement;
+  for (const btn of document.querySelectorAll('[data-set-theme]')) {
+    btn.addEventListener('click', () => {
+      const t = btn.dataset.setTheme;
+      root.setAttribute('data-theme', t);
+      for (const b of document.querySelectorAll('[data-set-theme]')) {
+        b.setAttribute('aria-pressed', String(b === btn));
+      }
+    });
+  }
+</script>
+</body>
+</html>
+`;
+
+function component(title, note, demo) {
+  return `<article class="comp">
+    <div class="comp-head"><h3 class="comp-h">${title}</h3>${note ? `<p class="muted comp-note">${note}</p>` : ''}</div>
+    <div class="comp-demo lk-row">${demo}</div>
+  </article>`;
+}
+
+await writeFile(join(site, 'index.html'), html);
+await writeFile(join(site, 'styles.css'), await siteStyles());
+await writeFile(join(site, '.nojekyll'), '');
+
+console.log('Built site/: index.html, styles.css, token CSS, fonts.');
+
+// ── site chrome (uses the tokens, hard-edged) ──────────────────────────────
+async function siteStyles() {
+  return `/* Lokta docs site chrome. Built on the same tokens. Generated. */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+body { margin: 0; color: var(--text-body); background: var(--surface-page); }
+.muted { color: var(--text-secondary); }
+.lk-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+code { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: 0.9em; color: var(--text-primary); }
+
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+  padding: 12px 24px;
+  background: var(--surface-raised);
+  border-bottom: var(--rule-2) solid var(--text-primary);
+}
+.brand { display: flex; align-items: baseline; gap: 10px; }
+.topnav { display: flex; gap: 16px; margin-left: auto; }
+.topnav a { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: var(--type-xs); text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-secondary); text-decoration: none; }
+.topnav a:hover { color: var(--text-primary); }
+.switcher { display: flex; }
+.theme-btn { margin-left: -1px; }
+.theme-btn[aria-pressed="true"] { background: var(--text-primary); color: var(--surface-raised); border-color: var(--text-primary); }
+
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px 96px; }
+section { padding: 64px 0; border-bottom: var(--rule-1) solid var(--border-hairline); }
+.sec-h { font-size: var(--type-2xl); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; color: var(--text-primary); margin: 0 0 8px; }
+.sub-h { font-size: var(--type-xl); font-weight: 700; letter-spacing: -0.01em; color: var(--text-primary); margin: 48px 0 8px; }
+.rule-label { display: block; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: var(--rule-1) solid var(--border-default); }
+
+.cover { padding-top: 40px; }
+.cover-title { font-size: var(--type-3xl); font-weight: 800; letter-spacing: -0.045em; line-height: 0.95; color: var(--text-primary); margin: 8px 0 16px; }
+.cover-lede { font-size: var(--type-md); max-width: 64ch; color: var(--text-body); }
+.cover-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-top: 40px; }
+.cover-grid p { margin: 6px 0 0; }
+
+.sw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.sw { margin: 0; border: var(--rule-1) solid var(--border-default); background: var(--surface-raised); }
+.sw-chip { height: 64px; border-bottom: var(--rule-1) solid var(--border-default); }
+.sw figcaption { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; }
+.sw-hex { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: var(--type-xs); color: var(--text-secondary); }
+.sw-note { font-size: var(--type-xs); color: var(--text-muted); }
+
+.stock-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.stock-card { padding: 16px; border: var(--rule-1) solid var(--border-default); background: var(--surface-page); color: var(--text-body); }
+.stock-h { font-size: var(--type-lg); font-weight: 700; color: var(--text-primary); margin: 10px 0 4px; }
+.stock-b { margin: 0 0 6px; }
+.stock-s { color: var(--text-secondary); margin: 0 0 12px; }
+.stock-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+.type-families { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 20px; }
+.type-families p { margin: 8px 0 0; }
+
+.space-scale { display: grid; gap: 8px; }
+.space-row { display: grid; grid-template-columns: 90px 1fr 60px; align-items: center; gap: 12px; }
+.space-bar { height: 14px; background: var(--accent-feature-fill); display: inline-block; }
+.space-val { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: var(--type-xs); color: var(--text-secondary); text-align: right; }
+
+.grid-demo { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; margin-top: 8px; }
+.grid-demo span { height: 56px; background: var(--surface-inset); border: var(--rule-1) solid var(--border-default); }
+
+.icon-row { display: flex; gap: 16px; color: var(--text-primary); margin-top: 8px; }
+
+.comp { padding: 24px 0; border-top: var(--rule-1) solid var(--border-hairline); }
+.comp:first-of-type { border-top: 0; }
+.comp-head { margin-bottom: 14px; }
+.comp-h { font-size: var(--type-lg); font-weight: 700; color: var(--text-primary); margin: 0; }
+.comp-note { margin: 4px 0 0; }
+.comp-demo { padding: 20px; background: var(--surface-raised); border: var(--rule-1) solid var(--border-default); align-items: flex-start; }
+
+.tok-set { margin: 32px 0 8px; }
+.tok-table { margin-bottom: 8px; }
+.tok-val { display: inline-flex; align-items: center; gap: 8px; font-family: "Spline Sans Mono", ui-monospace, monospace; }
+.tok-chip { width: 14px; height: 14px; border: var(--rule-1) solid var(--border-default); display: inline-block; }
+
+.colophon-foot { max-width: 1040px; margin: 0 auto; padding: 32px 24px 64px; }
+.colophon-foot p { max-width: 72ch; margin-top: 16px; }
+
+@media (max-width: 640px) {
+  .topnav { display: none; }
+  .grid-demo { grid-template-columns: repeat(6, 1fr); gap: 12px; }
+}
+`;
+}

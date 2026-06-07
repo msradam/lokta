@@ -1,0 +1,257 @@
+{
+  "paper": {
+    "00": {
+      "$type": "color",
+      "$value": "#FAF8EA",
+      "$description": "deckle, top sheet"
+    },
+    "01": {
+      "$type": "color",
+      "$value": "#F4F1DF",
+      "$description": "page, primary surface"
+    },
+    "02": {
+      "$type": "color",
+      "$value": "#EAE6D2",
+      "$description": "page shadow, sidebar"
+    },
+    "03": {
+      "$type": "color",
+      "$value": "#DBD3BB",
+      "$description": "inset, table stripe"
+    },
+    "04": {
+      "$type": "color",
+      "$value": "#C2B89C",
+      "$description": "divider, plate edge"
+    }
+  },
+  "ink": {
+    "20": {
+      "$type": "color",
+      "$value": "#B8B0A1",
+      "$description": "1.9:1 — hairlines/fills only, never text"
+    },
+    "40": {
+      "$type": "color",
+      "$value": "#8E867A",
+      "$description": "3.1:1 — borders/large/disabled only"
+    },
+    "50": {
+      "$type": "color",
+      "$value": "#6E665A",
+      "$description": "4.9:1 — muted text (AA)"
+    },
+    "60": {
+      "$type": "color",
+      "$value": "#5C564B",
+      "$description": "6.3:1 — secondary (AA)"
+    },
+    "80": {
+      "$type": "color",
+      "$value": "#2A2620",
+      "$description": "13.1:1 — body"
+    },
+    "90": {
+      "$type": "color",
+      "$value": "#1F1C13",
+      "$description": "13.9:1 — headlines"
+    },
+    "100": {
+      "$type": "color",
+      "$value": "#16140E",
+      "$description": "14.8:1 on paper-01"
+    }
+  },
+  "pigment": {
+    "aubergine": {
+      "$type": "color",
+      "$value": "#6B4E8E"
+    },
+    "marigold": {
+      "$type": "color",
+      "$value": "#FBBC0E",
+      "$description": "hero feature ground — requires dark text"
+    },
+    "peach": {
+      "$type": "color",
+      "$value": "#E7A079",
+      "$description": "heritage salmon (Kabir cookbook) — dark text"
+    },
+    "lavender": {
+      "$type": "color",
+      "$value": "#A99CB3",
+      "$description": "cover / brand tone — dark text"
+    },
+    "night": {
+      "$type": "color",
+      "$value": "#070D0E",
+      "$description": "dramatic section-opener ground"
+    },
+    "cinnabar": {
+      "$type": "color",
+      "$value": "#C23A26"
+    },
+    "celadon": {
+      "$type": "color",
+      "$value": "#6E8B6F"
+    },
+    "indigo": {
+      "$type": "color",
+      "$value": "#2E3E5C"
+    },
+    "celadon-ink": {
+      "$type": "color",
+      "$value": "#4F6B50",
+      "$description": "5.2:1 — success text on paper"
+    },
+    "cinnabar-ink": {
+      "$type": "color",
+      "$value": "#C23A26",
+      "$description": "4.7:1 — danger text on paper"
+    },
+    "aubergine-ink": {
+      "$type": "color",
+      "$value": "#6B4E8E",
+      "$description": "4.6:1 — feature text on paper"
+    }
+  },
+  "dark-accent": {
+    "success": {
+      "$type": "color",
+      "$value": "#8FB088",
+      "$description": "6.7:1 on ink page"
+    },
+    "danger": {
+      "$type": "color",
+      "$value": "#E2654F",
+      "$description": "4.8:1 on ink page"
+    },
+    "feature": {
+      "$type": "color",
+      "$value": "#A98FC9",
+      "$description": "7.5:1 on ink page"
+    }
+  },
+  "type-scale": {
+    "xs": {
+      "$type": "dimension",
+      "$value": "11px"
+    },
+    "sm": {
+      "$type": "dimension",
+      "$value": "13px"
+    },
+    "base": {
+      "$type": "dimension",
+      "$value": "15px"
+    },
+    "md": {
+      "$type": "dimension",
+      "$value": "18px"
+    },
+    "lg": {
+      "$type": "dimension",
+      "$value": "24px"
+    },
+    "xl": {
+      "$type": "dimension",
+      "$value": "32px"
+    },
+    "2xl": {
+      "$type": "dimension",
+      "$value": "48px"
+    },
+    "3xl": {
+      "$type": "dimension",
+      "$value": "72px"
+    }
+  },
+  "space": {
+    "1": {
+      "$type": "dimension",
+      "$value": "4px"
+    },
+    "2": {
+      "$type": "dimension",
+      "$value": "8px"
+    },
+    "3": {
+      "$type": "dimension",
+      "$value": "12px"
+    },
+    "4": {
+      "$type": "dimension",
+      "$value": "16px"
+    },
+    "5": {
+      "$type": "dimension",
+      "$value": "24px"
+    },
+    "6": {
+      "$type": "dimension",
+      "$value": "32px"
+    },
+    "7": {
+      "$type": "dimension",
+      "$value": "48px"
+    },
+    "8": {
+      "$type": "dimension",
+      "$value": "64px"
+    },
+    "9": {
+      "$type": "dimension",
+      "$value": "96px"
+    }
+  },
+  "rule": {
+    "1": {
+      "$type": "dimension",
+      "$value": "1px"
+    },
+    "2": {
+      "$type": "dimension",
+      "$value": "2px"
+    },
+    "3": {
+      "$type": "dimension",
+      "$value": "4px"
+    },
+    "hairline": {
+      "$type": "dimension",
+      "$value": "0.5px"
+    }
+  },
+  "target": {
+    "min": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$description": "WCAG 2.5.8 pointer minimum"
+    },
+    "touch": {
+      "$type": "dimension",
+      "$value": "44px",
+      "$description": "comfortable touch"
+    }
+  },
+  "font-family": {
+    "display": {
+      "$type": "fontFamily",
+      "$value": "Archivo",
+      "$description": "free, Figma-native — Helvetica Neue substitute"
+    },
+    "mono": {
+      "$type": "fontFamily",
+      "$value": "Spline Sans Mono"
+    },
+    "serif": {
+      "$type": "fontFamily",
+      "$value": "Source Serif 4"
+    },
+    "cjk": {
+      "$type": "fontFamily",
+      "$value": "Noto Sans JP"
+    }
+  }
+}

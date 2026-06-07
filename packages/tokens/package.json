@@ -1,0 +1,18 @@
+{
+  "name": "@lokta/tokens",
+  "version": "0.1.0",
+  "description": "Lokta design tokens, built to CSS, SCSS, and JS for four paper stocks.",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./css/*": "./dist/css/*",
+    "./scss/*": "./dist/scss/*",
+    "./js/*": "./dist/js/*"
+  },
+  "scripts": {
+    "build": "node ../../tokens/style-dictionary.config.mjs"
+  }
+}

@@ -1,0 +1,251 @@
+{
+  "$description": "Lokta — Paper on Screen · v0.1. Tokens Studio (DTCG) export. Import order: enable 'primitives', then one of 'semantic-paper' / 'semantic-ink'. Themes are pre-wired under $themes.",
+  "primitives": {
+    "paper": {
+      "00": { "$type": "color", "$value": "#FAF8EA", "$description": "deckle, top sheet" },
+      "01": { "$type": "color", "$value": "#F4F1DF", "$description": "page, primary surface" },
+      "02": { "$type": "color", "$value": "#EAE6D2", "$description": "page shadow, sidebar" },
+      "03": { "$type": "color", "$value": "#DBD3BB", "$description": "inset, table stripe" },
+      "04": { "$type": "color", "$value": "#C2B89C", "$description": "divider, plate edge" }
+    },
+    "ink": {
+      "100": { "$type": "color", "$value": "#16140E", "$description": "14.8:1 on paper-01" },
+      "90":  { "$type": "color", "$value": "#1F1C13", "$description": "13.9:1 — headlines" },
+      "80":  { "$type": "color", "$value": "#2A2620", "$description": "13.1:1 — body" },
+      "60":  { "$type": "color", "$value": "#5C564B", "$description": "6.3:1 — secondary (AA)" },
+      "50":  { "$type": "color", "$value": "#6E665A", "$description": "4.9:1 — muted text (AA)" },
+      "40":  { "$type": "color", "$value": "#8E867A", "$description": "3.1:1 — borders/large/disabled only" },
+      "20":  { "$type": "color", "$value": "#B8B0A1", "$description": "1.9:1 — hairlines/fills only, never text" }
+    },
+    "pigment": {
+      "aubergine":     { "$type": "color", "$value": "#6B4E8E" },
+      "marigold":      { "$type": "color", "$value": "#FBBC0E", "$description": "hero feature ground — requires dark text" },
+      "peach":         { "$type": "color", "$value": "#E7A079", "$description": "heritage salmon (Kabir cookbook) — dark text" },
+      "lavender":      { "$type": "color", "$value": "#A99CB3", "$description": "cover / brand tone — dark text" },
+      "night":         { "$type": "color", "$value": "#070D0E", "$description": "dramatic section-opener ground" },
+      "cinnabar":      { "$type": "color", "$value": "#C23A26" },
+      "celadon":       { "$type": "color", "$value": "#6E8B6F" },
+      "indigo":        { "$type": "color", "$value": "#2E3E5C" },
+      "celadon-ink":   { "$type": "color", "$value": "#4F6B50", "$description": "5.2:1 — success text on paper" },
+      "cinnabar-ink":  { "$type": "color", "$value": "#C23A26", "$description": "4.7:1 — danger text on paper" },
+      "aubergine-ink": { "$type": "color", "$value": "#6B4E8E", "$description": "4.6:1 — feature text on paper" }
+    },
+    "dark-accent": {
+      "success":  { "$type": "color", "$value": "#8FB088", "$description": "6.7:1 on ink page" },
+      "danger":   { "$type": "color", "$value": "#E2654F", "$description": "4.8:1 on ink page" },
+      "feature":  { "$type": "color", "$value": "#A98FC9", "$description": "7.5:1 on ink page" }
+    },
+    "type-scale": {
+      "xs":   { "$type": "dimension", "$value": "11px" },
+      "sm":   { "$type": "dimension", "$value": "13px" },
+      "base": { "$type": "dimension", "$value": "15px" },
+      "md":   { "$type": "dimension", "$value": "18px" },
+      "lg":   { "$type": "dimension", "$value": "24px" },
+      "xl":   { "$type": "dimension", "$value": "32px" },
+      "2xl":  { "$type": "dimension", "$value": "48px" },
+      "3xl":  { "$type": "dimension", "$value": "72px" }
+    },
+    "space": {
+      "1": { "$type": "dimension", "$value": "4px" },
+      "2": { "$type": "dimension", "$value": "8px" },
+      "3": { "$type": "dimension", "$value": "12px" },
+      "4": { "$type": "dimension", "$value": "16px" },
+      "5": { "$type": "dimension", "$value": "24px" },
+      "6": { "$type": "dimension", "$value": "32px" },
+      "7": { "$type": "dimension", "$value": "48px" },
+      "8": { "$type": "dimension", "$value": "64px" },
+      "9": { "$type": "dimension", "$value": "96px" }
+    },
+    "rule": {
+      "hairline": { "$type": "dimension", "$value": "0.5px" },
+      "1": { "$type": "dimension", "$value": "1px" },
+      "2": { "$type": "dimension", "$value": "2px" },
+      "3": { "$type": "dimension", "$value": "4px" }
+    },
+    "target": {
+      "min":   { "$type": "dimension", "$value": "24px", "$description": "WCAG 2.5.8 pointer minimum" },
+      "touch": { "$type": "dimension", "$value": "44px", "$description": "comfortable touch" }
+    },
+    "font-family": {
+      "display": { "$type": "fontFamily", "$value": "Archivo", "$description": "free, Figma-native — Helvetica Neue substitute" },
+      "mono":    { "$type": "fontFamily", "$value": "Spline Sans Mono" },
+      "serif":   { "$type": "fontFamily", "$value": "Source Serif 4" },
+      "cjk":     { "$type": "fontFamily", "$value": "Noto Sans JP" }
+    }
+  },
+
+  "semantic-paper": {
+    "surface": {
+      "page":    { "$type": "color", "$value": "{paper.01}" },
+      "raised":  { "$type": "color", "$value": "{paper.00}" },
+      "sunken":  { "$type": "color", "$value": "{paper.02}" },
+      "inset":   { "$type": "color", "$value": "{paper.03}" },
+      "inverse": { "$type": "color", "$value": "{ink.90}" }
+    },
+    "text": {
+      "primary":     { "$type": "color", "$value": "{ink.90}" },
+      "body":        { "$type": "color", "$value": "{ink.80}" },
+      "secondary":   { "$type": "color", "$value": "{ink.60}" },
+      "muted":       { "$type": "color", "$value": "{ink.50}" },
+      "disabled":    { "$type": "color", "$value": "{ink.40}" },
+      "on-fill":     { "$type": "color", "$value": "{paper.00}" },
+      "on-marigold": { "$type": "color", "$value": "{ink.90}" }
+    },
+    "border": {
+      "strong":   { "$type": "color", "$value": "{ink.80}" },
+      "default":  { "$type": "color", "$value": "{ink.40}" },
+      "hairline": { "$type": "color", "$value": "{ink.20}" }
+    },
+    "accent": {
+      "success":      { "$type": "color", "$value": "{pigment.celadon-ink}" },
+      "success-fill": { "$type": "color", "$value": "{pigment.celadon}" },
+      "danger":       { "$type": "color", "$value": "{pigment.cinnabar-ink}" },
+      "danger-fill":  { "$type": "color", "$value": "{pigment.cinnabar}" },
+      "feature":      { "$type": "color", "$value": "{pigment.aubergine-ink}" },
+      "feature-fill": { "$type": "color", "$value": "{pigment.aubergine}" },
+      "warning-fill": { "$type": "color", "$value": "{pigment.marigold}" },
+      "info-fill":    { "$type": "color", "$value": "{pigment.indigo}" }
+    },
+    "field": {
+      "bg":          { "$type": "color", "$value": "{paper.00}" },
+      "border":      { "$type": "color", "$value": "{ink.80}" },
+      "placeholder": { "$type": "color", "$value": "{ink.50}" }
+    },
+    "focus": {
+      "ring":  { "$type": "color", "$value": "{ink.100}" },
+      "width": { "$type": "dimension", "$value": "{rule.2}" },
+      "offset":{ "$type": "dimension", "$value": "2px" }
+    }
+  },
+
+  "semantic-ink": {
+    "surface": {
+      "page":    { "$type": "color", "$value": "{ink.90}" },
+      "raised":  { "$type": "color", "$value": "{ink.80}" },
+      "sunken":  { "$type": "color", "$value": "{ink.100}" },
+      "inset":   { "$type": "color", "$value": "#26221A" },
+      "inverse": { "$type": "color", "$value": "{paper.01}" }
+    },
+    "text": {
+      "primary":     { "$type": "color", "$value": "{paper.00}" },
+      "body":        { "$type": "color", "$value": "{paper.01}" },
+      "secondary":   { "$type": "color", "$value": "{paper.04}" },
+      "muted":       { "$type": "color", "$value": "{ink.20}" },
+      "disabled":    { "$type": "color", "$value": "{ink.40}" },
+      "on-fill":     { "$type": "color", "$value": "{paper.00}" },
+      "on-marigold": { "$type": "color", "$value": "{ink.100}" }
+    },
+    "border": {
+      "strong":   { "$type": "color", "$value": "{paper.04}" },
+      "default":  { "$type": "color", "$value": "{ink.40}" },
+      "hairline": { "$type": "color", "$value": "{ink.60}" }
+    },
+    "accent": {
+      "success":      { "$type": "color", "$value": "{dark-accent.success}" },
+      "success-fill": { "$type": "color", "$value": "{pigment.celadon}" },
+      "danger":       { "$type": "color", "$value": "{dark-accent.danger}" },
+      "danger-fill":  { "$type": "color", "$value": "{pigment.cinnabar}" },
+      "feature":      { "$type": "color", "$value": "{dark-accent.feature}" },
+      "feature-fill": { "$type": "color", "$value": "{pigment.aubergine}" },
+      "warning-fill": { "$type": "color", "$value": "{pigment.marigold}" },
+      "info-fill":    { "$type": "color", "$value": "{pigment.indigo}" }
+    },
+    "field": {
+      "bg":          { "$type": "color", "$value": "{ink.100}" },
+      "border":      { "$type": "color", "$value": "{paper.04}" },
+      "placeholder": { "$type": "color", "$value": "{ink.20}" }
+    },
+    "focus": {
+      "ring":  { "$type": "color", "$value": "{paper.00}" },
+      "width": { "$type": "dimension", "$value": "{rule.2}" },
+      "offset":{ "$type": "dimension", "$value": "2px" }
+    }
+  },
+
+  "stock-bone": {
+    "surface": {
+      "page":    { "$type": "color", "$value": "#EFEEE7" },
+      "raised":  { "$type": "color", "$value": "#F7F6F1" },
+      "sunken":  { "$type": "color", "$value": "#E4E3DB" },
+      "inset":   { "$type": "color", "$value": "#D8D7CE" },
+      "inverse": { "$type": "color", "$value": "{ink.90}" }
+    },
+    "text": {
+      "primary":   { "$type": "color", "$value": "{ink.90}" },
+      "body":      { "$type": "color", "$value": "{ink.80}" },
+      "secondary": { "$type": "color", "$value": "{ink.60}" },
+      "muted":     { "$type": "color", "$value": "{ink.50}" },
+      "disabled":  { "$type": "color", "$value": "{ink.40}" }
+    },
+    "border": {
+      "strong":   { "$type": "color", "$value": "{ink.80}" },
+      "default":  { "$type": "color", "$value": "{ink.40}" },
+      "hairline": { "$type": "color", "$value": "{ink.20}" }
+    },
+    "field": {
+      "bg":          { "$type": "color", "$value": "#F7F6F1" },
+      "border":      { "$type": "color", "$value": "{ink.80}" },
+      "placeholder": { "$type": "color", "$value": "{ink.50}" }
+    },
+    "focus": { "ring": { "$type": "color", "$value": "{ink.100}" } }
+  },
+
+  "stock-indigo": {
+    "surface": {
+      "page":    { "$type": "color", "$value": "#1B2230" },
+      "raised":  { "$type": "color", "$value": "#232C3D" },
+      "sunken":  { "$type": "color", "$value": "#141A25" },
+      "inset":   { "$type": "color", "$value": "#2B3547" },
+      "inverse": { "$type": "color", "$value": "#EFEEE7" }
+    },
+    "text": {
+      "primary":   { "$type": "color", "$value": "#EDECE3", "$description": "14.0:1" },
+      "body":      { "$type": "color", "$value": "#E2E1D6", "$description": "12.2:1" },
+      "secondary": { "$type": "color", "$value": "#AEB4C2", "$description": "7.6:1" },
+      "muted":     { "$type": "color", "$value": "#8A93A6", "$description": "5.2:1 — AA" },
+      "disabled":  { "$type": "color", "$value": "#5E6675" }
+    },
+    "border": {
+      "strong":   { "$type": "color", "$value": "#AEB4C2" },
+      "default":  { "$type": "color", "$value": "#4A5365" },
+      "hairline": { "$type": "color", "$value": "#343E4F" }
+    },
+    "accent": {
+      "success": { "$type": "color", "$value": "{dark-accent.success}" },
+      "danger":  { "$type": "color", "$value": "{dark-accent.danger}" },
+      "feature": { "$type": "color", "$value": "{dark-accent.feature}" }
+    },
+    "field": {
+      "bg":          { "$type": "color", "$value": "#141A25" },
+      "border":      { "$type": "color", "$value": "#4A5365" },
+      "placeholder": { "$type": "color", "$value": "#8A93A6" }
+    },
+    "focus": { "ring": { "$type": "color", "$value": "#EDECE3" } }
+  },
+
+  "$themes": [
+    {
+      "id": "paper",
+      "name": "Paper (light)",
+      "selectedTokenSets": { "primitives": "source", "semantic-paper": "enabled", "semantic-ink": "disabled" }
+    },
+    {
+      "id": "ink",
+      "name": "Ink (dark)",
+      "selectedTokenSets": { "primitives": "source", "semantic-ink": "enabled", "semantic-paper": "disabled" }
+    },
+    {
+      "id": "bone",
+      "name": "Bone (cool stock)",
+      "selectedTokenSets": { "primitives": "source", "stock-bone": "enabled" }
+    },
+    {
+      "id": "indigo",
+      "name": "Indigo (dark stock)",
+      "selectedTokenSets": { "primitives": "source", "stock-indigo": "enabled" }
+    }
+  ],
+  "$metadata": {
+    "tokenSetOrder": ["primitives", "semantic-paper", "semantic-ink", "stock-bone", "stock-indigo"]
+  }
+}

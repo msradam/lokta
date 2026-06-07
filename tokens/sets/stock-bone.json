@@ -1,0 +1,80 @@
+{
+  "surface": {
+    "page": {
+      "$type": "color",
+      "$value": "#EFEEE7"
+    },
+    "raised": {
+      "$type": "color",
+      "$value": "#F7F6F1"
+    },
+    "sunken": {
+      "$type": "color",
+      "$value": "#E4E3DB"
+    },
+    "inset": {
+      "$type": "color",
+      "$value": "#D8D7CE"
+    },
+    "inverse": {
+      "$type": "color",
+      "$value": "{ink.90}"
+    }
+  },
+  "text": {
+    "primary": {
+      "$type": "color",
+      "$value": "{ink.90}"
+    },
+    "body": {
+      "$type": "color",
+      "$value": "{ink.80}"
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "{ink.60}"
+    },
+    "muted": {
+      "$type": "color",
+      "$value": "{ink.50}"
+    },
+    "disabled": {
+      "$type": "color",
+      "$value": "{ink.40}"
+    }
+  },
+  "border": {
+    "strong": {
+      "$type": "color",
+      "$value": "{ink.80}"
+    },
+    "default": {
+      "$type": "color",
+      "$value": "{ink.40}"
+    },
+    "hairline": {
+      "$type": "color",
+      "$value": "{ink.20}"
+    }
+  },
+  "field": {
+    "bg": {
+      "$type": "color",
+      "$value": "#F7F6F1"
+    },
+    "border": {
+      "$type": "color",
+      "$value": "{ink.80}"
+    },
+    "placeholder": {
+      "$type": "color",
+      "$value": "{ink.50}"
+    }
+  },
+  "focus": {
+    "ring": {
+      "$type": "color",
+      "$value": "{ink.100}"
+    }
+  }
+}

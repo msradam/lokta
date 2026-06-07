@@ -1,0 +1,10 @@
+/* @lokta/css drop-in. Fonts, base layer, and components in one import.
+   Load the tokens first so the semantic variables resolve, for example:
+
+     @import "@lokta/tokens/css/lokta.css";   (all four themes)
+     @import "@lokta/css/lokta.css";
+
+   Then set the stock with data-theme on <html> (default is paper). */
+@import "./fonts.css";
+@import "./lokta-base.css";
+@import "./lokta-components.css";
