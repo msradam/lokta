@@ -1,8 +1,8 @@
-/* Lokta — Paper on Screen
+/* Lokta, Paper on Screen
    A design system for web apps that treats the screen as a printed page.
    Inspired by editorial books (Prestel, Phaidon) and terminal UIs.
 
-   v0.1 — Accessibility-remediated (WCAG 2.2 AA).
+   v0.1, Accessibility-remediated (WCAG 2.2 AA).
    ───────────────────────────────────────────────────────────────────────
    ARCHITECTURE
    1. PRIMITIVES   raw values, never reference them directly in product UI
@@ -15,27 +15,27 @@
    1 · PRIMITIVES
    ════════════════════════════════════════════════════════════════════════ */
 :root {
-  /* PAPER — warm greenish cream, matched to the source book stock. Never pure white. */
+  /* PAPER, warm greenish cream, matched to the source book stock. Never pure white. */
   --paper-00: #FAF8EA;   /* deckle, top sheet */
   --paper-01: #F4F1DF;   /* page, primary surface */
   --paper-02: #EAE6D2;   /* page shadow, sidebar */
   --paper-03: #DBD3BB;   /* inset, table stripe */
   --paper-04: #C2B89C;   /* divider, plate edge */
 
-  /* INK — warm-tinted blacks. Prefer ink-80 for body.
+  /* INK, warm-tinted blacks. Prefer ink-80 for body.
      Contrast vs paper-01 noted; AA needs 4.5:1 (text <18px) / 3:1 (large/UI). */
   --ink-100: #16140E;    /* 14.8:1  full black, rare */
   --ink-90:  #1F1C13;    /* 13.9:1  headlines */
   --ink-80:  #2A2620;    /* 13.1:1  body text */
-  --ink-60:  #5C564B;    /*  6.3:1  secondary text — AA ✓ */
-  --ink-50:  #6E665A;    /*  4.9:1  muted text — AA ✓  (NEW — replaces ink-40 for small text) */
-  --ink-40:  #8E867A;    /*  3.1:1  borders / large / disabled ONLY — not body text */
-  --ink-20:  #B8B0A1;    /*  1.9:1  hairlines / fills ONLY — never text */
+  --ink-60:  #5C564B;    /*  6.3:1  secondary text, AA ✓ */
+  --ink-50:  #6E665A;    /*  4.9:1  muted text, AA ✓  (NEW, replaces ink-40 for small text) */
+  --ink-40:  #8E867A;    /*  3.1:1  borders / large / disabled ONLY, not body text */
+  --ink-20:  #B8B0A1;    /*  1.9:1  hairlines / fills ONLY, never text */
 
-  /* PIGMENT — saturated panels. FILL role: full-bleed section/feature grounds.
+  /* PIGMENT, saturated panels. FILL role: full-bleed section/feature grounds.
      marigold is the book's HERO ground (film-intro spreads); always DARK text. */
-  --pigment-marigold:  #FBBC0E;   /* HERO feature ground (dark text only — white fails badly) */
-  --pigment-peach:     #E7A079;   /* HERITAGE salmon (Kabir cookbook) — pairs with night, dark text */
+  --pigment-marigold:  #FBBC0E;   /* HERO feature ground (dark text only, white fails badly) */
+  --pigment-peach:     #E7A079;   /* HERITAGE salmon (Kabir cookbook), pairs with night, dark text */
   --pigment-lavender:  #A99CB3;   /* cover / brand tone (dark text) */
   --pigment-aubergine: #6B4E8E;   /* feature panel  (white text ✓ 6.2:1) */
   --pigment-cinnabar:  #C23A26;   /* danger fill    (white text ✓) */
@@ -43,18 +43,18 @@
   --pigment-indigo:    #2E3E5C;   /* info / deep blue (white text ✓) */
   --pigment-night:     #070D0E;   /* dramatic section-opener ground (cool near-black) */
 
-  /* PIGMENT · INK — AA-safe variants for using a pigment AS TEXT/ICON on paper. */
-  --pigment-celadon-ink:  #4F6B50;  /* 5.2:1 — success text/check on paper ✓ */
-  --pigment-cinnabar-ink: #C23A26;  /* 4.7:1 — danger text on paper ✓ */
-  --pigment-aubergine-ink:#6B4E8E;  /* 4.6:1 — feature text on paper ✓ */
+  /* PIGMENT · INK, AA-safe variants for using a pigment AS TEXT/ICON on paper. */
+  --pigment-celadon-ink:  #4F6B50;  /* 5.2:1, success text/check on paper ✓ */
+  --pigment-cinnabar-ink: #C23A26;  /* 4.7:1, danger text on paper ✓ */
+  --pigment-aubergine-ink:#6B4E8E;  /* 4.6:1, feature text on paper ✓ */
 
-  /* RULES — line weights for editorial dividers */
+  /* RULES, line weights for editorial dividers */
   --rule-hairline: 0.5px;
   --rule-1: 1px;
   --rule-2: 2px;
   --rule-3: 4px;
 
-  /* TYPE SCALE — based on book typography, not web defaults */
+  /* TYPE SCALE, based on book typography, not web defaults */
   --type-xs:   11px;   /* tracked labels, footnotes */
   --type-sm:   13px;   /* meta, captions */
   --type-base: 15px;   /* body */
@@ -64,7 +64,7 @@
   --type-2xl:  48px;   /* section header */
   --type-3xl:  72px;   /* book cover */
 
-  /* SPACING — paper measure, generous gutters */
+  /* SPACING, paper measure, generous gutters */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -75,11 +75,11 @@
   --space-8: 64px;
   --space-9: 96px;
 
-  /* TARGETS — minimum interactive sizes (WCAG 2.5.8) */
+  /* TARGETS, minimum interactive sizes (WCAG 2.5.8) */
   --target-min: 24px;   /* pointer minimum (AA) */
   --target-touch: 44px; /* comfortable touch (use lk-btn-lg in touch contexts) */
 
-  /* TRANSITIONS — paper doesn't bounce. Productive = UI feedback, expressive = entrances. */
+  /* TRANSITIONS, paper doesn't bounce. Productive = UI feedback, expressive = entrances. */
   --ease-paper: cubic-bezier(0.2, 0, 0.1, 1);
   --ease-productive: cubic-bezier(0.2, 0, 0.38, 0.9);
   --ease-expressive: cubic-bezier(0.4, 0.14, 0.3, 1);
@@ -87,7 +87,7 @@
   --dur-base: 200ms;
   --dur-slow: 320ms;
 
-  /* TYPE STYLES — every size pairs a line-height + weight + tracking (a real type set,
+  /* TYPE STYLES, every size pairs a line-height + weight + tracking (a real type set,
      not loose sizes). Reference these so vertical rhythm stays consistent. */
   --lh-tight:   1.05;   /* display / headline */
   --lh-snug:    1.2;    /* titles, KPIs, tags */
@@ -102,7 +102,7 @@
   --track-snug:  -0.01em;  /* 24–32px titles */
   --track-label:  0.12em;  /* tracked mono labels */
 
-  /* STATE — interaction layers. Resolve per-theme because they reference surface tokens. */
+  /* STATE, interaction layers. Resolve per-theme because they reference surface tokens. */
   --state-hover:    var(--surface-inset);
   --state-selected: var(--surface-sunken);
   --state-disabled-opacity: 0.45;
@@ -120,11 +120,11 @@
   --surface-inset:   var(--paper-03);
   --surface-inverse: var(--ink-90);
 
-  /* Text — all AA-compliant against surface-page */
+  /* Text, all AA-compliant against surface-page */
   --text-primary:    var(--ink-90);   /* headlines */
   --text-body:       var(--ink-80);   /* paragraphs */
   --text-secondary:  var(--ink-60);   /* captions, meta */
-  --text-muted:      var(--ink-50);   /* de-emphasised — still AA */
+  --text-muted:      var(--ink-50);   /* de-emphasised, still AA */
   --text-disabled:   var(--ink-40);   /* inactive only; never essential info */
   --text-on-fill:    var(--paper-00); /* light text on a dark/pigment fill */
   --text-on-marigold:var(--ink-90);   /* marigold demands dark text */
@@ -135,7 +135,7 @@
   --border-default:  var(--ink-40);   /* component dividers (3:1 UI) */
   --border-hairline: var(--ink-20);   /* faint table rules (decorative) */
 
-  /* Accents — text-safe roles map to *-ink, fill roles to base pigment */
+  /* Accents, text-safe roles map to *-ink, fill roles to base pigment */
   --accent-success:        var(--pigment-celadon-ink);
   --accent-success-fill:   var(--pigment-celadon);
   --accent-danger:         var(--pigment-cinnabar-ink);
@@ -149,9 +149,9 @@
   /* Fields */
   --field-bg:          var(--paper-00);
   --field-border:      var(--ink-80);
-  --field-placeholder: var(--ink-50);  /* AA — was ink-40, which failed */
+  --field-placeholder: var(--ink-50);  /* AA, was ink-40, which failed */
 
-  /* Focus — visible ring, 3:1+ against both states (WCAG 2.4.11) */
+  /* Focus, visible ring, 3:1+ against both states (WCAG 2.4.11) */
   --focus-ring:       var(--ink-100);
   --focus-ring-width: var(--rule-2);
   --focus-offset:     2px;
@@ -197,7 +197,7 @@
 }
 
 /* ════════════════════════════════════════════════════════════════════════
-   3b · STOCK · BONE  (cool neutral near-white — for when cream reads too warm)
+   3b · STOCK · BONE  (cool neutral near-white, for when cream reads too warm)
    ════════════════════════════════════════════════════════════════════════ */
 [data-theme="bone"] {
   --surface-page:    #EFEEE7;
@@ -209,7 +209,7 @@
   --text-primary:    var(--ink-90);   /* 13.5:1 */
   --text-body:       var(--ink-80);   /* 12.8:1 */
   --text-secondary:  var(--ink-60);   /*  6.2:1 */
-  --text-muted:      var(--ink-50);   /*  4.8:1 — AA */
+  --text-muted:      var(--ink-50);   /*  4.8:1, AA */
   --text-disabled:   var(--ink-40);
   --text-on-fill:    #F7F6F1;
   --text-on-marigold:var(--ink-90);
@@ -236,7 +236,7 @@
 }
 
 /* ════════════════════════════════════════════════════════════════════════
-   3c · STOCK · INDIGO  (cool dark — an alternative to the warm Ink page)
+   3c · STOCK · INDIGO  (cool dark, an alternative to the warm Ink page)
    All text checked AA against the #1B2230 surface.
    ════════════════════════════════════════════════════════════════════════ */
 [data-theme="indigo"] {
@@ -249,7 +249,7 @@
   --text-primary:    #EDECE3;   /* 14.0:1 */
   --text-body:       #E2E1D6;   /* 12.2:1 */
   --text-secondary:  #AEB4C2;   /*  7.6:1 */
-  --text-muted:      #8A93A6;   /*  5.2:1 — AA */
+  --text-muted:      #8A93A6;   /*  5.2:1, AA */
   --text-disabled:   #5E6675;
   --text-on-fill:    #EDECE3;
   --text-on-marigold:var(--ink-100);
@@ -342,7 +342,7 @@
 
 /* ════════════════════════════════════════════════════════════════════════
    TYPE FAMILIES
-   - Display/Body: Archivo — neutral editorial grotesk (free, Figma-native)
+   - Display/Body: Archivo, neutral editorial grotesk (free, Figma-native)
    - Mono: Spline Sans Mono · Serif: Source Serif 4 · CJK: Noto Sans JP
    ════════════════════════════════════════════════════════════════════════ */
 .lk {
@@ -371,13 +371,13 @@
   font-family: "Archivo", "Hiragino Kaku Gothic Pro", "Yu Gothic", "Noto Sans JP", sans-serif;
 }
 
-/* Bengali — Anek Bangla, a contemporary grotesque that sits naturally beside Archivo.
+/* Bengali, Anek Bangla, a contemporary grotesque that sits naturally beside Archivo.
    Used for the heritage thread (after Siddika Kabir's cookbook). */
 .lk-bn {
   font-family: "Anek Bangla", "Noto Sans Bengali", "Archivo", sans-serif;
 }
 
-/* TRACKED LABEL — small, uppercase, letter-spaced. The system's most-used label. */
+/* TRACKED LABEL, small, uppercase, letter-spaced. The system's most-used label. */
 .lk-label {
   font-family: "Spline Sans Mono", ui-monospace, monospace;
   font-size: var(--type-xs);
@@ -387,7 +387,7 @@
   font-weight: 500;
 }
 
-/* SHEET — the canonical paper container. Has a subtle grain. */
+/* SHEET, the canonical paper container. Has a subtle grain. */
 .lk-sheet {
   background: var(--surface-page);
   position: relative;
@@ -406,7 +406,7 @@
   opacity: 0.6;
 }
 
-/* RULE — editorial divider. Strokes, not full-width dividers. */
+/* RULE, editorial divider. Strokes, not full-width dividers. */
 .lk-rule {
   border: 0;
   border-top: var(--rule-1) solid var(--text-primary);
@@ -430,7 +430,7 @@
   margin: 0;
 }
 
-/* MEASURED RULE — line shorter than container; rest is a hatched "breath". */
+/* MEASURED RULE, line shorter than container; rest is a hatched "breath". */
 .lk-measure {
   display: flex;
   align-items: center;
@@ -471,7 +471,7 @@
   );
 }
 
-/* TAG — hard-cornered metadata pill */
+/* TAG, hard-cornered metadata pill */
 .lk-tag {
   display: inline-flex;
   align-items: center;
@@ -498,7 +498,7 @@
   border-color: var(--accent-feature-fill);
 }
 
-/* BUTTON — paper-button, looks like a printed key. min target 36px (>AA 24px). */
+/* BUTTON, paper-button, looks like a printed key. min target 36px (>AA 24px). */
 .lk-btn {
   font-family: "Spline Sans Mono", ui-monospace, monospace;
   font-size: 11px;
@@ -549,7 +549,7 @@
 }
 .lk-input::placeholder { color: var(--field-placeholder); opacity: 1; }
 
-/* FOCUS — single visible ring for every interactive element (keyboard only). */
+/* FOCUS, single visible ring for every interactive element (keyboard only). */
 .lk-btn:focus-visible,
 .lk-input:focus-visible,
 .lk-tag:focus-visible,
@@ -559,7 +559,7 @@ a:focus-visible {
   outline-offset: var(--focus-offset);
 }
 
-/* STATUS — color is paired with a glyph so it never relies on hue alone (1.4.1) */
+/* STATUS, color is paired with a glyph so it never relies on hue alone (1.4.1) */
 .lk-status {
   display: inline-flex;
   align-items: center;
@@ -577,7 +577,7 @@ a:focus-visible {
 .lk-status-pending { color: var(--text-muted); }
 .lk-status-pending::before { content: "\25CB"; }      /* ○ */
 
-/* PAGE NUMBER — bottom corner, like a book */
+/* PAGE NUMBER, bottom corner, like a book */
 .lk-folio {
   font-family: "Spline Sans Mono", ui-monospace, monospace;
   font-size: var(--type-sm);
@@ -585,7 +585,7 @@ a:focus-visible {
   font-variant-numeric: tabular-nums;
 }
 
-/* RUNNING HEAD — top-of-page strap */
+/* RUNNING HEAD, top-of-page strap */
 .lk-running-head {
   display: flex;
   align-items: center;
@@ -599,7 +599,7 @@ a:focus-visible {
   border-bottom: var(--rule-1) solid var(--text-primary);
 }
 
-/* COLOPHON FOOTER — bottom-of-page strap */
+/* COLOPHON FOOTER, bottom-of-page strap */
 .lk-colophon {
   display: flex;
   align-items: center;
@@ -613,7 +613,7 @@ a:focus-visible {
   letter-spacing: 0.12em;
 }
 
-/* DROP CAP — for the reading app */
+/* DROP CAP, for the reading app */
 .lk-dropcap::first-letter {
   font-family: "Source Serif 4", "Iowan Old Style", "Georgia", serif;
   font-size: 4.5em;
@@ -624,7 +624,7 @@ a:focus-visible {
   color: var(--text-primary);
 }
 
-/* SCROLLBAR — paper-friendly */
+/* SCROLLBAR, paper-friendly */
 .lk-scroll::-webkit-scrollbar { width: 10px; height: 10px; }
 .lk-scroll::-webkit-scrollbar-track { background: var(--surface-sunken); }
 .lk-scroll::-webkit-scrollbar-thumb { background: var(--border-default); border: 2px solid var(--surface-sunken); }
@@ -634,12 +634,12 @@ a:focus-visible {
 .lk-tabular { font-variant-numeric: tabular-nums; }
 .lk-num { font-feature-settings: "tnum"; font-variant-numeric: tabular-nums; }
 
-/* MOTION — respect reduced-motion preference */
+/* MOTION, respect reduced-motion preference */
 @media (prefers-reduced-motion: reduce) {
   * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
 
-/* SR-ONLY — visually hidden but available to assistive tech */
+/* SR-ONLY, visually hidden but available to assistive tech */
 .lk-sr-only {
   position: absolute;
   width: 1px; height: 1px;

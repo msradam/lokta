@@ -1,15 +1,23 @@
 # Lokta
 
-Lokta is an editorial design system that treats the screen as a printed page. It
-borrows book conventions (running heads, folios, hard rules, hatched end-marks,
-tracked mono labels, generous gutters) and applies them to dense interfaces. It
-is deliberately flat: layering comes from borders and surface tokens, not
-shadows. It is hard-edged: square caps, miter joins, no rounded controls by
-default.
+Lokta is an editorial UI design system adapted from the page layout of one book:
+*Cuisine on Screen* by Sachiyo Harada (Prestel, 2024), a collection of dishes
+from Japanese cult cinema, several of them Studio Ghibli films. That book sets a
+cookbook with unusual severity: a warm cream stock, a vertical 映画の料理 spine,
+hatched rules that give a section room to breathe, heavy grotesk titles run hard
+against the right margin, labels turned up the gutter, and full-bleed marigold
+grounds on the film-opener spreads. Lokta carries that grammar onto the screen
+and holds every text role to WCAG 2.2 AA.
 
-It ships the way IBM ships Carbon: design tokens built through a pipeline into
-multiple formats, a presentation theme, reusable templates, and a static
-documentation site deployed to GitHub Pages.
+A second thread runs through the dark stocks and the peach grounds: Professor
+Siddika Kabir's *Ranna Khaddo Pushti*, the standard household cookbook of
+Bangladesh, and the Bengali type that sits beside it.
+
+The result is deliberately flat (layering comes from borders and surface tokens,
+not shadows) and hard-edged (square caps, miter joins, no rounded controls by
+default). It ships the way IBM ships Carbon: design tokens built through a
+pipeline into multiple formats, a presentation theme, reusable templates, and a
+static documentation site deployed to GitHub Pages.
 
 - **Type:** Archivo (display and body), Spline Sans Mono (labels and figures),
   Source Serif 4 (pull quotes), Noto Sans JP and Anek Bangla (CJK and Bengali).
@@ -126,11 +134,20 @@ is shown in the workflow's deploy step and in Settings, Pages.
 3. **Stocks.** Each stock re-points the semantic layer, so theming and AA are
    inherited by anything built on the semantic tokens.
 
-## Credits
+## Credits and prior art
 
-Lokta is drawn from the Studio Ghibli cookbook *Cuisine on Screen* (Prestel) and
-Professor Siddika Kabir's *Ranna Khaddo Pushti*, as design inspiration, not
-reproduction. No artwork or text from either book is included in this repository.
+Lokta is an interpretation of two cookbooks, not a reproduction of either. It
+ships no text, photography, or artwork from them.
+
+- *Cuisine on Screen*, Sachiyo Harada (Prestel, 2024). The structural language:
+  the cream stock, the vertical 映画の料理 spine, the hatched breath rules, the
+  right-aligned grotesk display, the labels turned up the gutter, the folios and
+  running feet, and marigold as the full-bleed film-opener ground.
+- *Ranna Khaddo Pushti*, Professor Siddika Kabir (1931 to 2012). The heritage
+  thread: the peach (salmon) grounds and the Bengali type, set in Anek Bangla.
+
+A typeface pairing and a layout grammar are not themselves copyrightable; the
+books' contents are. Lokta borrows the former and none of the latter.
 
 ## License
 

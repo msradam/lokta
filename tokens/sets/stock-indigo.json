@@ -40,7 +40,7 @@
     "muted": {
       "$type": "color",
       "$value": "#8A93A6",
-      "$description": "5.2:1 — AA"
+      "$description": "5.2:1, AA"
     },
     "disabled": {
       "$type": "color",

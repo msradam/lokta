@@ -10,6 +10,9 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- An editorial UI system after the page layout of *Cuisine on Screen* by Sachiyo
+  Harada (Prestel, 2024), with a heritage thread from Professor Siddika Kabir's
+  *Ranna Khaddo Pushti*.
 - Three-tier design tokens (primitives, semantic, stocks) in Tokens Studio
   (DTCG) format, with four stocks: Paper (light), Ink (warm dark), Bone (cool
   light), and Indigo (cool dark). Every text role clears WCAG 2.2 AA on its

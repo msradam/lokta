@@ -165,8 +165,8 @@ const html = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lokta · Paper on Screen</title>
-<meta name="description" content="Lokta, an editorial design system that treats the screen as a printed page.">
+<title>Lokta · An editorial UI design system</title>
+<meta name="description" content="Lokta, an editorial UI design system adapted from the page layout of the cookbook Cuisine on Screen (Sachiyo Harada, Prestel).">
 <link rel="stylesheet" href="fonts.css">
 <link rel="stylesheet" href="lokta.tokens.css">
 <link rel="stylesheet" href="lokta-base.css">
@@ -194,9 +194,9 @@ const html = `<!doctype html>
 
   <section id="overview" class="cover">
     <div class="lk-running-head"><span>映画の料理 · LOKTA</span><span>WCAG 2.2 AA</span></div>
-    <p class="lk-label" style="margin-top:24px">An editorial design system</p>
+    <p class="lk-label" style="margin-top:24px">After Cuisine on Screen · Prestel</p>
     <h1 class="cover-title">Lokta</h1>
-    <p class="cover-lede lk-serif">The screen as a printed page. Running heads, folios, hard rules, hatched end-marks, tracked mono labels, and generous gutters, applied to dense interfaces. Flat by intent: layering comes from borders and surface tokens, not shadows.</p>
+    <p class="cover-lede lk-serif">One cookbook's page system, ported to the screen. Lokta adapts the layout of Sachiyo Harada's Cuisine on Screen (Prestel): a warm cream stock, a vertical 映画の料理 spine, hatched rules that let a section breathe, grotesk titles run hard to the right margin, and marigold grounds on the film-opener spreads. It holds every text role to WCAG 2.2 AA.</p>
     <div class="lk-measure"><span class="lk-measure-line" style="width:120px"></span><span class="lk-measure-gap"></span><span class="lk-measure-hatch"></span></div>
     <div class="cover-grid">
       <div><span class="lk-label">Type</span><p>Archivo, Spline Sans Mono, Source Serif 4, Noto Sans JP, Anek Bangla. All SIL OFL, self-hosted.</p></div>
@@ -373,7 +373,7 @@ const html = `<!doctype html>
 
 <footer class="colophon-foot">
   <div class="lk-measure"><span class="lk-measure-hatch"></span><span class="lk-measure-gap"></span><span class="lk-measure-line" style="width:120px"></span></div>
-  <p class="muted">Lokta · v0.1 · MIT. Drawn from the Studio Ghibli cookbook <em class="lk-serif">Cuisine on Screen</em> (Prestel) and Professor Siddika Kabir's <em class="lk-serif">Ranna Khaddo Pushti</em>, as design inspiration, not reproduction.</p>
+  <p class="muted">Lokta · v0.1 · MIT. After the page layout of <em class="lk-serif">Cuisine on Screen</em> by Sachiyo Harada (Prestel, 2024), with a heritage thread from Professor Siddika Kabir's <em class="lk-serif">Ranna Khaddo Pushti</em>. An interpretation of their typography, with no text or imagery reproduced from either.</p>
 </footer>
 
 <script>

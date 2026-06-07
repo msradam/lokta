@@ -2,7 +2,7 @@
   "name": "lokta",
   "version": "0.1.0",
   "private": true,
-  "description": "Lokta. An editorial design system: paper on screen.",
+  "description": "Lokta. An editorial UI design system, after the page layout of the cookbook Cuisine on Screen.",
   "license": "MIT",
   "workspaces": [
     "packages/tokens",

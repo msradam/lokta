@@ -30,32 +30,32 @@
     "20": {
       "$type": "color",
       "$value": "#B8B0A1",
-      "$description": "1.9:1 — hairlines/fills only, never text"
+      "$description": "1.9:1, hairlines/fills only, never text"
     },
     "40": {
       "$type": "color",
       "$value": "#8E867A",
-      "$description": "3.1:1 — borders/large/disabled only"
+      "$description": "3.1:1, borders/large/disabled only"
     },
     "50": {
       "$type": "color",
       "$value": "#6E665A",
-      "$description": "4.9:1 — muted text (AA)"
+      "$description": "4.9:1, muted text (AA)"
     },
     "60": {
       "$type": "color",
       "$value": "#5C564B",
-      "$description": "6.3:1 — secondary (AA)"
+      "$description": "6.3:1, secondary (AA)"
     },
     "80": {
       "$type": "color",
       "$value": "#2A2620",
-      "$description": "13.1:1 — body"
+      "$description": "13.1:1, body"
     },
     "90": {
       "$type": "color",
       "$value": "#1F1C13",
-      "$description": "13.9:1 — headlines"
+      "$description": "13.9:1, headlines"
     },
     "100": {
       "$type": "color",
@@ -71,17 +71,17 @@
     "marigold": {
       "$type": "color",
       "$value": "#FBBC0E",
-      "$description": "hero feature ground — requires dark text"
+      "$description": "hero feature ground, requires dark text"
     },
     "peach": {
       "$type": "color",
       "$value": "#E7A079",
-      "$description": "heritage salmon (Kabir cookbook) — dark text"
+      "$description": "heritage salmon (Kabir cookbook), dark text"
     },
     "lavender": {
       "$type": "color",
       "$value": "#A99CB3",
-      "$description": "cover / brand tone — dark text"
+      "$description": "cover / brand tone, dark text"
     },
     "night": {
       "$type": "color",
@@ -103,17 +103,17 @@
     "celadon-ink": {
       "$type": "color",
       "$value": "#4F6B50",
-      "$description": "5.2:1 — success text on paper"
+      "$description": "5.2:1, success text on paper"
     },
     "cinnabar-ink": {
       "$type": "color",
       "$value": "#C23A26",
-      "$description": "4.7:1 — danger text on paper"
+      "$description": "4.7:1, danger text on paper"
     },
     "aubergine-ink": {
       "$type": "color",
       "$value": "#6B4E8E",
-      "$description": "4.6:1 — feature text on paper"
+      "$description": "4.6:1, feature text on paper"
     }
   },
   "dark-accent": {
@@ -239,7 +239,7 @@
     "display": {
       "$type": "fontFamily",
       "$value": "Archivo",
-      "$description": "free, Figma-native — Helvetica Neue substitute"
+      "$description": "free, Figma-native, Helvetica Neue substitute"
     },
     "mono": {
       "$type": "fontFamily",
