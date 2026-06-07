@@ -70,7 +70,6 @@ for (const theme of THEMES) {
       },
     },
   });
-  await sd.cleanAllPlatforms();
   await sd.buildAllPlatforms();
 }
 
