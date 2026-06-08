@@ -266,6 +266,7 @@ const html = `<!doctype html>
 <link rel="stylesheet" href="lokta-components.css">
 <link rel="stylesheet" href="lokta-stocks.css">
 <link rel="stylesheet" href="styles.css">
+<script src="lokta-behaviors.js" defer></script>
 </head>
 <body class="lk lk-sheet">
 <a class="lk-sr-only" href="#main">Skip to content</a>
@@ -378,17 +379,44 @@ const html = `<!doctype html>
       <label class="lk-radio"><input type="radio" name="d-r" checked> Selected</label>
       <label class="lk-radio"><input type="radio" name="d-r"> Option</label>`)}
 
-    ${component('Tabs', 'Bottom keyline marks the active tab.', `
-      <div class="lk-tabs" role="tablist">
-        <button class="lk-tab" role="tab" aria-selected="true">Overview</button>
-        <button class="lk-tab" role="tab" aria-selected="false">Detail</button>
-        <button class="lk-tab" role="tab" aria-selected="false">History</button>
+    ${component('Tabs', 'Live: click or use Left/Right, Home/End. Roving tabindex, real ARIA.', `
+      <div style="max-width:520px">
+        <div class="lk-tabs" role="tablist" data-tabs aria-label="Example tabs">
+          <button class="lk-tab" role="tab" id="t1" aria-controls="tp1" aria-selected="true">Overview</button>
+          <button class="lk-tab" role="tab" id="t2" aria-controls="tp2" aria-selected="false">Detail</button>
+          <button class="lk-tab" role="tab" id="t3" aria-controls="tp3" aria-selected="false">History</button>
+        </div>
+        <div id="tp1" role="tabpanel" aria-labelledby="t1" style="padding:14px 2px">The overview panel.</div>
+        <div id="tp2" role="tabpanel" aria-labelledby="t2" style="padding:14px 2px" hidden>The detail panel.</div>
+        <div id="tp3" role="tabpanel" aria-labelledby="t3" style="padding:14px 2px" hidden>The history panel.</div>
       </div>`)}
 
-    ${component('Accordion', 'Editorial rules between rows.', `
+    ${component('Accordion', 'Live: Enter or Space toggles each panel (aria-expanded + region).', `
       <div class="lk-accordion" style="max-width:520px">
-        <details open><summary>What is a stock?</summary><div class="lk-accordion-body">A stock re-points the semantic layer: Paper, Ink, Bone, Indigo.</div></details>
-        <details><summary>Is it accessible?</summary><div class="lk-accordion-body">Every text role clears WCAG 2.2 AA on its surface.</div></details>
+        <button class="lk-acc-head" aria-expanded="true" aria-controls="acp1">What is a stock?</button>
+        <div class="lk-acc-body" id="acp1" role="region">A stock re-points the semantic layer: Paper, Ink, Bone, Indigo.</div>
+        <button class="lk-acc-head" aria-expanded="false" aria-controls="acp2">Is it accessible?</button>
+        <div class="lk-acc-body" id="acp2" role="region" hidden>Every text role clears WCAG 2.2 AA on its surface, in every stock.</div>
+      </div>`)}
+
+    ${component('Menu', 'Live: ArrowDown opens, arrows move, Escape closes and restores focus.', `
+      <div class="lk-menu" data-menu>
+        <button class="lk-btn lk-menu-btn" data-menu-btn aria-haspopup="true" aria-expanded="false">Actions</button>
+        <ul class="lk-menu-list" role="menu" data-menu-list hidden>
+          <li><button role="menuitem">Duplicate</button></li>
+          <li><button role="menuitem">Export</button></li>
+          <li><button role="menuitem">Delete</button></li>
+        </ul>
+      </div>`)}
+
+    ${component('Dialog', 'Live: opens with focus trap, Escape closes, focus returns to the trigger.', `
+      <button class="lk-btn lk-btn-primary" data-open-dialog="siteDialog">Open dialog</button>
+      <div class="lk-modal-backdrop" id="siteDialog" role="dialog" aria-modal="true" aria-labelledby="siteDialog-t" hidden>
+        <div class="lk-modal">
+          <div class="lk-modal-head"><span class="lk-modal-title" id="siteDialog-t">Set the stock</span><button class="lk-btn" data-close-dialog="siteDialog" aria-label="Close">&#10005;</button></div>
+          <p>Choose a paper for the run. The choice re-points every semantic token.</p>
+          <div class="lk-modal-foot"><button class="lk-btn" data-close-dialog="siteDialog">Cancel</button><button class="lk-btn lk-btn-primary" data-close-dialog="siteDialog">Confirm</button></div>
+        </div>
       </div>`)}
 
     ${component('Inline notifications', 'Color is paired with a glyph, so meaning never relies on hue.', `
