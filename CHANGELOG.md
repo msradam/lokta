@@ -39,6 +39,17 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   gallery cataloguing the application-tier components.
 - An Install section on the docs site (npm, standalone repos, no-build drop-in),
   a mobile responsiveness pass, and a Figma publish guide (`docs/figma/PUBLISH.md`).
+- Manuscript-fusion / namesake: two stocks, Manuscript (warm aged-lokta ivory)
+  and Highland (stone-cool dark), each clearing the full role x surface AA matrix
+  (verify is now 234 checks); the heritage pigment palette (Pala dye tones
+  madder, walnut, turmeric, lac, malachite, conch, the afsani gilt, with light
+  variants) as Accent dial options; first-class Devanagari (Mukta display/body,
+  Martel serif, self-hosted SIL OFL) beside Bengali, with the Voice dial and
+  `:lang()` script switching across web, Marp, and Typst; the trilingual
+  `lk-wordmark` (लोक्ता · Lokta · লোক্তা); opt-in material motifs (`lk-deckle-r`/`-b`
+  deckle edge, `lk-pothi` palm-leaf format) and a `fibrous` grain step; and the
+  six-dial customization model (`CUSTOMIZATION.md` plus a docs page). All
+  additive: no existing token value changed.
 
 ### Fixed
 
