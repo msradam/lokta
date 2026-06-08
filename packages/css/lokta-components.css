@@ -841,10 +841,7 @@ a:focus-visible {
 .lk-nav-item .lk-icon { flex: none; }
 
 /* ── STAT / KPI CARD ─────────────────────────────────────────────────────── */
-/* Page surface, not raised: accent deltas (success/danger) are AA-tuned against
-   the page surface in every stock (it is what verify.mjs gates). The raised
-   surface dips below 4.5 on the dark stocks; the sunken surface dips on the light
-   ones. A border frames the well. */
+/* Page surface, where accent deltas hold AA; raised dips on dark stocks, sunken on light. */
 .lk-stat {
   display: flex; flex-direction: column; gap: var(--space-2);
   background: var(--surface-page); border: var(--rule-1) solid var(--border-default);
@@ -892,9 +889,7 @@ a:focus-visible {
 }
 .lk-segment > button:last-child { border-right: 0; }
 .lk-segment > button:hover { background: var(--surface-inset); }
-/* Active fill mirrors lk-btn-primary (text-primary over surface-raised), which
-   pairs correctly in every stock; surface-inverse + text-on-fill collide on the
-   dark stocks (both resolve light). */
+/* Active fill mirrors lk-btn-primary; surface-inverse + text-on-fill collide on dark stocks. */
 .lk-segment > button[aria-pressed="true"], .lk-segment > button.is-active {
   background: var(--text-primary); color: var(--surface-raised);
 }
@@ -1017,11 +1012,7 @@ a:focus-visible {
 .lk-logos > * { color: var(--text-muted); font-family: "Archivo", sans-serif; font-weight: var(--wt-bold); font-size: var(--type-md); }
 
 /* ── ON-PIGMENT SECTION (recolors furniture for a pigment ground) ──────────
- * Remaps the furniture tokens to ink-on-pigment (or paper-on-dark-pigment) so a
- * section dropped on a marigold/aubergine ground reads in any stock. Buttons keep
- * working: a primary fill becomes a dark key with a paper label, a default button
- * an outline. Do not set surface-raised to transparent: the primary button uses
- * it as its text color. */
+ * surface-raised stays opaque: the primary button uses it as its text color. */
 .lk-on-pigment {
   --text-primary: var(--ink-90); --text-body: var(--ink-90); --text-secondary: var(--ink-80);
   --text-muted: var(--ink-80);
@@ -1046,9 +1037,7 @@ a:focus-visible {
 }
 .lk-link:hover { color: var(--accent-feature); }
 
-/* ── WORDMARK (trilingual: Devanagari · Latin · Bengali) ──────────────────────
- * The namesake lockup. Each part sets its own script face; lang attributes on
- * the markup drive shaping. Scale with font-size on .lk-wordmark. */
+/* ── WORDMARK (trilingual: Devanagari · Latin · Bengali). Scale via font-size. ── */
 .lk-wordmark { display: inline-flex; align-items: baseline; gap: var(--space-4); flex-wrap: wrap; font-size: var(--type-2xl); }
 .lk-wm-deva { font-family: var(--font-family-devanagari); font-weight: 700; line-height: 1; color: var(--text-primary); }
 .lk-wm-latin { font-family: var(--font-family-display); font-weight: var(--voice-weight-display, 800); letter-spacing: var(--track-tight); line-height: 0.9; color: var(--text-primary); }

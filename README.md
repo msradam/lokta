@@ -1,13 +1,13 @@
 # Lokta
 
-Lokta is an editorial UI design system adapted from the page layout of one book:
-_Cuisine on Screen_ by Sachiyo Harada (Prestel, 2024), a collection of dishes
-from Japanese cult cinema, several of them Studio Ghibli films. That book sets a
-cookbook with unusual severity: a warm cream stock, a vertical 映画の料理 spine,
-hatched rules that give a section room to breathe, heavy grotesk titles run hard
-against the right margin, labels turned up the gutter, and full-bleed marigold
-grounds on the film-opener spreads. Lokta carries that grammar onto the screen
-and holds every text role to WCAG 2.2 AA.
+Lokta treats the screen as a printed page and holds every text role to WCAG 2.2
+AA. It is named after Nepali lokta paper, the fibrous archival paper of the
+Himalayas, and draws on one trans-Asian paper-and-manuscript tradition through
+three references: the Japanese cookbook _Cuisine on Screen_ (Sachiyo Harada,
+Prestel), Nepali lokta, and the Bengali Pala manuscripts behind Professor Siddika
+Kabir's _Ranna Khaddo Pushti_. The grammar: a warm cream stock, a vertical
+映画の料理 spine, hatched breath rules, heavy grotesk titles run hard to the
+margin, tracked mono labels, and full-bleed pigment grounds.
 
 ![The Lokta overview: a cream page with a tracked label, the wordmark Lokta, an italic lede, and a measured rule.](docs/overview.png)
 
@@ -19,23 +19,20 @@ theme, Typst document themes, and a Mermaid diagram theme.
 | ![Lokta components.](docs/components.png)          | ![A Lokta-themed Mermaid flowchart.](docs/mermaid.png) |
 | ![A Typst recipe document.](docs/typst-recipe.png) | ![A Lokta slide with a diagram.](docs/deck.png)        |
 
-A second thread runs through the dark stocks and the peach grounds: Professor
-Siddika Kabir's _Ranna Khaddo Pushti_, the standard household cookbook of
-Bangladesh, and the Bengali type that sits beside it.
-
-The result is deliberately flat (layering comes from borders and surface tokens,
-not shadows) and hard-edged (square caps, miter joins, no rounded controls by
-default). It ships the way IBM ships Carbon: design tokens built through a
-pipeline into multiple formats, a presentation theme, reusable templates, and a
-static documentation site deployed to GitHub Pages.
+It is deliberately flat (layering from borders, not shadows) and hard-edged
+(square caps, no rounded controls by default). It ships the way IBM ships Carbon:
+tokens built through a pipeline into multiple formats, a slide theme, document
+themes, templates, and a docs site on GitHub Pages.
 
 - **Type:** Archivo (display and body), Spline Sans Mono (labels and figures),
-  Source Serif 4 (pull quotes), Noto Sans JP and Anek Bangla (CJK and Bengali).
-  All SIL OFL, self-hosted.
+  Source Serif 4 (pull quotes), and the script faces Noto Sans JP, Anek Bangla
+  (Bengali), and Mukta and Martel (Devanagari). All SIL OFL, self-hosted.
 - **Color:** warm paper surfaces, warm-tinted ink text, saturated pigment
-  grounds. Marigold is the hero.
-- **Stocks:** Paper (light, default), Ink (warm dark), Bone (cool light),
-  Indigo (cool dark). Every text role clears WCAG 2.2 AA on each.
+  grounds. Marigold is the hero; the heritage dyes (madder, lac, turmeric) are
+  Accent options.
+- **Stocks:** Paper, Manuscript (aged-lokta ivory), Bone, Ink, Indigo, Highland
+  (stone-cool dark), plus the enterprise set Slate, Steel, Onyx. Every text role
+  clears WCAG 2.2 AA on each.
 
 ## Repos
 
@@ -117,16 +114,21 @@ product UI.
 
 ### Brand customisation
 
-Apps may override the brand layer. Everything else (type scale, 8px grid, AA
-rules, component structure, hard-edged character) is locked.
+Six range-limited dials. Everything else (type scale, 8px grid, AA rules,
+component structure, hard-edged character) is locked. See
+[CUSTOMIZATION.md](CUSTOMIZATION.md).
 
-| Knob           | How                      | Default     |
-| -------------- | ------------------------ | ----------- |
-| Accent pigment | `--lk-accent`            | marigold    |
-| Control radius | `--lk-radius` (0 to 3px) | `0px`       |
-| Density        | `data-density="compact"` | comfortable |
-| Grain          | `data-grain="off"`       | on          |
-| Stock          | `data-theme`             | paper       |
+| Dial    | How                                    | Default     |
+| ------- | -------------------------------------- | ----------- |
+| Stock   | `data-theme`                           | paper       |
+| Accent  | `--lk-accent` (curated pigments)       | marigold    |
+| Voice   | `--font-family-*` (named faces)        | Archivo set |
+| Density | `data-density="compact"`               | comfortable |
+| Radius  | `--lk-radius` (0 to 3px)               | `0px`       |
+| Grain   | `data-grain` (off / subtle / fibrous)  | subtle      |
+
+Script (Latin, Devanagari, Bengali, CJK) is chosen by content language via
+`:lang()`, not a dial.
 
 ## Build
 
@@ -173,15 +175,18 @@ is shown in the workflow's deploy step and in Settings, Pages.
 
 ## Credits and prior art
 
-Lokta is an interpretation of two cookbooks, not a reproduction of either. It
-ships no text, photography, or artwork from them.
+Lokta is an interpretation of one paper-and-manuscript tradition, not a
+reproduction of any source. It ships no text, photography, or artwork from them.
 
+- **Nepali lokta paper.** The namesake: handmade bark paper of the Himalayas,
+  used for a thousand years to carry Buddhist sacred texts. The Manuscript and
+  Highland stocks, the fibre grain, and the deckle and palm-leaf motifs.
 - _Cuisine on Screen_, Sachiyo Harada (Prestel, 2024). The structural language:
-  the cream stock, the vertical 映画の料理 spine, the hatched breath rules, the
-  right-aligned grotesk display, the labels turned up the gutter, the folios and
-  running feet, and marigold as the full-bleed film-opener ground.
-- _Ranna Khaddo Pushti_, Professor Siddika Kabir (1931 to 2012). The heritage
-  thread: the peach (salmon) grounds and the Bengali type, set in Anek Bangla.
+  the cream stock, the 映画の料理 spine, the hatched breath rules, the
+  right-aligned grotesk display, and marigold as the full-bleed ground.
+- _Ranna Khaddo Pushti_, Professor Siddika Kabir (1931 to 2012), and the Bengali
+  Pala manuscripts behind it: the peach grounds, the heritage dye palette, and
+  the Bengali type in Anek Bangla.
 
 A typeface pairing and a layout grammar are not themselves copyrightable; the
 books' contents are. Lokta borrows the former and none of the latter.

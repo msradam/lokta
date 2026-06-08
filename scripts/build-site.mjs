@@ -349,9 +349,9 @@ ${iconSprite}
 
   <section id="overview" class="cover">
     <div class="lk-running-head"><span>映画の料理 · LOKTA</span><span>WCAG 2.2 AA</span></div>
-    <p class="lk-label" style="margin-top:24px">After Cuisine on Screen · Prestel</p>
+    <p class="lk-label" style="margin-top:24px">After the Asian manuscript page</p>
     <h1 class="cover-title">Lokta</h1>
-    <p class="cover-lede lk-serif">One cookbook's page system, ported to the screen. Lokta adapts the layout of Sachiyo Harada's Cuisine on Screen (Prestel): a warm cream stock, a vertical 映画の料理 spine, hatched rules that let a section breathe, grotesk titles run hard to the right margin, and marigold grounds on the film-opener spreads. It holds every text role to WCAG 2.2 AA.</p>
+    <p class="cover-lede lk-serif">The screen as a printed page. Named after Nepali lokta paper, drawn from one trans-Asian paper tradition: Japanese washi, Himalayan lokta, and the Bengali Pala manuscripts. A warm cream stock, hatched breath rules, grotesk titles run hard to the margin, pigment grounds. Every text role clears WCAG 2.2 AA.</p>
     <div class="lk-measure"><span class="lk-measure-line" style="width:120px"></span><span class="lk-measure-gap"></span><span class="lk-measure-hatch"></span></div>
     <div class="cover-grid">
       <div><span class="lk-label">Type</span><p>Archivo, Spline Sans Mono, Source Serif 4, Noto Sans JP, Anek Bangla. All SIL OFL, self-hosted.</p></div>

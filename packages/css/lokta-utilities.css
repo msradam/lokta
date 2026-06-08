@@ -45,10 +45,8 @@
 }
 
 /* ── DATA VIZ ──────────────────────────────────────────────────────────────
- * A categorical series palette drawn from the pigments, ordered for adjacent
- * distinctness. Pigment values are constant across stocks, so a chart keeps its
- * colours when the surface changes. Pair colour with a label; never encode by
- * colour alone (use the legend, and patterns where you can). */
+ * A categorical series palette from the pigments (constant across stocks).
+ * Pair colour with a label; never encode by colour alone. */
 :root {
   --viz-1: var(--pigment-indigo);
   --viz-2: var(--pigment-marigold);
@@ -86,8 +84,7 @@
 .lk-spark path, .lk-spark polyline { fill: none; stroke: var(--viz, var(--viz-1)); stroke-width: 1.5; stroke-linejoin: miter; stroke-linecap: square; }
 
 /* ── MANUSCRIPT MATERIAL (opt-in motifs from the namesake) ─────────────────── */
-/* Deckle edge: the torn handmade edge of a lokta sheet. Clip a block's right
-   (or bottom) edge into an irregular deckle. Texture and format, never depth. */
+/* Deckle edge: clips a block's right or bottom edge into a torn lokta deckle. */
 .lk-deckle-r {
   clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 4%, calc(100% - 5px) 9%, 100% 15%, calc(100% - 8px) 21%, calc(100% - 2px) 28%, 100% 35%, calc(100% - 7px) 42%, calc(100% - 3px) 49%, 100% 56%, calc(100% - 8px) 63%, calc(100% - 2px) 70%, calc(100% - 6px) 77%, 100% 84%, calc(100% - 7px) 91%, calc(100% - 3px) 97%, 100% 100%, 0 100%);
 }
@@ -95,8 +92,7 @@
   clip-path: polygon(0 0, 100% 0, 100% 100%, 96% calc(100% - 6px), 91% 100%, 84% calc(100% - 7px), 77% 100%, 70% calc(100% - 5px), 63% 100%, 56% calc(100% - 8px), 49% 100%, 42% calc(100% - 4px), 35% 100%, 28% calc(100% - 7px), 21% 100%, 15% calc(100% - 3px), 9% 100%, 4% calc(100% - 6px), 0 100%);
 }
 
-/* Palm-leaf pothi: a long landscape leaf with double ruled margins and a central
-   string-hole, the binding format of palm-leaf and lokta manuscripts. */
+/* Palm-leaf pothi: a landscape leaf with double rules and a central string-hole. */
 .lk-pothi {
   position: relative;
   border: var(--rule-1) solid var(--border-strong);

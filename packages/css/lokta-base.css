@@ -49,10 +49,8 @@
   --lk-radius: 0px;
   --lk-density-step: 0px;
 
-  /* Heritage pigments, the manuscript-fusion palette (Pala dye tones, conch,
-     and the one afsani gilt). Available as Accent dial options; the -light
-     variants carry accent text on the dark stocks. Each is AA on light
-     surfaces (gilt is a flat fill only, not text). */
+  /* Heritage pigments (Accent dial options). -light variants carry accent text on
+     the dark stocks; gilt is a flat fill only, not text. */
   --pigment-madder: #8E3B30;
   --pigment-walnut: #4E3B29;
   --pigment-turmeric: #7A5A12;
@@ -66,10 +64,8 @@
   --pigment-lac-light: #D98098;
   --pigment-malachite-light: #7FB08C;
 
-  /* VOICE dial. Named typeface options per role as multilingual stacks: the
-     Latin face first, then the script fallbacks (Mukta for Devanagari, Anek
-     Bangla for Bengali, Noto JP for CJK). Script is resolved by content
-     language via :lang() below, never a user dial. */
+  /* VOICE dial. Per-role stacks: Latin face first, then script fallbacks. :lang()
+     below picks the script by content language, never a user dial. */
   --font-family-display: "Archivo", "Mukta", "Anek Bangla", "Noto Sans JP", system-ui, sans-serif;
   --font-family-mono: "Spline Sans Mono", ui-monospace, monospace;
   --font-family-serif: "Source Serif 4", "Martel", "Noto Serif Bengali", Georgia, serif;
@@ -95,9 +91,7 @@
   --lk-density-step: 4px;
 }
 
-/* Grain dial: off | subtle (default) | fibrous. Off removes the texture;
-   fibrous swaps the subtle dots for directional lokta fibre, the namesake
-   material. Texture only, never depth. */
+/* Grain dial: off | subtle (default) | fibrous. Fibrous swaps the dots for lokta fibre. */
 [data-grain="off"] .lk-sheet::before {
   display: none;
 }
