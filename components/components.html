@@ -1,0 +1,1950 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="paper">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lokta, Components, Icons & Accessibility</title>
+<link rel="stylesheet" href="fonts.css">
+<!-- SYSTEM CSS (verbatim, inlined, do not edit; regenerate from lokta-tokens.css + lokta-controls.css) -->
+<style id="lokta-tokens">
+/* Lokta, Paper on Screen
+   A design system for web apps that treats the screen as a printed page.
+   Inspired by editorial books (Prestel, Phaidon) and terminal UIs.
+
+   v0.1, Accessibility-remediated (WCAG 2.2 AA).
+   ───────────────────────────────────────────────────────────────────────
+   ARCHITECTURE
+   1. PRIMITIVES   raw values, never reference them directly in product UI
+   2. SEMANTIC     role-based aliases (text-*, surface-*, border-*, accent-*)
+   3. THEMES       [data-theme="paper"] (default) · [data-theme="ink"] (dark)
+   Build UI against the SEMANTIC layer so both themes + a11y come for free.
+*/
+
+/* ════════════════════════════════════════════════════════════════════════
+   1 · PRIMITIVES
+   ════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* PAPER, warm greenish cream, matched to the source book stock. Never pure white. */
+  --paper-00: #FAF8EA;   /* deckle, top sheet */
+  --paper-01: #F4F1DF;   /* page, primary surface */
+  --paper-02: #EAE6D2;   /* page shadow, sidebar */
+  --paper-03: #DBD3BB;   /* inset, table stripe */
+  --paper-04: #C2B89C;   /* divider, plate edge */
+
+  /* INK, warm-tinted blacks. Prefer ink-80 for body.
+     Contrast vs paper-01 noted; AA needs 4.5:1 (text <18px) / 3:1 (large/UI). */
+  --ink-100: #16140E;    /* 14.8:1  full black, rare */
+  --ink-90:  #1F1C13;    /* 13.9:1  headlines */
+  --ink-80:  #2A2620;    /* 13.1:1  body text */
+  --ink-60:  #5C564B;    /*  6.3:1  secondary text, AA ✓ */
+  --ink-50:  #615A4C;    /*  4.9:1  muted text, AA ✓  (NEW, replaces ink-40 for small text) */
+  --ink-40:  #8E867A;    /*  3.1:1  borders / large / disabled ONLY, not body text */
+  --ink-20:  #B8B0A1;    /*  1.9:1  hairlines / fills ONLY, never text */
+
+  /* PIGMENT, saturated panels. FILL role: full-bleed section/feature grounds.
+     marigold is the book's HERO ground (film-intro spreads); always DARK text. */
+  --pigment-marigold:  #FBBC0E;   /* HERO feature ground (dark text only, white fails badly) */
+  --pigment-peach:     #E7A079;   /* HERITAGE salmon (Kabir cookbook), pairs with night, dark text */
+  --pigment-lavender:  #A99CB3;   /* cover / brand tone (dark text) */
+  --pigment-aubergine: #6B4E8E;   /* feature panel  (white text ✓ 6.2:1) */
+  --pigment-cinnabar:  #C23A26;   /* danger fill    (white text ✓) */
+  --pigment-celadon:   #6E8B6F;   /* success fill   (white text ✓) */
+  --pigment-indigo:    #2E3E5C;   /* info / deep blue (white text ✓) */
+  --pigment-night:     #070D0E;   /* dramatic section-opener ground (cool near-black) */
+
+  /* PIGMENT · INK, AA-safe variants for using a pigment AS TEXT/ICON on paper. */
+  --pigment-celadon-ink:  #4F6B50;  /* 5.2:1, success text/check on paper ✓ */
+  --pigment-cinnabar-ink: #C23A26;  /* 4.7:1, danger text on paper ✓ */
+  --pigment-aubergine-ink:#6B4E8E;  /* 4.6:1, feature text on paper ✓ */
+
+  /* RULES, line weights for editorial dividers */
+  --rule-hairline: 0.5px;
+  --rule-1: 1px;
+  --rule-2: 2px;
+  --rule-3: 4px;
+
+  /* TYPE SCALE, based on book typography, not web defaults */
+  --type-xs:   11px;   /* tracked labels, footnotes */
+  --type-sm:   13px;   /* meta, captions */
+  --type-base: 15px;   /* body */
+  --type-md:   18px;   /* lead-in */
+  --type-lg:   24px;   /* deck, subheadline */
+  --type-xl:   32px;   /* recipe title */
+  --type-2xl:  48px;   /* section header */
+  --type-3xl:  72px;   /* book cover */
+
+  /* SPACING, paper measure, generous gutters */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* TARGETS, minimum interactive sizes (WCAG 2.5.8) */
+  --target-min: 24px;   /* pointer minimum (AA) */
+  --target-touch: 44px; /* comfortable touch (use lk-btn-lg in touch contexts) */
+
+  /* TRANSITIONS, paper doesn't bounce. Productive = UI feedback, expressive = entrances. */
+  --ease-paper: cubic-bezier(0.2, 0, 0.1, 1);
+  --ease-productive: cubic-bezier(0.2, 0, 0.38, 0.9);
+  --ease-expressive: cubic-bezier(0.4, 0.14, 0.3, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+
+  /* TYPE STYLES, every size pairs a line-height + weight + tracking (a real type set,
+     not loose sizes). Reference these so vertical rhythm stays consistent. */
+  --lh-tight:   1.05;   /* display / headline */
+  --lh-snug:    1.2;    /* titles, KPIs, tags */
+  --lh-normal:  1.45;   /* body */
+  --lh-relaxed: 1.6;    /* long-form reading */
+  --wt-regular: 400;
+  --wt-medium:  500;
+  --wt-semibold:600;
+  --wt-bold:    700;
+  --wt-black:   800;
+  --track-tight: -0.03em;  /* 48px+ display */
+  --track-snug:  -0.01em;  /* 24–32px titles */
+  --track-label:  0.12em;  /* tracked mono labels */
+
+  /* STATE, interaction layers. Resolve per-theme because they reference surface tokens. */
+  --state-hover:    var(--surface-inset);
+  --state-selected: var(--surface-sunken);
+  --state-disabled-opacity: 0.45;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   2 · SEMANTIC  (default = paper / light)
+   ════════════════════════════════════════════════════════════════════════ */
+:root,
+[data-theme="paper"] {
+  /* Surfaces */
+  --surface-page:    var(--paper-01);
+  --surface-raised:  var(--paper-00);
+  --surface-sunken:  var(--paper-02);
+  --surface-inset:   var(--paper-03);
+  --surface-inverse: var(--ink-90);
+
+  /* Text, all AA-compliant against surface-page */
+  --text-primary:    var(--ink-90);   /* headlines */
+  --text-body:       var(--ink-80);   /* paragraphs */
+  --text-secondary:  var(--ink-60);   /* captions, meta */
+  --text-muted:      var(--ink-50);   /* de-emphasised, still AA */
+  --text-disabled:   var(--ink-40);   /* inactive only; never essential info */
+  --text-on-fill:    var(--paper-00); /* light text on a dark/pigment fill */
+  --text-on-marigold:var(--ink-90);   /* marigold demands dark text */
+  --text-on-peach:   var(--ink-90);   /* peach demands dark text */
+
+  /* Borders */
+  --border-strong:   var(--ink-80);   /* keylines, inputs, buttons */
+  --border-default:  var(--ink-40);   /* component dividers (3:1 UI) */
+  --border-hairline: var(--ink-20);   /* faint table rules (decorative) */
+
+  /* Accents, text-safe roles map to *-ink, fill roles to base pigment */
+  --accent-success:        var(--pigment-celadon-ink);
+  --accent-success-fill:   var(--pigment-celadon);
+  --accent-danger:         var(--pigment-cinnabar-ink);
+  --accent-danger-fill:    var(--pigment-cinnabar);
+  --accent-feature:        var(--pigment-aubergine-ink);
+  --accent-feature-fill:   var(--pigment-aubergine);
+  --accent-feature-ground: var(--pigment-marigold);  /* full-bleed film/section ground (dark text) */
+  --accent-warning-fill:   var(--pigment-marigold);
+  --accent-info-fill:      var(--pigment-indigo);
+
+  /* Fields */
+  --field-bg:          var(--paper-00);
+  --field-border:      var(--ink-80);
+  --field-placeholder: var(--ink-50);  /* AA, was ink-40, which failed */
+
+  /* Focus, visible ring, 3:1+ against both states (WCAG 2.4.11) */
+  --focus-ring:       var(--ink-100);
+  --focus-ring-width: var(--rule-2);
+  --focus-offset:     2px;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   3 · THEME · INK  (dark "ink page")
+   Re-points the semantic layer; all text checked AA against ink-90 surface.
+   ════════════════════════════════════════════════════════════════════════ */
+[data-theme="ink"] {
+  --surface-page:    var(--ink-90);
+  --surface-raised:  var(--ink-80);
+  --surface-sunken:  var(--ink-100);
+  --surface-inset:   #26221A;
+  --surface-inverse: var(--paper-01);
+
+  --text-primary:    var(--paper-00);  /* 13.7:1 */
+  --text-body:       var(--paper-01);  /* 12.9:1 */
+  --text-secondary:  var(--paper-04);  /*  8.2:1 */
+  --text-muted:      var(--ink-20);    /*  7.5:1 */
+  --text-disabled:   var(--ink-40);
+  --text-on-fill:    var(--paper-00);
+  --text-on-marigold:var(--ink-100);
+
+  --border-strong:   var(--paper-04);
+  --border-default:  var(--ink-40);
+  --border-hairline: var(--ink-60);
+
+  --accent-success:      #8FB088;  /* 6.7:1 on ink */
+  --accent-success-fill: var(--pigment-celadon);
+  --accent-danger:       #E2654F;  /* 4.8:1 on ink */
+  --accent-danger-fill:  var(--pigment-cinnabar);
+  --accent-feature:      #A98FC9;  /* 7.5:1 on ink */
+  --accent-feature-fill: var(--pigment-aubergine);
+  --accent-warning-fill: var(--pigment-marigold);
+  --accent-info-fill:    var(--pigment-indigo);
+
+  --field-bg:          var(--ink-100);
+  --field-border:      var(--paper-04);
+  --field-placeholder: var(--ink-20);
+
+  --focus-ring:       var(--paper-00);
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   3b · STOCK · BONE  (cool neutral near-white, for when cream reads too warm)
+   ════════════════════════════════════════════════════════════════════════ */
+[data-theme="bone"] {
+  --surface-page:    #EFEEE7;
+  --surface-raised:  #F7F6F1;
+  --surface-sunken:  #E4E3DB;
+  --surface-inset:   #D8D7CE;
+  --surface-inverse: var(--ink-90);
+
+  --text-primary:    var(--ink-90);   /* 13.5:1 */
+  --text-body:       var(--ink-80);   /* 12.8:1 */
+  --text-secondary:  var(--ink-60);   /*  6.2:1 */
+  --text-muted:      var(--ink-50);   /*  4.8:1, AA */
+  --text-disabled:   var(--ink-40);
+  --text-on-fill:    #F7F6F1;
+  --text-on-marigold:var(--ink-90);
+
+  --border-strong:   var(--ink-80);
+  --border-default:  var(--ink-40);
+  --border-hairline: var(--ink-20);
+
+  --accent-success:        var(--pigment-celadon-ink);
+  --accent-success-fill:   var(--pigment-celadon);
+  --accent-danger:         var(--pigment-cinnabar-ink);
+  --accent-danger-fill:    var(--pigment-cinnabar);
+  --accent-feature:        var(--pigment-aubergine-ink);
+  --accent-feature-fill:   var(--pigment-aubergine);
+  --accent-feature-ground: var(--pigment-marigold);
+  --accent-warning-fill:   var(--pigment-marigold);
+  --accent-info-fill:      var(--pigment-indigo);
+
+  --field-bg:          #F7F6F1;
+  --field-border:      var(--ink-80);
+  --field-placeholder: var(--ink-50);
+
+  --focus-ring:       var(--ink-100);
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   3c · STOCK · INDIGO  (cool dark, an alternative to the warm Ink page)
+   All text checked AA against the #1B2230 surface.
+   ════════════════════════════════════════════════════════════════════════ */
+[data-theme="indigo"] {
+  --surface-page:    #1B2230;
+  --surface-raised:  #232C3D;
+  --surface-sunken:  #141A25;
+  --surface-inset:   #2B3547;
+  --surface-inverse: #EFEEE7;
+
+  --text-primary:    #EDECE3;   /* 14.0:1 */
+  --text-body:       #E2E1D6;   /* 12.2:1 */
+  --text-secondary:  #AEB4C2;   /*  7.6:1 */
+  --text-muted:      #9BA3B4;   /*  5.2:1, AA */
+  --text-disabled:   #5E6675;
+  --text-on-fill:    #EDECE3;
+  --text-on-marigold:var(--ink-100);
+
+  --border-strong:   #AEB4C2;
+  --border-default:  #4A5365;
+  --border-hairline: #343E4F;
+
+  --accent-success:        #8FB088;  /* 6.4:1 on indigo */
+  --accent-success-fill:   var(--pigment-celadon);
+  --accent-danger:         #E2654F;  /* 4.6:1 on indigo */
+  --accent-danger-fill:    var(--pigment-cinnabar);
+  --accent-feature:        #A98FC9;  /* 7.0:1 on indigo */
+  --accent-feature-fill:   var(--pigment-aubergine);
+  --accent-feature-ground: var(--pigment-marigold);
+  --accent-warning-fill:   var(--pigment-marigold);
+  --accent-info-fill:      var(--pigment-indigo);
+
+  --field-bg:          #141A25;
+  --field-border:      #4A5365;
+  --field-placeholder: #9BA3B4;
+
+  --focus-ring:       #EDECE3;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   3d · STOCK · PINE  (deep green dark) · 3e · STOCK · MULBERRY (deep wine dark)
+   Non-blue dark stocks. Text roles mirror Indigo's AA structure.
+   ════════════════════════════════════════════════════════════════════════ */
+[data-theme="pine"] {
+  --surface-page:    #16231C;
+  --surface-raised:  #1E2E25;
+  --surface-sunken:  #101A14;
+  --surface-inset:   #24382C;
+  --surface-inverse: #F3F0E6;
+  --text-primary:    #EEEFE6;
+  --text-body:       #E0E4D9;
+  --text-secondary:  #AFBBA8;
+  --text-muted:      #889184;
+  --text-disabled:   #5E665C;
+  --text-on-fill:    #EEEFE6;
+  --text-on-marigold:var(--ink-100);
+  --border-strong:   #AFBBA8;
+  --border-default:  #495449;
+  --border-hairline: #2E3A32;
+  --accent-success:      #9DC08F;
+  --accent-success-fill: var(--pigment-celadon);
+  --accent-danger:       #E2654F;
+  --accent-danger-fill:  var(--pigment-cinnabar);
+  --accent-feature:      #D8B36A;
+  --accent-feature-fill: var(--pigment-aubergine);
+  --accent-feature-ground: var(--pigment-marigold);
+  --accent-warning-fill: var(--pigment-marigold);
+  --accent-info-fill:    var(--pigment-indigo);
+  --field-bg:          #101A14;
+  --field-border:      #495449;
+  --field-placeholder: #889184;
+  --focus-ring:       #EEEFE6;
+}
+[data-theme="mulberry"] {
+  --surface-page:    #241620;
+  --surface-raised:  #2E1E29;
+  --surface-sunken:  #1A0F16;
+  --surface-inset:   #382433;
+  --surface-inverse: #F3EEEF;
+  --text-primary:    #F0E9EC;
+  --text-body:       #E5DBDF;
+  --text-secondary:  #C0AEB7;
+  --text-muted:      #9A8791;
+  --text-disabled:   #6A5A63;
+  --text-on-fill:    #F0E9EC;
+  --text-on-marigold:var(--ink-100);
+  --border-strong:   #C0AEB7;
+  --border-default:  #574A52;
+  --border-hairline: #3A2C35;
+  --accent-success:      #8FB088;
+  --accent-success-fill: var(--pigment-celadon);
+  --accent-danger:       #E2654F;
+  --accent-danger-fill:  var(--pigment-cinnabar);
+  --accent-feature:      #D199C2;
+  --accent-feature-fill: var(--pigment-aubergine);
+  --accent-feature-ground: var(--pigment-marigold);
+  --accent-warning-fill: var(--pigment-marigold);
+  --accent-info-fill:    var(--pigment-indigo);
+  --field-bg:          #1A0F16;
+  --field-border:      #574A52;
+  --field-placeholder: #9A8791;
+  --focus-ring:       #F0E9EC;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   3f · ENTERPRISE STOCKS (slate/steel/onyx + light variants). All AA-validated.
+   ════════════════════════════════════════════════════════════════════════ */
+[data-theme="slate"]{
+  --surface-page:#21252C;--surface-raised:#2A2F38;--surface-sunken:#181C22;--surface-inset:#2B313A;--surface-inverse:#ECEEF1;
+  --text-primary:#ECEEF1;--text-body:#DDE0E4;--text-secondary:#B4B9C2;--text-muted:#9DA4AF;--text-disabled:#5E636D;--text-on-fill:#ECEEF1;--text-on-marigold:var(--ink-100);
+  --border-strong:#B4B9C2;--border-default:#4A515C;--border-hairline:#343A44;
+  --accent-success:#8FB088;--accent-success-fill:var(--pigment-celadon);--accent-danger:#E2654F;--accent-danger-fill:var(--pigment-cinnabar);--accent-feature:#A6AFCB;--accent-feature-fill:var(--pigment-aubergine);--accent-feature-ground:var(--pigment-marigold);--accent-warning-fill:var(--pigment-marigold);--accent-info-fill:var(--pigment-indigo);
+  --field-bg:#181C22;--field-border:#4A515C;--field-placeholder:#9DA4AF;
+  --focus-ring:#ECEEF1;
+}
+[data-theme="steel"]{
+  --surface-page:#16282B;--surface-raised:#1F3438;--surface-sunken:#0F1D20;--surface-inset:#21383C;--surface-inverse:#E9EEED;
+  --text-primary:#E9EEED;--text-body:#D8E2E1;--text-secondary:#ABC0C0;--text-muted:#95ABAB;--text-disabled:#5C6E6E;--text-on-fill:#E9EEED;--text-on-marigold:var(--ink-100);
+  --border-strong:#ABC0C0;--border-default:#3A5458;--border-hairline:#234044;
+  --accent-success:#8FB088;--accent-success-fill:var(--pigment-celadon);--accent-danger:#E2654F;--accent-danger-fill:var(--pigment-cinnabar);--accent-feature:#D4B06A;--accent-feature-fill:var(--pigment-aubergine);--accent-feature-ground:var(--pigment-marigold);--accent-warning-fill:var(--pigment-marigold);--accent-info-fill:var(--pigment-indigo);
+  --field-bg:#0F1D20;--field-border:#3A5458;--field-placeholder:#95ABAB;
+  --focus-ring:#E9EEED;
+}
+[data-theme="onyx"]{
+  --surface-page:#1E1F22;--surface-raised:#27282C;--surface-sunken:#161719;--surface-inset:#2A2B30;--surface-inverse:#1E1F22;
+  --text-primary:#ECECEE;--text-body:#DEDEE0;--text-secondary:#B2B2B7;--text-muted:#9C9CA2;--text-disabled:#5C5C61;--text-on-fill:#ECECEE;--text-on-marigold:var(--ink-100);
+  --border-strong:#B2B2B7;--border-default:#45464B;--border-hairline:#313237;
+  --accent-success:#8FB088;--accent-success-fill:var(--pigment-celadon);--accent-danger:#E2654F;--accent-danger-fill:var(--pigment-cinnabar);--accent-feature:#A99BC0;--accent-feature-fill:var(--pigment-aubergine);--accent-feature-ground:var(--pigment-marigold);--accent-warning-fill:var(--pigment-marigold);--accent-info-fill:var(--pigment-indigo);
+  --field-bg:#161719;--field-border:#45464B;--field-placeholder:#9C9CA2;
+  --focus-ring:#ECECEE;
+}
+[data-theme="slate-light"]{
+  --surface-page:#EDEEF1;--surface-raised:#F6F7F9;--surface-sunken:#E2E4E9;--surface-inset:#D8DAE0;--surface-inverse:#21252C;
+  --text-primary:#1A1D23;--text-body:#272A30;--text-secondary:#515761;--text-muted:#555A63;--text-disabled:#9097A0;--text-on-fill:#FAF8EA;--text-on-marigold:var(--ink-100);
+  --border-strong:#272A30;--border-default:#9097A0;--border-hairline:#C3C7CE;
+  --accent-success:#4F6B50;--accent-success-fill:var(--pigment-celadon);--accent-danger:#C23A26;--accent-danger-fill:var(--pigment-cinnabar);--accent-feature:#45557F;--accent-feature-fill:var(--pigment-aubergine);--accent-feature-ground:var(--pigment-marigold);--accent-warning-fill:var(--pigment-marigold);--accent-info-fill:var(--pigment-indigo);
+  --field-bg:#F6F7F9;--field-border:#1A1D23;--field-placeholder:#555A63;
+  --focus-ring:#1A1D23;
+}
+[data-theme="steel-light"]{
+  --surface-page:#E7EEED;--surface-raised:#F2F7F6;--surface-sunken:#DBE6E4;--surface-inset:#D0DEDC;--surface-inverse:#16282B;
+  --text-primary:#14201F;--text-body:#232E2D;--text-secondary:#4B5958;--text-muted:#4F5B5A;--text-disabled:#8CA09E;--text-on-fill:#FAF8EA;--text-on-marigold:var(--ink-100);
+  --border-strong:#232E2D;--border-default:#8CA09E;--border-hairline:#BFD0CE;
+  --accent-success:#4F6B50;--accent-success-fill:var(--pigment-celadon);--accent-danger:#C23A26;--accent-danger-fill:var(--pigment-cinnabar);--accent-feature:#5C4A22;--accent-feature-fill:var(--pigment-aubergine);--accent-feature-ground:var(--pigment-marigold);--accent-warning-fill:var(--pigment-marigold);--accent-info-fill:var(--pigment-indigo);
+  --field-bg:#F2F7F6;--field-border:#14201F;--field-placeholder:#4F5B5A;
+  --focus-ring:#14201F;
+}
+[data-theme="onyx-light"]{
+  --surface-page:#ECECEE;--surface-raised:#F6F6F7;--surface-sunken:#E1E1E4;--surface-inset:#D6D6DA;--surface-inverse:#1E1F22;
+  --text-primary:#1A1A1D;--text-body:#28282B;--text-secondary:#515156;--text-muted:#5D5D63;--text-disabled:#909096;--text-on-fill:#FAF8EA;--text-on-marigold:var(--ink-100);
+  --border-strong:#28282B;--border-default:#909096;--border-hairline:#C3C3C8;
+  --accent-success:#4F6B50;--accent-success-fill:var(--pigment-celadon);--accent-danger:#C23A26;--accent-danger-fill:var(--pigment-cinnabar);--accent-feature:#5A4E70;--accent-feature-fill:var(--pigment-aubergine);--accent-feature-ground:var(--pigment-marigold);--accent-warning-fill:var(--pigment-marigold);--accent-info-fill:var(--pigment-indigo);
+  --field-bg:#F6F6F7;--field-border:#1A1A1D;--field-placeholder:#5D5D63;
+  --focus-ring:#1A1A1D;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   TYPE FAMILIES
+   - Display/Body: Archivo, neutral editorial grotesk (free, Figma-native)
+   - Mono: Spline Sans Mono · Serif: Source Serif 4 · CJK: Noto Sans JP
+   ════════════════════════════════════════════════════════════════════════ */
+.lk {
+  font-family: "Archivo", "Helvetica Neue", "Arial", "Noto Sans JP", sans-serif;
+  font-size: var(--type-base);
+  line-height: 1.45;
+  color: var(--text-body);
+  background: var(--surface-page);
+  font-feature-settings: "ss01";
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+}
+
+.lk-mono {
+  font-family: "Spline Sans Mono", "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  font-feature-settings: "zero", "ss02";
+  letter-spacing: 0;
+}
+
+.lk-serif {
+  font-family: "Source Serif 4", "Source Serif Pro", "Iowan Old Style", "Georgia", serif;
+  font-feature-settings: "kern", "liga";
+}
+
+.lk-cjk-jp {
+  font-family: "Archivo", "Hiragino Kaku Gothic Pro", "Yu Gothic", "Noto Sans JP", sans-serif;
+}
+
+/* Bengali, Anek Bangla, a contemporary grotesque that sits naturally beside Archivo.
+   Used for the heritage thread (after Siddika Kabir's cookbook). */
+.lk-bn {
+  font-family: "Anek Bangla", "Noto Sans Bengali", "Archivo", sans-serif;
+}
+
+/* TRACKED LABEL, small, uppercase, letter-spaced. The system's most-used label. */
+.lk-label {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* SHEET, the canonical paper container. Has a subtle grain. */
+.lk-sheet {
+  background: var(--surface-page);
+  position: relative;
+}
+.lk-sheet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 15% 30%, rgba(22,20,14,0.018) 0px, transparent 1px),
+    radial-gradient(circle at 70% 60%, rgba(22,20,14,0.015) 0px, transparent 1.5px),
+    radial-gradient(circle at 40% 80%, rgba(22,20,14,0.012) 0px, transparent 1px);
+  background-size: 7px 7px, 11px 11px, 13px 13px;
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+}
+
+/* RULE, editorial divider. Strokes, not full-width dividers. */
+.lk-rule {
+  border: 0;
+  border-top: var(--rule-1) solid var(--text-primary);
+  margin: 0;
+}
+.lk-rule-hair {
+  border: 0;
+  border-top: var(--rule-hairline) solid var(--border-default);
+  margin: 0;
+}
+.lk-rule-thick {
+  border: 0;
+  border-top: var(--rule-2) solid var(--text-primary);
+  margin: 0;
+}
+.lk-rule-double {
+  border: 0;
+  border-top: var(--rule-1) solid var(--text-primary);
+  border-bottom: var(--rule-1) solid var(--text-primary);
+  height: 4px;
+  margin: 0;
+}
+
+/* MEASURED RULE, line shorter than container; rest is a hatched "breath". */
+.lk-measure {
+  display: flex;
+  align-items: center;
+  height: 8px;
+  width: 100%;
+  gap: 0;
+}
+.lk-measure-line {
+  height: 1px;
+  background: var(--text-primary);
+  flex: 0 0 auto;
+}
+.lk-measure-hatch {
+  flex: 1 1 auto;
+  height: 6px;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--text-body) 0,
+    var(--text-body) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  opacity: 0.85;
+}
+.lk-measure-gap {
+  flex: 1 1 auto;
+}
+.lk-endmark {
+  display: inline-block;
+  width: 56px;
+  height: 6px;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--text-body) 0,
+    var(--text-body) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+/* TAG, hard-cornered metadata pill */
+.lk-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 3px 7px;
+  border: var(--rule-1) solid var(--border-strong);
+  color: var(--text-body);
+  background: transparent;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.lk-tag-filled {
+  background: var(--border-strong);
+  color: var(--surface-raised);
+  border-color: var(--border-strong);
+}
+.lk-tag-pigment {
+  background: var(--accent-feature-fill);
+  color: var(--text-on-fill);
+  border-color: var(--accent-feature-fill);
+}
+
+/* BUTTON, paper-button, looks like a printed key. min target 36px (>AA 24px). */
+.lk-btn {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  min-height: 36px;
+  padding: 0 14px;
+  border: var(--rule-1) solid var(--border-strong);
+  background: var(--field-bg);
+  color: var(--text-body);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-paper);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 500;
+}
+.lk-btn:hover { background: var(--surface-inset); }
+.lk-btn:active { background: var(--border-strong); color: var(--surface-raised); }
+.lk-btn-primary {
+  background: var(--text-primary);
+  color: var(--surface-raised);
+  border-color: var(--text-primary);
+}
+.lk-btn-primary:hover { background: var(--ink-100); }
+.lk-btn-lg { min-height: 44px; padding: 0 20px; font-size: 12px; }
+.lk-btn:disabled,
+.lk-btn[aria-disabled="true"] {
+  color: var(--text-disabled);
+  border-color: var(--border-default);
+  background: var(--surface-sunken);
+  cursor: not-allowed;
+}
+
+/* INPUT */
+.lk-input {
+  font-family: "Archivo", "Helvetica Neue", sans-serif;
+  font-size: var(--type-base);
+  min-height: 36px;
+  padding: 8px 10px;
+  border: var(--rule-1) solid var(--field-border);
+  background: var(--field-bg);
+  color: var(--text-primary);
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+.lk-input::placeholder { color: var(--field-placeholder); opacity: 1; }
+
+/* FOCUS, single visible ring for every interactive element (keyboard only). */
+.lk-btn:focus-visible,
+.lk-input:focus-visible,
+.lk-tag:focus-visible,
+.lk-focus:focus-visible,
+a:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+/* STATUS, color is paired with a glyph so it never relies on hue alone (1.4.1) */
+.lk-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+.lk-status::before { font-size: 10px; line-height: 1; }
+.lk-status-done    { color: var(--accent-success); }
+.lk-status-done::before    { content: "\2714"; }      /* ✔ */
+.lk-status-alert   { color: var(--accent-danger); }
+.lk-status-alert::before   { content: "\26A0"; }      /* ⚠ */
+.lk-status-pending { color: var(--text-muted); }
+.lk-status-pending::before { content: "\25CB"; }      /* ○ */
+
+/* PAGE NUMBER, bottom corner, like a book */
+.lk-folio {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-sm);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* RUNNING HEAD, top-of-page strap */
+.lk-running-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+  padding: 8px 0;
+  border-bottom: var(--rule-1) solid var(--text-primary);
+}
+
+/* COLOPHON FOOTER, bottom-of-page strap */
+.lk-colophon {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 12px;
+  background: var(--surface-inverse);
+  color: var(--surface-raised);
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* DROP CAP, for the reading app */
+.lk-dropcap::first-letter {
+  font-family: "Source Serif 4", "Iowan Old Style", "Georgia", serif;
+  font-size: 4.5em;
+  line-height: 0.85;
+  float: left;
+  padding: 0.05em 0.08em 0 0;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* SCROLLBAR, paper-friendly */
+.lk-scroll::-webkit-scrollbar { width: 10px; height: 10px; }
+.lk-scroll::-webkit-scrollbar-track { background: var(--surface-sunken); }
+.lk-scroll::-webkit-scrollbar-thumb { background: var(--border-default); border: 2px solid var(--surface-sunken); }
+.lk-scroll::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+/* UTILITY */
+.lk-tabular { font-variant-numeric: tabular-nums; }
+.lk-num { font-feature-settings: "tnum"; font-variant-numeric: tabular-nums; }
+
+/* MOTION, respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+/* SR-ONLY, visually hidden but available to assistive tech */
+.lk-sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
+}
+
+/* ── POLISH ────────────────────────────────────────────────────────────────
+   Craft layer. Balanced headings stop awkward single-word last lines; pretty
+   body wrap evens the rag and kills orphans; selection wears the house marigold. */
+.lk h1, .lk h2, .lk h3, .lk-balance { text-wrap: balance; }
+.lk p, .lk-pretty { text-wrap: pretty; }
+::selection { background: var(--pigment-marigold); color: var(--ink-100); }
+::-moz-selection { background: var(--pigment-marigold); color: var(--ink-100); }
+/* Hairlines stay crisp at any DPR; numerals stay tabular by default in data UI. */
+.lk { -webkit-text-size-adjust: 100%; }
+.lk-num, .lk-tabular, .lk-folio, .lk-mono { font-variant-numeric: tabular-nums; }
+
+/* ── CUSTOMIZATION · the brand layer ───────────────────────────────────────
+   A disciplined set of knobs an app may override. Everything else stays locked:
+   the type scale, the 8px spacing grid, the AA contrast rules, the components.
+   1) Accent, set --accent-feature-fill / --accent-feature to any pigment.
+   2) Density, [data-density="compact"] tightens controls.
+   3) Radius, --lk-radius softens control corners (keep <= 3px; 0 is Lokta).
+   4) Grain, [data-grain="off"] removes the paper texture.
+   5) Stock, [data-theme="…"] picks the surface (paper/ink/bone/indigo/pine/mulberry). */
+:root { --lk-radius: 0px; }
+.lk-btn, .lk-input, .lk-tag, .lk-select select, .lk-note-box, .lk-code, .lk-box, .lk-pager, .lk-switcher { border-radius: var(--lk-radius); }
+[data-density="compact"] .lk-btn { min-height: 30px; padding: 0 11px; }
+[data-density="compact"] .lk-input,
+[data-density="compact"] .lk-select select { min-height: 30px; padding-top: 6px; padding-bottom: 6px; }
+[data-density="compact"] .lk-choice { gap: 7px; }
+[data-grain="off"] .lk-sheet::before { display: none; }
+
+/* ── FORCED COLORS · Windows High Contrast (forced-colors: active) ──────────
+   A compliance must beyond AA: keep structure visible when the OS recolors. */
+@media (forced-colors: active) {
+  .lk-btn, .lk-input, .lk-tag, .lk-choice .lk-box, .lk-choice .lk-dot,
+  .lk-select select, .lk-note-box, .lk-pager, .lk-switcher { border: 1px solid CanvasText; }
+  .lk-btn:focus-visible, .lk-input:focus-visible, .lk-tab:focus-visible,
+  .lk-focus:focus-visible, a:focus-visible { outline: 2px solid Highlight; outline-offset: 2px; }
+  .lk-tab[aria-selected="true"], .lk-pager button[aria-current="true"],
+  .lk-switcher button[aria-selected="true"] { forced-color-adjust: none; outline: 2px solid Highlight; }
+  .lk-status::before { forced-color-adjust: auto; }
+}
+
+</style>
+<style id="lokta-controls">
+/* Lokta, Expanded components (Carbon-parity workhorses).
+   All built on the semantic layer, so they theme across every stock automatically.
+   Pairs with lokta-controls.jsx. */
+
+/* ── RESPONSIVE GRID ──────────────────────────────────────────────────────
+   A formal column grid + breakpoint tokens. Columns step 12 → 8 → 4 like Carbon's
+   2x grid. Use .lk-container for page margins, .lk-grid for the column field. */
+:root {
+  --bp-sm: 480px; --bp-md: 768px; --bp-lg: 1024px; --bp-xl: 1440px;
+  --grid-cols: 12; --grid-gutter: 24px; --grid-margin: 48px;
+}
+.lk-container { width: 100%; max-width: var(--bp-xl); margin-inline: auto; padding-inline: var(--grid-margin); box-sizing: border-box; }
+.lk-grid { display: grid; grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr)); gap: var(--grid-gutter); }
+@media (max-width: 768px)  { :root { --grid-cols: 4; --grid-gutter: 16px; --grid-margin: 20px; } }
+@media (min-width: 769px) and (max-width: 1024px) { :root { --grid-cols: 8; --grid-margin: 32px; } }
+
+/* ── CHECKBOX & RADIO ─────────────────────────────────────────────────── */
+.lk-choice { display: inline-flex; align-items: flex-start; gap: 9px; cursor: pointer; font-size: var(--type-base); color: var(--text-body); }
+.lk-choice input { position: absolute; opacity: 0; width: 0; height: 0; }
+.lk-box, .lk-dot {
+  flex: 0 0 auto; width: 18px; height: 18px; margin-top: 1px;
+  border: 1px solid var(--border-strong); background: var(--field-bg);
+  display: inline-flex; align-items: center; justify-content: center; color: transparent;
+}
+.lk-dot { border-radius: 50%; }
+.lk-choice input:checked + .lk-box { background: var(--text-primary); border-color: var(--text-primary); color: var(--surface-raised); }
+.lk-choice input:checked + .lk-dot { border-color: var(--text-primary); }
+.lk-choice input:checked + .lk-dot::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--text-primary); }
+.lk-choice input:focus-visible + .lk-box,
+.lk-choice input:focus-visible + .lk-dot { outline: var(--rule-2) solid var(--focus-ring); outline-offset: 2px; }
+.lk-choice input:disabled ~ * { opacity: 0.45; }
+
+/* ── SELECT ───────────────────────────────────────────────────────────── */
+.lk-select { position: relative; display: inline-block; width: 100%; }
+.lk-select select {
+  appearance: none; -webkit-appearance: none; width: 100%; min-height: 36px;
+  font-family: "Archivo", sans-serif; font-size: var(--type-base);
+  padding: 8px 36px 8px 10px; border: 1px solid var(--field-border);
+  background: var(--field-bg); color: var(--text-primary); cursor: pointer;
+}
+.lk-select select:focus-visible { outline: var(--rule-2) solid var(--focus-ring); outline-offset: 2px; }
+.lk-select .lk-select-chev { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-secondary); }
+
+/* ── TABS ─────────────────────────────────────────────────────────────── */
+.lk-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--text-primary); }
+.lk-tab {
+  font-family: "Spline Sans Mono", monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 10px 16px; background: transparent; border: none; border-bottom: 2px solid transparent;
+  color: var(--text-secondary); cursor: pointer; margin-bottom: -1px;
+}
+.lk-tab:hover { color: var(--text-primary); }
+.lk-tab[aria-selected="true"] { color: var(--text-primary); border-bottom-color: var(--text-primary); }
+.lk-tab:focus-visible { outline: var(--rule-2) solid var(--focus-ring); outline-offset: -2px; }
+
+/* ── CONTENT SWITCHER (segmented) ─────────────────────────────────────── */
+.lk-switcher { display: inline-flex; border: 1px solid var(--border-strong); }
+.lk-switcher button {
+  font-family: "Spline Sans Mono", monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 7px 14px; background: var(--field-bg); color: var(--text-secondary); border: none;
+  border-right: 1px solid var(--border-strong); cursor: pointer;
+}
+.lk-switcher button:last-child { border-right: none; }
+.lk-switcher button[aria-selected="true"] { background: var(--text-primary); color: var(--surface-raised); }
+.lk-switcher button:focus-visible { outline: var(--rule-2) solid var(--focus-ring); outline-offset: -2px; }
+
+/* ── ACCORDION ────────────────────────────────────────────────────────── */
+.lk-accordion { border-top: 1px solid var(--border-default); }
+.lk-acc-item { border-bottom: 1px solid var(--border-default); }
+.lk-acc-head {
+  width: 100%; display: flex; align-items: center; gap: 12px; padding: 14px 4px;
+  background: transparent; border: none; cursor: pointer; text-align: left;
+  font-family: "Archivo", sans-serif; font-size: 15px; font-weight: 600; color: var(--text-primary);
+}
+.lk-acc-head:focus-visible { outline: var(--rule-2) solid var(--focus-ring); outline-offset: -2px; }
+.lk-acc-head .lk-acc-chev { margin-left: auto; transition: transform var(--dur-base) var(--ease-paper); color: var(--text-secondary); }
+.lk-acc-head[aria-expanded="true"] .lk-acc-chev { transform: rotate(180deg); }
+.lk-acc-body { padding: 0 4px 16px 36px; font-size: 14px; line-height: 1.6; color: var(--text-body); }
+
+/* ── INLINE NOTIFICATION ──────────────────────────────────────────────── */
+.lk-note-box {
+  display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px;
+  background: var(--surface-raised); border: 1px solid var(--border-default);
+  border-left: 3px solid var(--text-primary);
+}
+.lk-note-box .lk-note-ico { flex: 0 0 auto; margin-top: 1px; color: var(--text-primary); }
+.lk-note-box .lk-note-title { font-weight: 700; font-size: 14px; color: var(--text-primary); }
+.lk-note-box .lk-note-msg { font-size: 13.5px; line-height: 1.5; color: var(--text-body); margin-top: 2px; }
+.lk-note-success { border-left-color: var(--accent-success); } .lk-note-success .lk-note-ico { color: var(--accent-success); }
+.lk-note-danger  { border-left-color: var(--accent-danger); }  .lk-note-danger .lk-note-ico  { color: var(--accent-danger); }
+.lk-note-warning { border-left-color: var(--accent-warning-fill); } .lk-note-warning .lk-note-ico { color: var(--text-primary); }
+.lk-note-info    { border-left-color: var(--accent-feature); } .lk-note-info .lk-note-ico { color: var(--accent-feature); }
+
+/* ── BREADCRUMB ───────────────────────────────────────────────────────── */
+.lk-breadcrumb { display: flex; align-items: center; gap: 8px; font-family: "Spline Sans Mono", monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+.lk-breadcrumb a { color: var(--text-secondary); text-decoration: none; }
+.lk-breadcrumb a:hover { color: var(--text-primary); text-decoration: underline; }
+.lk-breadcrumb .lk-bc-sep { color: var(--text-muted); }
+.lk-breadcrumb .lk-bc-current { color: var(--text-primary); }
+
+/* ── PAGINATION ───────────────────────────────────────────────────────── */
+.lk-pager { display: inline-flex; border: 1px solid var(--border-strong); }
+.lk-pager button {
+  min-width: 34px; height: 34px; font-family: "Spline Sans Mono", monospace; font-size: 12px;
+  background: var(--field-bg); color: var(--text-secondary); border: none; border-right: 1px solid var(--border-strong); cursor: pointer;
+}
+.lk-pager button:last-child { border-right: none; }
+.lk-pager button[aria-current="true"] { background: var(--text-primary); color: var(--surface-raised); }
+.lk-pager button:disabled { color: var(--text-disabled); cursor: not-allowed; }
+.lk-pager button:focus-visible { outline: var(--rule-2) solid var(--focus-ring); outline-offset: -2px; }
+
+/* ── PROGRESS ─────────────────────────────────────────────────────────── */
+.lk-progress { height: 8px; background: var(--surface-sunken); border: 1px solid var(--border-default); position: relative; overflow: hidden; }
+.lk-progress > span { position: absolute; inset: 0; background: var(--text-primary); }
+.lk-progress-hatch > span { background: var(--accent-feature-ground); }
+
+/* ── SLIDER (range) ───────────────────────────────────────────────────── */
+.lk-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 2px; background: var(--border-strong); outline: none; cursor: pointer; }
+.lk-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: var(--text-primary); border: none; cursor: pointer; }
+.lk-slider::-moz-range-thumb { width: 16px; height: 16px; background: var(--text-primary); border: none; border-radius: 0; cursor: pointer; }
+.lk-slider:focus-visible::-webkit-slider-thumb { outline: var(--rule-2) solid var(--focus-ring); outline-offset: 2px; }
+
+/* ── TOOLTIP ──────────────────────────────────────────────────────────── */
+.lk-tip { position: relative; display: inline-flex; }
+.lk-tip::after {
+  content: attr(data-tip); position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+  background: var(--surface-inverse); color: var(--surface-raised); font-family: "Spline Sans Mono", monospace;
+  font-size: 11px; letter-spacing: 0.04em; padding: 5px 9px; white-space: nowrap;
+  opacity: 0; pointer-events: none; transition: opacity var(--dur-fast); z-index: 20;
+}
+.lk-tip:hover::after, .lk-tip:focus-within::after { opacity: 1; }
+
+/* ── CODE BLOCK ───────────────────────────────────────────────────────── */
+.lk-code {
+  font-family: "Spline Sans Mono", monospace; font-size: 13px; line-height: 1.6;
+  background: var(--surface-inverse); color: var(--surface-raised); padding: 16px 18px;
+  overflow-x: auto; position: relative; white-space: pre;
+}
+.lk-code .lk-code-bar { display: flex; align-items: center; gap: 8px; margin: -16px -18px 12px; padding: 8px 14px; border-bottom: 1px solid rgba(255,255,255,0.12); }
+.lk-code-inline { font-family: "Spline Sans Mono", monospace; font-size: 0.88em; background: var(--surface-sunken); border: 1px solid var(--border-hairline); padding: 1px 5px; color: var(--text-primary); }
+
+</style>
+<style id="doc-chrome">
+/* ── Doc chrome only. The system CSS above is untouched. ── */
+html,body{ margin:0; padding:0; }
+body{ background:var(--surface-page); color:var(--text-body); font-family:"Archivo",sans-serif; -webkit-font-smoothing:antialiased; }
+[hidden]{ display:none !important; }
+.lk-icon{ display:inline-block; vertical-align:middle; }
+.lk-icon *{ stroke-linecap:square !important; stroke-linejoin:miter !important; }
+.icon-missing{ border:1px solid var(--accent-danger); position:relative; }
+.icon-missing::after{ content:"?"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:"Spline Sans Mono",monospace; font-size:11px; color:var(--accent-danger); }
+
+/* top bar */
+.topbar{ position:sticky; top:0; z-index:40; display:flex; align-items:center; gap:18px; padding:12px 32px; background:var(--surface-page); border-bottom:1px solid var(--text-primary); }
+.topbar .brand{ font-weight:800; letter-spacing:-0.02em; font-size:18px; color:var(--text-primary); }
+.topbar .brand span{ font-family:"Spline Sans Mono",monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--text-muted); margin-left:8px; }
+.topbar .spacer{ flex:1; }
+.ctrl{ display:flex; align-items:center; gap:7px; }
+.ctrl label{ font-family:"Spline Sans Mono",monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-secondary); }
+.ctrl select{ appearance:none; font-family:"Spline Sans Mono",monospace; font-size:11px; padding:6px 28px 6px 10px; border:1px solid var(--border-strong); background:var(--field-bg); color:var(--text-primary); cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,var(--text-secondary) 50%),linear-gradient(135deg,var(--text-secondary) 50%,transparent 50%); background-position:calc(100% - 14px) center,calc(100% - 9px) center; background-size:5px 5px,5px 5px; background-repeat:no-repeat; }
+
+/* layout */
+.shell{ display:grid; grid-template-columns:232px 1fr; max-width:1320px; margin:0 auto; }
+.sidenav{ position:sticky; top:53px; align-self:start; height:calc(100vh - 53px); overflow-y:auto; padding:28px 20px 60px; border-right:1px solid var(--border-default); }
+.sidenav .grp{ font-family:"Spline Sans Mono",monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); margin:18px 0 7px; }
+.sidenav a{ display:block; padding:5px 10px; font-size:13px; color:var(--text-secondary); text-decoration:none; border-left:2px solid transparent; }
+.sidenav a:hover{ color:var(--text-primary); border-left-color:var(--border-default); }
+.main{ padding:0 48px 140px; min-width:0; }
+section[id]{ scroll-margin-top:70px; padding-top:24px; }
+
+/* editorial furniture */
+.eyebrow{ font-family:"Spline Sans Mono",monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--text-secondary); }
+h1.disp{ font-weight:800; letter-spacing:-0.04em; font-size:72px; line-height:0.92; margin:8px 0 0; color:var(--text-primary); }
+h2.sec{ font-weight:800; letter-spacing:-0.025em; font-size:36px; margin:0; color:var(--text-primary); }
+h3.comp{ font-weight:700; letter-spacing:-0.01em; font-size:23px; margin:0; color:var(--text-primary); }
+.lead{ font-size:17px; line-height:1.55; color:var(--text-body); max-width:680px; margin:14px 0 0; }
+.meashead{ display:flex; align-items:center; gap:18px; margin:48px 0 22px; }
+.meashead .num{ font-family:"Spline Sans Mono",monospace; font-size:40px; font-weight:300; letter-spacing:-0.04em; color:var(--text-primary); }
+.dash-rule{ height:8px; background-image:repeating-linear-gradient(-45deg,var(--text-body) 0,var(--text-body) 1px,transparent 1px,transparent 4px); opacity:0.85; }
+
+/* component card */
+.card{ border:1px solid var(--text-primary); margin-top:22px; background:var(--surface-page); }
+.card > header{ display:flex; align-items:baseline; gap:14px; padding:16px 20px; border-bottom:1px solid var(--text-primary); }
+.card > header .lk-tag{ margin-left:auto; }
+.demo{ padding:26px 20px; background:var(--surface-page); border-bottom:1px solid var(--border-default); }
+.demo.flexwrap{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+.subgrid{ display:grid; grid-template-columns:1fr 1fr; gap:0; }
+.subgrid > div{ padding:16px 20px; }
+.subgrid > div:first-child{ border-right:1px solid var(--border-default); }
+.block{ padding:16px 20px; border-bottom:1px solid var(--border-default); }
+.block:last-child{ border-bottom:none; }
+.block h4,.subgrid h4{ font-family:"Spline Sans Mono",monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-secondary); margin:0 0 10px; }
+.muted{ font-size:13.5px; line-height:1.55; color:var(--text-body); margin:0; }
+.muted + .muted{ margin-top:8px; }
+
+/* states matrix */
+.states{ display:flex; gap:0; flex-wrap:wrap; }
+.state{ flex:1; min-width:120px; padding:14px 16px; border-right:1px solid var(--border-default); display:flex; flex-direction:column; align-items:flex-start; gap:10px; }
+.state:last-child{ border-right:none; }
+.state .lbl{ font-family:"Spline Sans Mono",monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); }
+
+/* do / dont */
+.dd{ display:grid; grid-template-columns:1fr 1fr; gap:0; }
+.dd > div{ padding:16px 20px; }
+.dd > div:first-child{ border-right:1px solid var(--border-default); }
+.dd .tagline{ display:inline-flex; align-items:center; gap:6px; font-family:"Spline Sans Mono",monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px; }
+.dd .do .tagline{ color:var(--accent-success); }
+.dd .dont .tagline{ color:var(--accent-danger); }
+.glyph::before{ font-family:"Spline Sans Mono",monospace; }
+.do .tagline::before{ content:"✔ "; }
+.dont .tagline::before{ content:"⚠ "; }
+
+/* anatomy */
+.anat{ display:flex; gap:8px; flex-wrap:wrap; }
+.anat .part{ font-family:"Spline Sans Mono",monospace; font-size:11px; padding:3px 8px; border:1px solid var(--border-default); color:var(--text-secondary); }
+.anat .part b{ color:var(--text-primary); font-weight:600; }
+
+/* markup */
+.markup{ position:relative; }
+.markup pre{ margin:0; background:var(--surface-inverse); color:var(--surface-raised); padding:14px 16px; overflow-x:auto; font-family:"Spline Sans Mono",monospace; font-size:12px; line-height:1.6; white-space:pre; }
+.markup .copy{ position:absolute; top:8px; right:8px; font-family:"Spline Sans Mono",monospace; font-size:9px; letter-spacing:0.08em; padding:4px 8px; border:1px solid var(--surface-raised); background:transparent; color:var(--surface-raised); cursor:pointer; opacity:0.8; }
+.markup .copy:hover{ opacity:1; }
+
+/* a11y spec card */
+.speccard{ border:1px solid var(--accent-feature); background:var(--surface-raised); }
+.speccard .sc-h{ font-family:"Spline Sans Mono",monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent-feature); padding:10px 16px; border-bottom:1px solid var(--border-default); }
+.specrow{ display:grid; grid-template-columns:90px 1fr; gap:12px; padding:9px 16px; border-bottom:1px solid var(--border-hairline); font-size:13px; }
+.specrow:last-child{ border-bottom:none; }
+.specrow .k{ font-family:"Spline Sans Mono",monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-muted); }
+.specrow .v{ color:var(--text-body); line-height:1.5; }
+.kbd{ font-family:"Spline Sans Mono",monospace; font-size:11px; border:1px solid var(--border-default); padding:1px 5px; color:var(--text-primary); white-space:nowrap; }
+
+/* icons panel */
+.iconbar{ display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-bottom:16px; }
+.seg{ display:inline-flex; border:1px solid var(--border-strong); }
+.seg button{ font-family:"Spline Sans Mono",monospace; font-size:10px; letter-spacing:0.06em; text-transform:uppercase; padding:7px 13px; background:var(--field-bg); color:var(--text-secondary); border:none; border-right:1px solid var(--border-strong); cursor:pointer; }
+.seg button:last-child{ border-right:none; }
+.seg button[aria-selected="true"]{ background:var(--text-primary); color:var(--surface-raised); }
+.icongrid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(96px,1fr)); gap:0; border:1px solid var(--border-default); }
+.icon-tile{ display:flex; flex-direction:column; align-items:center; gap:9px; padding:16px 8px; background:var(--surface-raised); border:none; border-right:1px solid var(--border-hairline); border-bottom:1px solid var(--border-hairline); color:var(--text-primary); cursor:pointer; }
+.icon-tile:hover{ background:var(--surface-inset); }
+.icon-tile:focus-visible{ outline:2px solid var(--focus-ring); outline-offset:-2px; }
+.icon-name{ font-size:9px; letter-spacing:0.02em; color:var(--text-muted); text-align:center; word-break:break-word; line-height:1.2; }
+.usage-row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+
+/* dialog */
+.lk-modal-back{ position:fixed; inset:0; background:rgba(7,13,14,0.5); display:flex; align-items:center; justify-content:center; z-index:60; padding:24px; }
+.lk-modal{ width:100%; max-width:460px; background:var(--surface-raised); border:1px solid var(--text-primary); box-shadow:8px 8px 0 rgba(7,13,14,0.22); }
+.lk-modal-h{ display:flex; align-items:center; gap:10px; padding:14px 18px; border-bottom:1px solid var(--border-default); }
+.lk-modal-h .t{ font-weight:700; font-size:16px; color:var(--text-primary); }
+.lk-modal-b{ padding:18px; font-size:14px; line-height:1.6; color:var(--text-body); }
+.lk-modal-f{ display:flex; gap:8px; justify-content:flex-end; padding:12px 18px; border-top:1px solid var(--border-default); }
+
+/* table */
+.lk-table{ width:100%; border-collapse:collapse; font-size:13px; }
+.lk-table th{ text-align:left; font-family:"Spline Sans Mono",monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-secondary); border-bottom:2px solid var(--text-primary); padding:9px 12px; }
+.lk-table th[data-sort]{ cursor:pointer; user-select:none; }
+.lk-table th[data-sort]:hover{ color:var(--text-primary); }
+.lk-table th[aria-sort="ascending"]::after{ content:" ↑"; }
+.lk-table th[aria-sort="descending"]::after{ content:" ↓"; }
+.lk-table td{ padding:9px 12px; border-bottom:1px solid var(--border-hairline); color:var(--text-body); }
+.lk-table tbody tr:hover{ background:var(--surface-inset); }
+.lk-table .lk-num{ text-align:right; }
+
+/* menu */
+.menu-wrap{ position:relative; display:inline-block; }
+.menu-list{ position:absolute; top:calc(100% + 4px); left:0; min-width:180px; background:var(--surface-raised); border:1px solid var(--text-primary); box-shadow:5px 5px 0 rgba(7,13,14,0.16); z-index:30; padding:4px; }
+.menu-list [role="menuitem"]{ display:flex; align-items:center; gap:9px; width:100%; padding:8px 10px; background:transparent; border:none; text-align:left; font-family:"Archivo",sans-serif; font-size:13.5px; color:var(--text-body); cursor:pointer; }
+.menu-list [role="menuitem"]:hover,.menu-list [role="menuitem"]:focus-visible{ background:var(--surface-inset); color:var(--text-primary); outline:none; }
+
+/* force-focus audit mode */
+.force-focus :focus{ outline:var(--rule-2) solid var(--focus-ring) !important; outline-offset:2px !important; }
+
+/* footer */
+.colo{ display:flex; align-items:center; gap:14px; margin-top:64px; padding:14px 0; border-top:2px solid var(--text-primary); font-family:"Spline Sans Mono",monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-secondary); }
+@media(max-width:900px){ .shell{ grid-template-columns:1fr; } .sidenav{ display:none; } .main{ padding:0 24px 100px; } h1.disp{ font-size:52px; } }
+</style>
+</head>
+<body class="lk">
+
+<!-- ════ TOP BAR ════ -->
+<div class="topbar">
+  <span class="brand">Lokta<span>Reference</span></span>
+  <div class="spacer"></div>
+  <div class="ctrl">
+    <label for="stockSelect">Stock</label>
+    <select id="stockSelect" aria-label="Choose a stock (theme)">
+      <option value="paper">Paper</option><option value="bone">Bone</option>
+      <option value="ink">Ink</option><option value="indigo">Indigo</option>
+      <option value="pine">Pine</option><option value="mulberry">Mulberry</option>
+      <option value="slate">Slate</option><option value="steel">Steel</option><option value="onyx">Onyx</option>
+      <option value="slate-light">Slate Light</option><option value="steel-light">Steel Light</option><option value="onyx-light">Onyx Light</option>
+    </select>
+  </div>
+  <button id="focusToggle" class="lk-btn" aria-pressed="false">Show focus rings</button>
+</div>
+
+<div class="shell">
+  <!-- ════ SIDE NAV ════ -->
+  <nav class="sidenav" aria-label="Sections">
+    <div class="grp">Foundations</div>
+    <a href="#cover">Cover &amp; contents</a>
+    <a href="#icons">Icons</a>
+    <div class="grp">Actions &amp; inputs</div>
+    <a href="#button">Button</a><a href="#tag">Tag</a><a href="#input">Input</a>
+    <a href="#choice">Checkbox &amp; radio</a><a href="#select">Select</a><a href="#slider">Slider</a>
+    <div class="grp">Navigation</div>
+    <a href="#tabs">Tabs</a><a href="#switcher">Content switcher</a><a href="#breadcrumb">Breadcrumb</a>
+    <a href="#pager">Pagination</a><a href="#menu">Menu</a>
+    <div class="grp">Disclosure &amp; overlay</div>
+    <a href="#accordion">Accordion</a><a href="#dialog">Dialog</a><a href="#tooltip">Tooltip</a>
+    <div class="grp">Feedback &amp; status</div>
+    <a href="#note">Inline notification</a><a href="#status">Status</a><a href="#progress">Progress</a>
+    <div class="grp">Data &amp; content</div>
+    <a href="#table">Data table</a><a href="#code">Code</a>
+    <div class="grp">Editorial</div>
+    <a href="#rules">Measured rule</a><a href="#page-furniture">Running head &amp; folio</a>
+  </nav>
+
+  <main class="main">
+    <!-- ════ COVER ════ -->
+    <section id="cover">
+      <div class="lk-running-head"><span>Lokta · Paper on Screen</span><span>Reference · v0.1</span></div>
+      <div style="margin-top:40px"></div>
+      <div class="eyebrow">Specimen 002 · Components, Icons &amp; Accessibility</div>
+      <h1 class="disp">The working set</h1>
+      <p class="lead">Every component the system ships, in the live stock. Real icons fetched at runtime, real keyboard behavior, and the markup to paste. Switch the stock in the header and the whole page re-themes. Toggle focus rings to audit every control.</p>
+      <div class="lk-measure" style="margin:26px 0"><span class="lk-measure-line" style="width:260px"></span><span class="lk-measure-gap"></span><span class="lk-measure-hatch" style="max-width:90px"></span></div>
+      <div class="anat" style="gap:6px">
+        <span class="part"><b>20</b> components</span>
+        <span class="part"><b>12</b> stocks</span>
+        <span class="part"><b>WCAG 2.2</b> AA</span>
+        <span class="part">icons via <b>Iconify</b></span>
+      </div>
+    </section>
+
+    <!-- ════ ICONS ════ -->
+    <section id="icons">
+      <div class="meashead"><span class="num">01</span><div><div class="eyebrow">§ Icons</div><h2 class="sec">Fetched, then sharpened</h2></div></div>
+      <p class="lead">The system ships no icon paths. These are pulled live from the Iconify API and sharpened in code to Lokta's edge: a 24 grid, 2px stroke, square caps, miter joins, and <code class="lk-code-inline">currentColor</code> so each glyph inherits its text role. Click any tile to copy its sharpened SVG.</p>
+
+      <div class="card">
+        <header><h3 class="comp">Seed set &amp; search</h3><span class="lk-tag">tabler · mynaui</span></header>
+        <div class="block">
+          <div class="iconbar">
+            <div class="ctrl"><label>Library</label><div class="seg" role="tablist" aria-label="Icon library">
+              <button role="tab" data-iconlib="tabler" aria-selected="true">Tabler</button>
+              <button role="tab" data-iconlib="mynaui" aria-selected="false">Myna UI</button>
+            </div></div>
+            <div class="ctrl"><label>Size</label><div class="seg" role="tablist" aria-label="Icon size">
+              <button role="tab" data-iconsize="16" aria-selected="false">16</button>
+              <button role="tab" data-iconsize="20" aria-selected="false">20</button>
+              <button role="tab" data-iconsize="24" aria-selected="true">24</button>
+            </div></div>
+            <div class="ctrl" style="flex:1; min-width:200px"><label for="iconSearchInput" class="lk-sr-only">Search icons</label>
+              <input id="iconSearchInput" class="lk-input" placeholder="Search icons (e.g. lock, cloud, chart)…" />
+            </div>
+          </div>
+          <div id="iconSeedGrid" class="icongrid" aria-label="Seed icons"></div>
+          <div id="iconSearchResults" class="icongrid" style="margin-top:14px; border:none"></div>
+        </div>
+        <div class="subgrid">
+          <div>
+            <h4>In real components</h4>
+            <div id="iconUsage"></div>
+          </div>
+          <div>
+            <h4>Sharpen recipe</h4>
+            <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;svg viewBox="0 0 24 24" fill="none"
+  stroke="currentColor" stroke-width="2"&gt;
+  &lt;!-- Iconify body --&gt;
+&lt;/svg&gt;
+/* CSS forces the edge */
+svg.lk-icon * {
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}</code></pre></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ COMPONENTS HEADER ════ -->
+    <section id="components-head">
+      <div class="meashead"><span class="num">02</span><div><div class="eyebrow">§ Components</div><h2 class="sec">Every class the system ships</h2></div></div>
+      <p class="lead">Each component below uses the real Lokta classes, unrestyled, on the current stock. Interactive ones are genuinely keyboard operable, with an accessibility spec beside them. Markup blocks include the ARIA you need.</p>
+    </section>
+
+    <!-- ════ BUTTON ════ -->
+    <section id="button">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.1</span><h3 class="comp">Button</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-btn</h3><span class="lk-tag">action</span></header>
+        <div class="demo flexwrap">
+          <button class="lk-btn lk-btn-primary">Primary</button>
+          <button class="lk-btn">Default</button>
+          <button class="lk-btn lk-btn-lg">Large · 44px</button>
+          <button class="lk-btn" disabled>Disabled</button>
+        </div>
+        <div class="block"><h4>States</h4>
+          <div class="states">
+            <div class="state"><span class="lbl">Default</span><button class="lk-btn">Save</button></div>
+            <div class="state"><span class="lbl">Hover</span><button class="lk-btn" style="background:var(--surface-inset)">Save</button></div>
+            <div class="state"><span class="lbl">Active</span><button class="lk-btn" style="background:var(--border-strong);color:var(--surface-raised)">Save</button></div>
+            <div class="state"><span class="lbl">Focus</span><button class="lk-btn" style="outline:2px solid var(--focus-ring);outline-offset:2px">Save</button></div>
+            <div class="state"><span class="lbl">Disabled</span><button class="lk-btn" disabled>Save</button></div>
+          </div>
+        </div>
+        <div class="subgrid">
+          <div><h4>Anatomy</h4><div class="anat">
+            <span class="part"><b>min-height</b> 36px</span><span class="part"><b>border</b> 1px ink</span>
+            <span class="part"><b>label</b> mono · uppercase</span><span class="part"><b>radius</b> 0</span>
+          </div></div>
+          <div><h4>When to use</h4><p class="muted">One primary per view for the main action. Default for everything secondary. Use <code class="lk-code-inline">lk-btn-lg</code> (44px) in touch contexts.</p></div>
+        </div>
+        <div class="dd">
+          <div class="do"><span class="tagline">Do</span><p class="muted">Lead a form with a single primary button so the main path is obvious.</p></div>
+          <div class="dont"><span class="tagline">Don't</span><p class="muted">Stack three primaries in a row. They compete and the hierarchy collapses.</p></div>
+        </div>
+        <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;button class="lk-btn lk-btn-primary"&gt;Save&lt;/button&gt;
+&lt;button class="lk-btn"&gt;Cancel&lt;/button&gt;
+&lt;button class="lk-btn" disabled aria-disabled="true"&gt;Saving…&lt;/button&gt;</code></pre></div>
+      </div>
+    </section>
+
+    <!-- ════ TAG ════ -->
+    <section id="tag">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.2</span><h3 class="comp">Tag</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-tag</h3><span class="lk-tag">metadata</span></header>
+        <div class="demo flexwrap">
+          <span class="lk-tag">OUTLINE</span>
+          <span class="lk-tag lk-tag-filled">FILLED</span>
+          <span class="lk-tag lk-tag-pigment">PIGMENT</span>
+        </div>
+        <div class="subgrid">
+          <div><h4>When to use</h4><p class="muted">Short, non-interactive metadata: a status word, a version, a category. Keep to one or two words, uppercase.</p></div>
+          <div><h4>When not</h4><p class="muted">Not for actions (use a button) and not for live status that pairs colour with meaning (use <a href="#status" style="color:var(--accent-feature)">Status</a>).</p></div>
+        </div>
+        <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;span class="lk-tag"&gt;OUTLINE&lt;/span&gt;
+&lt;span class="lk-tag lk-tag-filled"&gt;FILLED&lt;/span&gt;
+&lt;span class="lk-tag lk-tag-pigment"&gt;PIGMENT&lt;/span&gt;</code></pre></div>
+      </div>
+    </section>
+
+    <!-- ════ INPUT ════ -->
+    <section id="input">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.3</span><h3 class="comp">Input</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-input</h3><span class="lk-tag">form</span></header>
+        <div class="demo" style="max-width:420px">
+          <label class="lk-label" for="d-input" style="display:block;margin-bottom:7px">Search the index</label>
+          <input id="d-input" class="lk-input" placeholder="Type to filter…" />
+        </div>
+        <div class="block"><h4>States</h4>
+          <div class="states">
+            <div class="state"><span class="lbl">Default</span><input class="lk-input" placeholder="Empty" style="min-width:120px"></div>
+            <div class="state"><span class="lbl">Focus</span><input aria-label="Example field, focused" class="lk-input" value="Focused" style="min-width:120px;outline:2px solid var(--focus-ring);outline-offset:2px"></div>
+            <div class="state"><span class="lbl">Error</span><input aria-label="Example field with an error" class="lk-input" value="Bad value" style="min-width:120px;border-color:var(--accent-danger)"></div>
+            <div class="state"><span class="lbl">Disabled</span><input class="lk-input" placeholder="Disabled" disabled style="min-width:120px;opacity:0.45"></div>
+          </div>
+        </div>
+        <div class="subgrid">
+          <div><h4>Anatomy</h4><div class="anat"><span class="part"><b>label</b> always visible</span><span class="part"><b>placeholder</b> AA, not a label</span><span class="part"><b>min-height</b> 36px</span></div></div>
+          <div><h4>Accessibility</h4><p class="muted">Pair every field with a visible <code class="lk-code-inline">&lt;label for&gt;</code>. Placeholders disappear on input, so never use them as the only label. Error state needs text, not colour alone.</p></div>
+        </div>
+        <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;label class="lk-label" for="q"&gt;Search the index&lt;/label&gt;
+&lt;input id="q" class="lk-input" placeholder="Type to filter…"
+  aria-describedby="q-err" /&gt;
+&lt;p id="q-err" class="lk-label"&gt;Enter at least 2 characters&lt;/p&gt;</code></pre></div>
+      </div>
+    </section>
+
+    <!-- ════ CHECKBOX & RADIO ════ -->
+    <section id="choice">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.4</span><h3 class="comp">Checkbox &amp; radio</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-choice</h3><span class="lk-tag">form</span></header>
+        <div class="demo" style="display:flex;gap:32px;flex-wrap:wrap">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <label class="lk-choice"><input type="checkbox" checked><span class="lk-box">✔</span><span>Email receipts</span></label>
+            <label class="lk-choice"><input type="checkbox"><span class="lk-box">✔</span><span>Usage alerts</span></label>
+            <label class="lk-choice"><input type="checkbox" disabled><span class="lk-box">✔</span><span>Disabled option</span></label>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <label class="lk-choice"><input type="radio" name="bill" checked><span class="lk-dot"></span><span>Annual billing</span></label>
+            <label class="lk-choice"><input type="radio" name="bill"><span class="lk-dot"></span><span>Monthly billing</span></label>
+          </div>
+        </div>
+        <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;label class="lk-choice"&gt;
+  &lt;input type="checkbox" checked&gt;
+  &lt;span class="lk-box"&gt;✔&lt;/span&gt;&lt;span&gt;Email receipts&lt;/span&gt;
+&lt;/label&gt;
+&lt;label class="lk-choice"&gt;
+  &lt;input type="radio" name="bill"&gt;
+  &lt;span class="lk-dot"&gt;&lt;/span&gt;&lt;span&gt;Annual&lt;/span&gt;
+&lt;/label&gt;</code></pre></div>
+      </div>
+    </section>
+
+    <!-- ════ SELECT ════ -->
+    <section id="select">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.5</span><h3 class="comp">Select</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-select</h3><span class="lk-tag">form</span></header>
+        <div class="demo" style="max-width:280px">
+          <div class="lk-select">
+            <select aria-label="Date range"><option>Last 12 weeks</option><option>Last 30 days</option><option>This quarter</option></select>
+            <span class="lk-select-chev" aria-hidden="true">▾</span>
+          </div>
+        </div>
+        <div class="block"><h4>When to use</h4><p class="muted">For one choice from a known, short list. Past roughly seven options or when search helps, reach for a combobox instead.</p></div>
+        <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;div class="lk-select"&gt;
+  &lt;select aria-label="Date range"&gt;
+    &lt;option&gt;Last 12 weeks&lt;/option&gt;
+  &lt;/select&gt;
+  &lt;span class="lk-select-chev" aria-hidden="true"&gt;▾&lt;/span&gt;
+&lt;/div&gt;</code></pre></div>
+      </div>
+    </section>
+
+    <!-- ════ SLIDER ════ -->
+    <section id="slider">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.6</span><h3 class="comp">Slider</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-slider</h3><span class="lk-tag">form</span></header>
+        <div class="demo" style="display:flex;align-items:center;gap:16px;max-width:420px">
+          <input class="lk-slider" type="range" min="0" max="100" value="42" aria-label="Opacity" role="slider" aria-valuemin="0" aria-valuemax="100">
+          <span class="lk-mono" data-slider-out style="min-width:30px;text-align:right">42</span>
+        </div>
+        <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;input class="lk-slider" type="range" min="0" max="100"
+  value="42" aria-label="Opacity" /&gt;</code></pre></div>
+      </div>
+    </section>
+
+    <!-- ════ TABS ════ -->
+    <section id="tabs">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.7</span><h3 class="comp">Tabs</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-tabs</h3><span class="lk-tag">navigation · a11y</span></header>
+        <div class="demo">
+          <div data-tabs>
+            <div class="lk-tabs" role="tablist" aria-label="Plan details">
+              <button class="lk-tab" role="tab" id="t1" aria-controls="p1" aria-selected="true">Overview</button>
+              <button class="lk-tab" role="tab" id="t2" aria-controls="p2" aria-selected="false">Pricing</button>
+              <button class="lk-tab" role="tab" id="t3" aria-controls="p3" aria-selected="false">Changelog</button>
+            </div>
+            <div id="p1" role="tabpanel" aria-labelledby="t1" style="padding:16px 4px"><p class="muted">A measured grid keeps every tab calm and legible.</p></div>
+            <div id="p2" role="tabpanel" aria-labelledby="t2" style="padding:16px 4px" hidden><p class="muted">Three tiers: Starter, Team, Enterprise.</p></div>
+            <div id="p3" role="tabpanel" aria-labelledby="t3" style="padding:16px 4px" hidden><p class="muted">v2.4.0 added margin annotations.</p></div>
+          </div>
+        </div>
+        <div class="subgrid" style="grid-template-columns:1fr 1fr">
+          <div><h4>Anatomy</h4><div class="anat"><span class="part"><b>tablist</b> the rail</span><span class="part"><b>tab</b> selected = ink underline</span><span class="part"><b>tabpanel</b> one visible</span></div>
+            <h4 style="margin-top:14px">When to use</h4><p class="muted">Peer views of one object. Keep labels to a word. Not for sequential steps; use a wizard.</p></div>
+          <div class="speccard">
+            <div class="sc-h">Accessibility spec</div>
+            <div class="specrow"><span class="k">Role</span><span class="v">tablist / tab / tabpanel</span></div>
+            <div class="specrow"><span class="k">States</span><span class="v">aria-selected, aria-controls, aria-labelledby</span></div>
+            <div class="specrow"><span class="k">Keyboard</span><span class="v"><span class="kbd">←</span> <span class="kbd">→</span> move, <span class="kbd">Home</span> <span class="kbd">End</span> jump, activate on focus</span></div>
+            <div class="specrow"><span class="k">Focus</span><span class="v">Roving tabindex: only the selected tab is in the tab order</span></div>
+          </div>
+        </div>
+        <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;div class="lk-tabs" role="tablist" aria-label="Plan details"&gt;
+  &lt;button class="lk-tab" role="tab" id="t1"
+    aria-controls="p1" aria-selected="true"&gt;Overview&lt;/button&gt;
+&lt;/div&gt;
+&lt;div id="p1" role="tabpanel" aria-labelledby="t1"&gt;…&lt;/div&gt;</code></pre></div>
+      </div>
+    </section>
+
+    <!-- ════ CONTENT SWITCHER ════ -->
+    <section id="switcher">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.8</span><h3 class="comp">Content switcher</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-switcher</h3><span class="lk-tag">navigation</span></header>
+        <div class="demo">
+          <div class="lk-switcher" role="tablist" aria-label="View">
+            <button role="tab" aria-selected="true">Chart</button>
+            <button role="tab" aria-selected="false">Table</button>
+            <button role="tab" aria-selected="false">Map</button>
+          </div>
+        </div>
+        <div class="block"><h4>When to use</h4><p class="muted">Two or three mutually exclusive views of the same data, where the switch is a control rather than page navigation.</p></div>
+        <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;div class="lk-switcher" role="tablist"&gt;
+  &lt;button role="tab" aria-selected="true"&gt;Chart&lt;/button&gt;
+  &lt;button role="tab" aria-selected="false"&gt;Table&lt;/button&gt;
+&lt;/div&gt;</code></pre></div>
+      </div>
+    </section>
+
+    <!-- ════ BREADCRUMB ════ -->
+    <section id="breadcrumb">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.9</span><h3 class="comp">Breadcrumb</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-breadcrumb</h3><span class="lk-tag">navigation</span></header>
+        <div class="demo">
+          <nav class="lk-breadcrumb" aria-label="Breadcrumb">
+            <a href="#">Docs</a><span class="lk-bc-sep" aria-hidden="true">/</span>
+            <a href="#">Guides</a><span class="lk-bc-sep" aria-hidden="true">/</span>
+            <span class="lk-bc-current" aria-current="page">Theming</span>
+          </nav>
+        </div>
+        <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;nav class="lk-breadcrumb" aria-label="Breadcrumb"&gt;
+  &lt;a href="/docs"&gt;Docs&lt;/a&gt;&lt;span class="lk-bc-sep"&gt;/&lt;/span&gt;
+  &lt;span class="lk-bc-current" aria-current="page"&gt;Theming&lt;/span&gt;
+&lt;/nav&gt;</code></pre></div>
+      </div>
+    </section>
+
+    <!-- ════ PAGINATION ════ -->
+    <section id="pager">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.10</span><h3 class="comp">Pagination</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-pager</h3><span class="lk-tag">navigation</span></header>
+        <div class="demo">
+          <nav class="lk-pager" aria-label="Pagination">
+            <button aria-label="Previous page">‹</button>
+            <button aria-current="true" aria-label="Page 1">1</button>
+            <button aria-label="Page 2">2</button>
+            <button aria-label="Page 3">3</button>
+            <button aria-label="Next page">›</button>
+          </nav>
+        </div>
+        <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;nav class="lk-pager" aria-label="Pagination"&gt;
+  &lt;button aria-label="Previous page"&gt;‹&lt;/button&gt;
+  &lt;button aria-current="true" aria-label="Page 1"&gt;1&lt;/button&gt;
+&lt;/nav&gt;</code></pre></div>
+      </div>
+    </section>
+
+    <!-- ════ MENU ════ -->
+    <section id="menu">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.11</span><h3 class="comp">Menu</h3></div>
+      <div class="card">
+        <header><h3 class="comp">disclosure menu</h3><span class="lk-tag">navigation · a11y</span></header>
+        <div class="demo" style="min-height:180px">
+          <div class="menu-wrap" data-menu>
+            <button class="lk-btn" data-menu-btn aria-haspopup="true" aria-expanded="false">Actions ▾</button>
+            <div class="menu-list" data-menu-list role="menu" hidden>
+              <button role="menuitem">Rename</button>
+              <button role="menuitem">Duplicate</button>
+              <button role="menuitem">Export</button>
+              <button role="menuitem">Delete</button>
+            </div>
+          </div>
+        </div>
+        <div class="subgrid">
+          <div><h4>When to use</h4><p class="muted">A short list of actions on an object. For navigation between pages, use links, not a menu.</p></div>
+          <div class="speccard">
+            <div class="sc-h">Accessibility spec</div>
+            <div class="specrow"><span class="k">Role</span><span class="v">button[aria-haspopup] + menu / menuitem</span></div>
+            <div class="specrow"><span class="k">States</span><span class="v">aria-expanded on the trigger</span></div>
+            <div class="specrow"><span class="k">Keyboard</span><span class="v"><span class="kbd">↓</span> open, <span class="kbd">↑</span> <span class="kbd">↓</span> move, <span class="kbd">Esc</span> close</span></div>
+            <div class="specrow"><span class="k">Focus</span><span class="v">Returns to the trigger on close</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ ACCORDION ════ -->
+    <section id="accordion">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.12</span><h3 class="comp">Accordion</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-accordion</h3><span class="lk-tag">disclosure · a11y</span></header>
+        <div class="demo">
+          <div class="lk-accordion">
+            <div class="lk-acc-item">
+              <button class="lk-acc-head" aria-expanded="true" aria-controls="ac1">What is a paper stock?<span class="lk-acc-chev" aria-hidden="true">▾</span></button>
+              <div class="lk-acc-body" id="ac1" role="region">A background theme. Paper, Bone, Ink, Indigo and the rest, all driven by the semantic layer.</div>
+            </div>
+            <div class="lk-acc-item">
+              <button class="lk-acc-head" aria-expanded="false" aria-controls="ac2">Is everything AA?<span class="lk-acc-chev" aria-hidden="true">▾</span></button>
+              <div class="lk-acc-body" id="ac2" role="region" hidden>Yes. Every text role clears WCAG 2.2 AA on its surface, in every stock.</div>
+            </div>
+          </div>
+        </div>
+        <div class="subgrid">
+          <div><h4>When not</h4><p class="muted">Don't hide primary content or form steps people must complete. Accordions are for secondary detail.</p></div>
+          <div class="speccard">
+            <div class="sc-h">Accessibility spec</div>
+            <div class="specrow"><span class="k">Role</span><span class="v">button header controlling a region</span></div>
+            <div class="specrow"><span class="k">States</span><span class="v">aria-expanded, aria-controls; panel hidden</span></div>
+            <div class="specrow"><span class="k">Keyboard</span><span class="v"><span class="kbd">Enter</span> <span class="kbd">Space</span> toggle (native button)</span></div>
+            <div class="specrow"><span class="k">Focus</span><span class="v">Stays on the header when toggled</span></div>
+          </div>
+        </div>
+        <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;div class="lk-acc-item"&gt;
+  &lt;button class="lk-acc-head" aria-expanded="true"
+    aria-controls="ac1"&gt;Question&lt;span class="lk-acc-chev"&gt;▾&lt;/span&gt;&lt;/button&gt;
+  &lt;div class="lk-acc-body" id="ac1" role="region"&gt;Answer&lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+      </div>
+    </section>
+
+    <!-- ════ DIALOG ════ -->
+    <section id="dialog">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.13</span><h3 class="comp">Dialog</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-modal</h3><span class="lk-tag">overlay · a11y</span></header>
+        <div class="demo"><button class="lk-btn lk-btn-primary" data-open-dialog="demoDialog">Cancel plan…</button></div>
+        <div class="subgrid">
+          <div><h4>Anatomy</h4><div class="anat"><span class="part"><b>backdrop</b> dim</span><span class="part"><b>panel</b> one hard offset shadow</span><span class="part"><b>title</b> labels the dialog</span></div>
+            <h4 style="margin-top:14px">Note</h4><p class="muted">The modal is the single place the flat system allows a shadow: one hard offset, never a blur.</p></div>
+          <div class="speccard">
+            <div class="sc-h">Accessibility spec</div>
+            <div class="specrow"><span class="k">Role</span><span class="v">dialog, aria-modal="true", aria-labelledby</span></div>
+            <div class="specrow"><span class="k">Focus</span><span class="v">Trapped inside; first control focused on open</span></div>
+            <div class="specrow"><span class="k">Keyboard</span><span class="v"><span class="kbd">Esc</span> closes, <span class="kbd">Tab</span> cycles within</span></div>
+            <div class="specrow"><span class="k">Return</span><span class="v">Focus returns to the trigger on close</span></div>
+          </div>
+        </div>
+        <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;div class="lk-modal-back" role="dialog" aria-modal="true"
+  aria-labelledby="dlg-t"&gt;
+  &lt;div class="lk-modal"&gt;
+    &lt;div class="lk-modal-h"&gt;&lt;span class="t" id="dlg-t"&gt;Cancel plan?&lt;/span&gt;&lt;/div&gt;
+    &lt;div class="lk-modal-b"&gt;…&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+      </div>
+    </section>
+
+    <!-- ════ TOOLTIP ════ -->
+    <section id="tooltip">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.14</span><h3 class="comp">Tooltip</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-tip</h3><span class="lk-tag">overlay · a11y</span></header>
+        <div class="demo" style="display:flex;gap:14px;align-items:center;min-height:90px">
+          <span class="lk-tip" data-tip="Copy to clipboard"><button class="lk-btn" aria-describedby="tip1">Copy</button></span>
+          <span class="lk-tip" data-tip="Open in a new tab"><button class="lk-btn" aria-describedby="tip2">Open ↗</button></span>
+          <span class="lk-label">Hover or focus. Escape dismisses.</span>
+        </div>
+        <div class="speccard" style="margin:0">
+          <div class="sc-h">Accessibility spec</div>
+          <div class="specrow"><span class="k">Role</span><span class="v">trigger has aria-describedby pointing at the tip text</span></div>
+          <div class="specrow"><span class="k">Trigger</span><span class="v">Shows on hover and on keyboard focus, never hover only</span></div>
+          <div class="specrow"><span class="k">Keyboard</span><span class="v"><span class="kbd">Esc</span> dismisses while focused</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ INLINE NOTIFICATION ════ -->
+    <section id="note">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.15</span><h3 class="comp">Inline notification</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-note-box</h3><span class="lk-tag">feedback</span></header>
+        <div class="demo" style="display:flex;flex-direction:column;gap:10px;max-width:560px">
+          <div class="lk-note-box lk-note-success"><span class="lk-note-ico" aria-hidden="true">✔</span><div><div class="lk-note-title">Saved</div><div class="lk-note-msg">Billing details updated.</div></div></div>
+          <div class="lk-note-box lk-note-danger"><span class="lk-note-ico" aria-hidden="true">⚠</span><div><div class="lk-note-title">Build failed</div><div class="lk-note-msg">Two type errors in src/index.ts.</div></div></div>
+          <div class="lk-note-box lk-note-warning"><span class="lk-note-ico" aria-hidden="true">⚠</span><div><div class="lk-note-title">Pin your version</div><div class="lk-note-msg">CI should pin an exact release.</div></div></div>
+          <div class="lk-note-box lk-note-info"><span class="lk-note-ico" aria-hidden="true">ℹ</span><div><div class="lk-note-title">Global install</div><div class="lk-note-msg">Project-local installs are reproducible.</div></div></div>
+        </div>
+        <div class="block"><h4>Accessibility</h4><p class="muted">The left bar carries colour, but the icon and title carry the meaning, so the variant never relies on hue alone. Add <code class="lk-code-inline">role="status"</code> for live, non-critical messages.</p></div>
+        <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;div class="lk-note-box lk-note-success" role="status"&gt;
+  &lt;span class="lk-note-ico" aria-hidden="true"&gt;✔&lt;/span&gt;
+  &lt;div&gt;&lt;div class="lk-note-title"&gt;Saved&lt;/div&gt;
+    &lt;div class="lk-note-msg"&gt;Billing details updated.&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+      </div>
+    </section>
+
+    <!-- ════ STATUS ════ -->
+    <section id="status">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.16</span><h3 class="comp">Status</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-status</h3><span class="lk-tag">feedback · a11y</span></header>
+        <div class="demo flexwrap" style="gap:20px">
+          <span class="lk-status lk-status-done">DONE</span>
+          <span class="lk-status lk-status-alert">DELAYED</span>
+          <span class="lk-status lk-status-pending">QUEUED</span>
+        </div>
+        <div class="dd">
+          <div class="do"><span class="tagline">Do</span><p class="muted">Pair every status with its glyph (✔ ⚠ ○) so meaning survives for colour-blind readers and in greyscale print.</p></div>
+          <div class="dont"><span class="tagline">Don't</span><p class="muted">Signal state with a bare coloured dot. That fails WCAG 1.4.1, use of colour.</p></div>
+        </div>
+        <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;span class="lk-status lk-status-done"&gt;DONE&lt;/span&gt;
+&lt;span class="lk-status lk-status-alert"&gt;DELAYED&lt;/span&gt;
+&lt;span class="lk-status lk-status-pending"&gt;QUEUED&lt;/span&gt;
+&lt;!-- glyph is a ::before, paired with colour --&gt;</code></pre></div>
+      </div>
+    </section>
+
+    <!-- ════ PROGRESS ════ -->
+    <section id="progress">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.17</span><h3 class="comp">Progress</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-progress</h3><span class="lk-tag">feedback</span></header>
+        <div class="demo" style="display:flex;flex-direction:column;gap:16px;max-width:420px">
+          <div class="lk-progress" role="progressbar" aria-label="Progress" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100"><span style="right:32%"></span></div>
+          <div class="lk-progress lk-progress-hatch" role="progressbar" aria-label="Progress" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100"><span style="right:58%"></span></div>
+        </div>
+        <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;div class="lk-progress" role="progressbar" aria-label="Progress"
+  aria-valuenow="68" aria-valuemin="0" aria-valuemax="100"&gt;
+  &lt;span style="right:32%"&gt;&lt;/span&gt;
+&lt;/div&gt;</code></pre></div>
+      </div>
+    </section>
+
+    <!-- ════ TABLE ════ -->
+    <section id="table">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.18</span><h3 class="comp">Data table</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-table</h3><span class="lk-tag">data · sortable</span></header>
+        <div class="demo" style="padding:0">
+          <table class="lk-table" data-sortable>
+            <thead><tr>
+              <th data-sort="text" aria-sort="none" tabindex="0">Experiment</th>
+              <th data-sort="text" aria-sort="none" tabindex="0">Owner</th>
+              <th data-sort="num" aria-sort="none" tabindex="0" class="lk-num">Lift</th>
+              <th>Status</th>
+            </tr></thead>
+            <tbody>
+              <tr><td>Onboarding checklist v3</td><td>M. Reyes</td><td class="lk-num lk-num">+4.2</td><td><span class="lk-status lk-status-done">DONE</span></td></tr>
+              <tr><td>Pricing page annual toggle</td><td>K. Adeyemi</td><td class="lk-num">+1.1</td><td><span class="lk-status lk-status-pending">RUN</span></td></tr>
+              <tr><td>Empty-state nudge</td><td>S. Park</td><td class="lk-num">-0.3</td><td><span class="lk-status lk-status-alert">HALT</span></td></tr>
+              <tr><td>Referral banner placement</td><td>J. Okafor</td><td class="lk-num">+2.8</td><td><span class="lk-status lk-status-done">DONE</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="block"><h4>Accessibility</h4><p class="muted">Sortable headers are focusable and toggle <code class="lk-code-inline">aria-sort</code> between ascending and descending. Click or press <span class="kbd">Enter</span> on a header. Numerals are tabular and right-aligned.</p></div>
+      </div>
+    </section>
+
+    <!-- ════ CODE ════ -->
+    <section id="code">
+      <div class="meashead" style="margin-bottom:8px"><span class="num" style="font-size:26px">2.19</span><h3 class="comp">Code</h3></div>
+      <div class="card">
+        <header><h3 class="comp">lk-code</h3><span class="lk-tag">content</span></header>
+        <div class="demo">
+          <div class="lk-code"><div class="lk-code-bar"><span class="lk-label" style="color:inherit;opacity:0.7">bash</span></div>npm install -D @lokta/tokens
+lokta build  # AA-checked CSS variables per stock</div>
+          <p class="muted" style="margin-top:12px">Inline code reads as <code class="lk-code-inline">--surface-page</code> within a sentence.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ EDITORIAL RULES ════ -->
+    <section id="rules">
+      <div class="meashead"><span class="num">03</span><div><div class="eyebrow">§ Editorial</div><h2 class="sec">Page furniture</h2></div></div>
+      <div class="card">
+        <header><h3 class="comp">lk-measure · lk-endmark</h3><span class="lk-tag">divider</span></header>
+        <div class="demo" style="display:flex;flex-direction:column;gap:22px">
+          <div class="lk-measure"><span class="lk-measure-line" style="width:240px"></span><span class="lk-measure-gap"></span><span class="lk-measure-hatch" style="max-width:80px"></span></div>
+          <div><span class="lk-endmark"></span></div>
+        </div>
+        <div class="block"><h4>What it is</h4><p class="muted">The system's signature divider: a rule that stops short of the margin and closes with a hatched end-mark, so a section ends with breath rather than a hard cut.</p></div>
+      </div>
+    </section>
+
+    <!-- ════ RUNNING HEAD / FOLIO ════ -->
+    <section id="page-furniture">
+      <div class="card">
+        <header><h3 class="comp">lk-running-head · lk-colophon · lk-folio</h3><span class="lk-tag">editorial</span></header>
+        <div class="demo" style="display:flex;flex-direction:column;gap:18px">
+          <div class="lk-running-head"><span>Section II · Architecture</span><span>p. 12</span></div>
+          <div class="lk-colophon"><span>Lokta</span><span style="opacity:0.5">÷</span><span>Paper on screen</span><span class="lk-folio" style="margin-left:auto;color:inherit">001</span></div>
+        </div>
+        <div class="block"><h4>When to use</h4><p class="muted">In document and reading layouts, not dense app chrome. The running head names the section, the folio numbers the page, the colophon signs it.</p></div>
+      </div>
+    </section>
+
+    <div class="colo"><span>Lokta · v0.1</span><span style="opacity:0.5">·</span><span>Components, Icons &amp; Accessibility</span><span style="margin-left:auto">WCAG 2.2 AA</span></div>
+  </main>
+</div>
+
+<!-- ════ DIALOG INSTANCE ════ -->
+<div class="lk-modal-back" id="demoDialog" role="dialog" aria-modal="true" aria-labelledby="demoDialog-t" hidden>
+  <div class="lk-modal">
+    <div class="lk-modal-h"><span class="lk-note-ico" style="color:var(--accent-danger)" aria-hidden="true">⚠</span><span class="t" id="demoDialog-t">Cancel plan?</span></div>
+    <div class="lk-modal-b">Your workspace becomes read-only after 12 April. Members keep view access, but no one can edit until a plan is restored.</div>
+    <div class="lk-modal-f">
+      <button class="lk-btn" data-close-dialog="demoDialog">Keep plan</button>
+      <button class="lk-btn lk-btn-primary" style="background:var(--accent-danger-fill);border-color:var(--accent-danger-fill);color:var(--paper-00)" data-close-dialog="demoDialog">Cancel plan</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* Lokta Components Reference, behavior layer.
+   Icons fetched from the Iconify API (never hand-authored), components made
+   genuinely keyboard-operable. Nothing here restyles the system. */
+"use strict";
+
+/* ───────────────────────── THEME + FOCUS ───────────────────────── */
+function setStock(name){
+  document.documentElement.setAttribute("data-theme", name);
+  document.querySelectorAll("[data-stock-btn]").forEach(b=>{
+    b.setAttribute("aria-pressed", String(b.dataset.stockBtn===name));
+  });
+}
+function toggleFocus(on){
+  document.body.classList.toggle("force-focus", on);
+  const b=document.getElementById("focusToggle");
+  if(b) b.setAttribute("aria-pressed", String(on));
+}
+
+/* ───────────────────────── COPY ───────────────────────── */
+async function copyText(txt, btn){
+  try{ await navigator.clipboard.writeText(txt); }
+  catch(e){ const t=document.createElement("textarea"); t.value=txt; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); }
+  if(btn){ const o=btn.textContent; btn.textContent="COPIED"; setTimeout(()=>btn.textContent=o, 1100); }
+}
+function wireCopyBlocks(){
+  document.querySelectorAll("[data-copy]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const sel=btn.getAttribute("data-copy");
+      const node=sel==="prev" ? btn.parentElement.querySelector("code") : document.querySelector(sel);
+      if(node) copyText(node.textContent, btn);
+    });
+  });
+}
+
+/* ───────────────────────── ICONS (Iconify API) ───────────────────────── */
+const ICON_API="https://api.iconify.design";
+const SEED=["check","alert-triangle","circle","info-circle","x","chevron-right","chevron-down","chevron-left","arrow-right","plus","minus","search","menu-2","external-link","dots","trash","settings","download","calendar","user"];
+let ICON_LIB="tabler", ICON_SIZE=24;
+const iconCache={};
+
+function sharpenSVG(name, body, w, h){
+  const filled = /-filled$/.test(name) || (/fill="(?!none)/.test(body) && !/stroke=/.test(body));
+  const vb = `0 0 ${w||24} ${h||24}`;
+  if(filled){
+    return `<svg class="lk-icon" viewBox="${vb}" width="${ICON_SIZE}" height="${ICON_SIZE}" fill="currentColor" stroke="none" aria-hidden="true">${body}</svg>`;
+  }
+  return `<svg class="lk-icon" viewBox="${vb}" width="${ICON_SIZE}" height="${ICON_SIZE}" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">${body}</svg>`;
+}
+function placeholder(name){
+  return `<span class="lk-icon icon-missing" title="failed to load ${name}" style="width:${ICON_SIZE}px;height:${ICON_SIZE}px"></span>`;
+}
+
+async function fetchBatch(prefix, names){
+  const key=prefix+":"+names.join(",");
+  if(iconCache[key]) return iconCache[key];
+  const url=`${ICON_API}/${prefix}.json?icons=${names.join(",")}`;
+  const res=await fetch(url);
+  if(!res.ok) throw new Error("icon batch "+res.status);
+  const data=await res.json();
+  iconCache[key]=data;
+  return data;
+}
+
+function iconTile(name, svg){
+  return `<button class="icon-tile" data-icon="${name}" title="Click to copy sharpened SVG" aria-label="Copy ${name}">
+    <span class="icon-glyph">${svg}</span>
+    <span class="icon-name mono">${name}</span>
+  </button>`;
+}
+
+async function renderIconGrid(names, mountId){
+  const mount=document.getElementById(mountId);
+  if(!mount) return;
+  mount.innerHTML=`<div class="lk-label" style="padding:8px 0">Loading ${names.length} icons from Iconify…</div>`;
+  let data;
+  try{ data=await fetchBatch(ICON_LIB, names); }
+  catch(e){ mount.innerHTML=names.map(n=>iconTile(n, placeholder(n))).join(""); wireIconTiles(); return; }
+  const dw=data.width||24, dh=data.height||24;
+  mount.innerHTML=names.map(n=>{
+    const ic=data.icons && data.icons[n];
+    if(!ic || !ic.body) return iconTile(n, placeholder(n));
+    return iconTile(n, sharpenSVG(n, ic.body, ic.width||dw, ic.height||dh));
+  }).join("");
+  wireIconTiles();
+}
+function wireIconTiles(){
+  document.querySelectorAll(".icon-tile").forEach(t=>{
+    t.addEventListener("click", ()=>{
+      const svg=t.querySelector("svg");
+      if(!svg){ return; }
+      copyText(svg.outerHTML.replace(' width="'+ICON_SIZE+'" height="'+ICON_SIZE+'"',''), null);
+      const n=t.querySelector(".icon-name"); const o=n.textContent; n.textContent="copied svg"; setTimeout(()=>n.textContent=o,1000);
+    });
+  });
+}
+
+async function iconSearch(q){
+  const mount=document.getElementById("iconSearchResults");
+  if(!q || q.length<2){ mount.innerHTML=""; return; }
+  mount.innerHTML=`<div class="lk-label" style="padding:8px 0">Searching ${ICON_LIB}…</div>`;
+  try{
+    const res=await fetch(`${ICON_API}/search?query=${encodeURIComponent(q)}&prefix=${ICON_LIB}&limit=60`);
+    const data=await res.json();
+    const names=(data.icons||[]).map(s=>s.split(":")[1]).filter(Boolean);
+    if(!names.length){ mount.innerHTML=`<div class="lk-label" style="padding:8px 0">No ${ICON_LIB} icons for “${q}”.</div>`; return; }
+    await renderIconGrid(names.slice(0,48), "iconSearchResults");
+  }catch(e){ mount.innerHTML=`<div class="lk-label" style="padding:8px 0;color:var(--accent-danger)">Search failed.</div>`; }
+}
+
+function setIconLib(lib){
+  ICON_LIB=lib;
+  document.querySelectorAll("[data-iconlib]").forEach(b=>b.setAttribute("aria-selected", String(b.dataset.iconlib===lib)));
+  renderIconGrid(SEED, "iconSeedGrid");
+  renderIconUsage();
+  const q=document.getElementById("iconSearchInput");
+  if(q && q.value) iconSearch(q.value);
+}
+function setIconSize(px){
+  ICON_SIZE=px;
+  document.querySelectorAll("[data-iconsize]").forEach(b=>b.setAttribute("aria-selected", String(+b.dataset.iconsize===px)));
+  renderIconGrid(SEED, "iconSeedGrid");
+  const q=document.getElementById("iconSearchInput");
+  if(q && q.value) iconSearch(q.value);
+}
+
+/* Icons living inside real components */
+async function renderIconUsage(){
+  const mount=document.getElementById("iconUsage");
+  if(!mount) return;
+  let data;
+  try{ data=await fetchBatch(ICON_LIB, ["download","check","alert-triangle","chevron-right","external-link"]); }
+  catch(e){ mount.innerHTML=`<div class="lk-label">Icon usage unavailable offline.</div>`; return; }
+  const g=n=>{ const ic=data.icons&&data.icons[n]; return ic&&ic.body ? sharpenSVG(n, ic.body, ic.width||24, ic.height||24) : placeholder(n); };
+  const sz=18; const old=ICON_SIZE; ICON_SIZE=sz;
+  const dl=g("download"), ck=g("check"), al=g("alert-triangle"), ch=g("chevron-right"), ex=g("external-link");
+  ICON_SIZE=old;
+  mount.innerHTML=`
+    <div class="usage-row">
+      <button class="lk-btn lk-btn-primary">${dl} Export</button>
+      <button class="lk-btn">Docs ${ex}</button>
+      <span class="lk-tag">v0.1 ${ch}</span>
+    </div>
+    <div class="lk-note-box lk-note-success" style="margin-top:14px">
+      <span class="lk-note-ico">${ck}</span>
+      <div><div class="lk-note-title">Saved</div><div class="lk-note-msg">Icons inherit the text role through currentColor.</div></div>
+    </div>
+    <div class="usage-row" style="margin-top:14px">
+      <span class="lk-status lk-status-done">DONE</span>
+      <span class="lk-status lk-status-alert">DELAYED</span>
+      <span class="lk-status lk-status-pending">QUEUED</span>
+    </div>`;
+}
+
+/* ───────────────────────── TABS (WAI-ARIA, roving tabindex) ───────────────────────── */
+function wireTabs(root){
+  const tabs=[...root.querySelectorAll('[role="tab"]')];
+  const panels=tabs.map(t=>document.getElementById(t.getAttribute("aria-controls")));
+  function select(i, focus){
+    tabs.forEach((t,n)=>{
+      const on=n===i;
+      t.setAttribute("aria-selected", String(on));
+      t.tabIndex = on?0:-1;
+      if(panels[n]) panels[n].hidden = !on;
+    });
+    if(focus) tabs[i].focus();
+  }
+  tabs.forEach((t,i)=>{
+    t.addEventListener("click", ()=>select(i,true));
+    t.addEventListener("keydown", e=>{
+      let n=null;
+      if(e.key==="ArrowRight") n=(i+1)%tabs.length;
+      else if(e.key==="ArrowLeft") n=(i-1+tabs.length)%tabs.length;
+      else if(e.key==="Home") n=0;
+      else if(e.key==="End") n=tabs.length-1;
+      if(n!==null){ e.preventDefault(); select(n,true); }
+    });
+  });
+  select(0,false);
+}
+
+/* ───────────────────────── ACCORDION ───────────────────────── */
+function wireAccordion(root){
+  root.querySelectorAll(".lk-acc-head").forEach(head=>{
+    head.addEventListener("click", ()=>{
+      const open=head.getAttribute("aria-expanded")==="true";
+      head.setAttribute("aria-expanded", String(!open));
+      const panel=document.getElementById(head.getAttribute("aria-controls"));
+      if(panel) panel.hidden=open;
+    });
+  });
+}
+
+/* ───────────────────────── DIALOG (focus trap, Esc, return focus) ───────────────────────── */
+let lastTrigger=null;
+function openDialog(id, trigger){
+  const back=document.getElementById(id);
+  lastTrigger=trigger||document.activeElement;
+  back.hidden=false;
+  const focusables=back.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+  const first=focusables[0], last=focusables[focusables.length-1];
+  if(first) first.focus();
+  function onKey(e){
+    if(e.key==="Escape"){ closeDialog(id); }
+    else if(e.key==="Tab"){
+      if(focusables.length===0) return;
+      if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+    }
+  }
+  back._onKey=onKey;
+  back.addEventListener("keydown", onKey);
+}
+function closeDialog(id){
+  const back=document.getElementById(id);
+  back.hidden=true;
+  if(back._onKey) back.removeEventListener("keydown", back._onKey);
+  if(lastTrigger) lastTrigger.focus();
+}
+
+/* ───────────────────────── TOOLTIP (Escape dismiss) ───────────────────────── */
+function wireTooltips(){
+  document.querySelectorAll(".lk-tip").forEach(tip=>{
+    tip.addEventListener("keydown", e=>{ if(e.key==="Escape"){ tip.blur(); const a=tip.querySelector("[tabindex],button,a"); if(a) a.blur(); } });
+  });
+}
+
+/* ───────────────────────── MENU / DISCLOSURE ───────────────────────── */
+function wireMenus(){
+  document.querySelectorAll("[data-menu]").forEach(wrap=>{
+    const btn=wrap.querySelector("[data-menu-btn]");
+    const list=wrap.querySelector("[data-menu-list]");
+    const items=[...list.querySelectorAll('[role="menuitem"]')];
+    let open=false;
+    function setOpen(o, focusFirst){
+      open=o; btn.setAttribute("aria-expanded", String(o)); list.hidden=!o;
+      if(o && focusFirst && items[0]) items[0].focus();
+      if(!o) btn.focus();
+    }
+    btn.addEventListener("click", ()=>setOpen(!open, true));
+    btn.addEventListener("keydown", e=>{
+      if(e.key==="ArrowDown"||e.key==="Enter"||e.key===" "){ e.preventDefault(); setOpen(true, true); }
+    });
+    items.forEach((it,i)=>{
+      it.addEventListener("keydown", e=>{
+        if(e.key==="ArrowDown"){ e.preventDefault(); items[(i+1)%items.length].focus(); }
+        else if(e.key==="ArrowUp"){ e.preventDefault(); items[(i-1+items.length)%items.length].focus(); }
+        else if(e.key==="Escape"){ e.preventDefault(); setOpen(false); }
+        else if(e.key==="Home"){ e.preventDefault(); items[0].focus(); }
+        else if(e.key==="End"){ e.preventDefault(); items[items.length-1].focus(); }
+      });
+      it.addEventListener("click", ()=>setOpen(false));
+    });
+    document.addEventListener("click", e=>{ if(open && !wrap.contains(e.target)) setOpen(false); });
+  });
+}
+
+/* ───────────────────────── SLIDER / PROGRESS readout ───────────────────────── */
+function wireSliders(){
+  document.querySelectorAll(".lk-slider").forEach(s=>{
+    const out=s.parentElement.querySelector("[data-slider-out]");
+    const sync=()=>{ if(out) out.textContent=s.value; s.setAttribute("aria-valuenow", s.value); };
+    s.addEventListener("input", sync); sync();
+  });
+}
+
+/* ───────────────────────── TABLE SORT ───────────────────────── */
+function wireTables(){
+  document.querySelectorAll("[data-sortable] th[data-sort]").forEach(th=>{
+    th.addEventListener("click", ()=>sortTable(th));
+    th.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); sortTable(th);} });
+  });
+}
+function sortTable(th){
+  const table=th.closest("table");
+  const idx=[...th.parentElement.children].indexOf(th);
+  const tbody=table.querySelector("tbody");
+  const rows=[...tbody.querySelectorAll("tr")];
+  const cur=th.getAttribute("aria-sort");
+  const dir = cur==="ascending" ? "descending" : "ascending";
+  table.querySelectorAll("th[data-sort]").forEach(h=>h.setAttribute("aria-sort","none"));
+  th.setAttribute("aria-sort", dir);
+  const num=th.dataset.sort==="num";
+  rows.sort((a,b)=>{
+    let x=a.children[idx].textContent.trim(), y=b.children[idx].textContent.trim();
+    if(num){ x=parseFloat(x.replace(/[^0-9.-]/g,""))||0; y=parseFloat(y.replace(/[^0-9.-]/g,""))||0; return dir==="ascending"?x-y:y-x; }
+    return dir==="ascending" ? x.localeCompare(y) : y.localeCompare(x);
+  });
+  rows.forEach(r=>tbody.appendChild(r));
+}
+
+/* ───────────────────────── INIT ───────────────────────── */
+document.addEventListener("DOMContentLoaded", ()=>{
+  // theme switcher
+  const sel=document.getElementById("stockSelect");
+  if(sel) sel.addEventListener("change", e=>setStock(e.target.value));
+  document.querySelectorAll("[data-stock-btn]").forEach(b=>b.addEventListener("click", ()=>{ setStock(b.dataset.stockBtn); if(sel) sel.value=b.dataset.stockBtn; }));
+  const ft=document.getElementById("focusToggle");
+  if(ft) ft.addEventListener("click", ()=>toggleFocus(!document.body.classList.contains("force-focus")));
+
+  // icons
+  renderIconGrid(SEED, "iconSeedGrid");
+  renderIconUsage();
+  document.querySelectorAll("[data-iconlib]").forEach(b=>b.addEventListener("click", ()=>setIconLib(b.dataset.iconlib)));
+  document.querySelectorAll("[data-iconsize]").forEach(b=>b.addEventListener("click", ()=>setIconSize(+b.dataset.iconsize)));
+  const si=document.getElementById("iconSearchInput");
+  if(si){ let t; si.addEventListener("input", ()=>{ clearTimeout(t); t=setTimeout(()=>iconSearch(si.value.trim()), 280); }); }
+
+  // components
+  document.querySelectorAll('[data-tabs]').forEach(wireTabs);
+  document.querySelectorAll('.lk-accordion').forEach(wireAccordion);
+  wireTooltips(); wireMenus(); wireSliders(); wireTables(); wireCopyBlocks();
+
+  // dialog triggers
+  document.querySelectorAll("[data-open-dialog]").forEach(b=>b.addEventListener("click", ()=>openDialog(b.dataset.openDialog, b)));
+  document.querySelectorAll("[data-close-dialog]").forEach(b=>b.addEventListener("click", ()=>closeDialog(b.dataset.closeDialog)));
+});
+
+</script>
+</body>
+</html>

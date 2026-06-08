@@ -84,7 +84,7 @@
 }
 
 [data-theme="onyx"]{
-  --surface-page:#1E1F22;--surface-raised:#27282C;--surface-sunken:#161719;--surface-inset:#2A2B30;--surface-inverse:#ECECEE;
+  --surface-page:#1E1F22;--surface-raised:#27282C;--surface-sunken:#161719;--surface-inset:#2A2B30;--surface-inverse:#1E1F22;
   --text-primary:#ECECEE;--text-body:#DEDEE0;--text-secondary:#B2B2B7;--text-muted:#9C9CA2;--text-disabled:#5C5C61;--text-on-fill:#ECECEE;--text-on-marigold:var(--ink-100);
   --border-strong:#B2B2B7;--border-default:#45464B;--border-hairline:#313237;
   --accent-success:#8FB088;--accent-success-fill:var(--pigment-celadon);--accent-danger:#E2654F;--accent-danger-fill:var(--pigment-cinnabar);--accent-feature:#A99BC0;--accent-feature-fill:var(--pigment-aubergine);--accent-feature-ground:var(--pigment-marigold);--accent-warning-fill:var(--pigment-marigold);--accent-info-fill:var(--pigment-indigo);
@@ -93,7 +93,7 @@
 }
 
 [data-theme="slate-light"]{
-  --surface-page:#EDEEF1;--surface-raised:#F6F7F9;--surface-sunken:#E2E4E9;--surface-inset:#D8DAE0;--surface-inverse:#EDEEF1;
+  --surface-page:#EDEEF1;--surface-raised:#F6F7F9;--surface-sunken:#E2E4E9;--surface-inset:#D8DAE0;--surface-inverse:#21252C;
   --text-primary:#1A1D23;--text-body:#272A30;--text-secondary:#515761;--text-muted:#555A63;--text-disabled:#9097A0;--text-on-fill:#FAF8EA;--text-on-marigold:var(--ink-100);
   --border-strong:#272A30;--border-default:#9097A0;--border-hairline:#C3C7CE;
   --accent-success:#4F6B50;--accent-success-fill:var(--pigment-celadon);--accent-danger:#C23A26;--accent-danger-fill:var(--pigment-cinnabar);--accent-feature:#45557F;--accent-feature-fill:var(--pigment-aubergine);--accent-feature-ground:var(--pigment-marigold);--accent-warning-fill:var(--pigment-marigold);--accent-info-fill:var(--pigment-indigo);
@@ -102,7 +102,7 @@
 }
 
 [data-theme="steel-light"]{
-  --surface-page:#E7EEED;--surface-raised:#F2F7F6;--surface-sunken:#DBE6E4;--surface-inset:#D0DEDC;--surface-inverse:#E7EEED;
+  --surface-page:#E7EEED;--surface-raised:#F2F7F6;--surface-sunken:#DBE6E4;--surface-inset:#D0DEDC;--surface-inverse:#16282B;
   --text-primary:#14201F;--text-body:#232E2D;--text-secondary:#4B5958;--text-muted:#4F5B5A;--text-disabled:#8CA09E;--text-on-fill:#FAF8EA;--text-on-marigold:var(--ink-100);
   --border-strong:#232E2D;--border-default:#8CA09E;--border-hairline:#BFD0CE;
   --accent-success:#4F6B50;--accent-success-fill:var(--pigment-celadon);--accent-danger:#C23A26;--accent-danger-fill:var(--pigment-cinnabar);--accent-feature:#5C4A22;--accent-feature-fill:var(--pigment-aubergine);--accent-feature-ground:var(--pigment-marigold);--accent-warning-fill:var(--pigment-marigold);--accent-info-fill:var(--pigment-indigo);
@@ -111,7 +111,7 @@
 }
 
 [data-theme="onyx-light"]{
-  --surface-page:#ECECEE;--surface-raised:#F6F6F7;--surface-sunken:#E1E1E4;--surface-inset:#D6D6DA;--surface-inverse:#ECECEE;
+  --surface-page:#ECECEE;--surface-raised:#F6F6F7;--surface-sunken:#E1E1E4;--surface-inset:#D6D6DA;--surface-inverse:#1E1F22;
   --text-primary:#1A1A1D;--text-body:#28282B;--text-secondary:#515156;--text-muted:#5D5D63;--text-disabled:#909096;--text-on-fill:#FAF8EA;--text-on-marigold:var(--ink-100);
   --border-strong:#28282B;--border-default:#909096;--border-hairline:#C3C3C8;
   --accent-success:#4F6B50;--accent-success-fill:var(--pigment-celadon);--accent-danger:#C23A26;--accent-danger-fill:var(--pigment-cinnabar);--accent-feature:#5A4E70;--accent-feature-fill:var(--pigment-aubergine);--accent-feature-ground:var(--pigment-marigold);--accent-warning-fill:var(--pigment-marigold);--accent-info-fill:var(--pigment-indigo);

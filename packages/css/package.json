@@ -8,6 +8,7 @@
     "lokta-components.css",
     "lokta-stocks.css",
     "lokta.css",
+    "lokta-behaviors.js",
     "fonts.css",
     "fonts"
   ],

@@ -25,6 +25,10 @@ const copies = [
   ['packages/css/lokta.css', 'lokta.css'],
   // The deterministic verification dashboard (the proof).
   ['proof/lokta-verification.html', 'verification.html'],
+  // The components, icons, and accessibility reference (self-contained page).
+  ['components/components.html', 'components.html'],
+  ['components/lokta-ref.js', 'lokta-ref.js'],
+  ['packages/css/lokta-behaviors.js', 'lokta-behaviors.js'],
   // Mermaid: theme config, web ESM, CSS, and the pre-rendered demo diagram.
   ['packages/mermaid/index.mjs', 'lokta.mermaid.mjs'],
   ['packages/mermaid/lokta-mermaid.json', 'lokta-mermaid.json'],
@@ -343,6 +347,8 @@ const html = `<!doctype html>
   <section id="components">
     <h2 class="sec-h">Components</h2>
     <p class="muted">Built on the semantic layer, so they theme with the switcher above. Use it to feel every stock.</p>
+    <p class="lk-row"><a class="lk-btn lk-btn-primary" href="components.html">Open the components, icons, and accessibility reference</a></p>
+    <p class="muted">The reference page is keyboard-operable (tabs, accordion, dialog, menu) with the ARIA wiring from <code>lokta-behaviors.js</code>, and a live icon browser. It is what the Playwright and axe suite tests.</p>
 
     ${component('Buttons', 'Printed keys. 36px minimum target, square caps, optional radius via --lk-radius.', `
       <button class="lk-btn" type="button">Default</button>
