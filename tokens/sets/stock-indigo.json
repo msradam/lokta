@@ -39,7 +39,7 @@
     },
     "muted": {
       "$type": "color",
-      "$value": "#8A93A6",
+      "$value": "#9BA3B4",
       "$description": "5.2:1, AA"
     },
     "disabled": {
@@ -86,7 +86,7 @@
     },
     "placeholder": {
       "$type": "color",
-      "$value": "#8A93A6"
+      "$value": "#9BA3B4"
     }
   },
   "focus": {

@@ -6,6 +6,26 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- `scripts/verify.mjs`, wired as `npm run verify` and `test` and as the first CI
+  gate. A pure-Node check of WCAG AA contrast (every text role on every surface
+  in every stock), cross-surface parity (the Typst and Mermaid literals equal
+  their primitive), and the 8px grid.
+- A deterministic verification dashboard at `proof/lokta-verification.html`,
+  linked from the docs site.
+- Extra stocks beyond the four token stocks: pine, mulberry, and the enterprise
+  set slate, steel, onyx with light variants, shipped in
+  `packages/css/lokta-stocks.css` and offered in the docs theme switcher.
+
+### Changed
+
+- AA retune: `ink.50` is now `#615A4C`, and the Indigo stock's muted text and
+  field placeholder are `#9BA3B4`. Propagated to the built CSS, the Typst and
+  Marp literals, and the reference.
+- Fixed a cross-surface drift: the Mermaid secondary and `muted` class are now
+  `#EAE6D2` (paper-02), matching the parity gate.
+
 ## [0.1.0] - 2026-06-07
 
 ### Added

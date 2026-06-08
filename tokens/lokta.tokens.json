@@ -13,7 +13,7 @@
       "90":  { "$type": "color", "$value": "#1F1C13", "$description": "13.9:1, headlines" },
       "80":  { "$type": "color", "$value": "#2A2620", "$description": "13.1:1, body" },
       "60":  { "$type": "color", "$value": "#5C564B", "$description": "6.3:1, secondary (AA)" },
-      "50":  { "$type": "color", "$value": "#6E665A", "$description": "4.9:1, muted text (AA)" },
+      "50":  { "$type": "color", "$value": "#615A4C", "$description": "4.9:1, muted text (AA)" },
       "40":  { "$type": "color", "$value": "#8E867A", "$description": "3.1:1, borders/large/disabled only" },
       "20":  { "$type": "color", "$value": "#B8B0A1", "$description": "1.9:1, hairlines/fills only, never text" }
     },
@@ -202,7 +202,7 @@
       "primary":   { "$type": "color", "$value": "#EDECE3", "$description": "14.0:1" },
       "body":      { "$type": "color", "$value": "#E2E1D6", "$description": "12.2:1" },
       "secondary": { "$type": "color", "$value": "#AEB4C2", "$description": "7.6:1" },
-      "muted":     { "$type": "color", "$value": "#8A93A6", "$description": "5.2:1, AA" },
+      "muted":     { "$type": "color", "$value": "#9BA3B4", "$description": "5.2:1, AA" },
       "disabled":  { "$type": "color", "$value": "#5E6675" }
     },
     "border": {
@@ -218,7 +218,7 @@
     "field": {
       "bg":          { "$type": "color", "$value": "#141A25" },
       "border":      { "$type": "color", "$value": "#4A5365" },
-      "placeholder": { "$type": "color", "$value": "#8A93A6" }
+      "placeholder": { "$type": "color", "$value": "#9BA3B4" }
     },
     "focus": { "ring": { "$type": "color", "$value": "#EDECE3" } }
   },

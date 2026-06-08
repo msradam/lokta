@@ -11,8 +11,8 @@
     "primaryTextColor": "#1F1C13",
     "primaryBorderColor": "#2A2620",
     "lineColor": "#2A2620",
-    "secondaryColor": "#ECE4D2",
-    "tertiaryColor": "#ECE4D2",
+    "secondaryColor": "#EAE6D2",
+    "tertiaryColor": "#EAE6D2",
     "tertiaryBorderColor": "#2A2620",
     "noteBkgColor": "#FBBC0E",
     "noteTextColor": "#1F1C13",
@@ -27,7 +27,7 @@
     "labelBoxBorderColor": "#1F1C13",
     "labelTextColor": "#1F1C13",
     "loopTextColor": "#1F1C13",
-    "clusterBkg": "#ECE4D2",
+    "clusterBkg": "#EAE6D2",
     "clusterBorder": "#2A2620",
     "edgeLabelBackground": "#F4F1DF",
     "transitionColor": "#2A2620",
@@ -41,6 +41,6 @@
     "store": "fill:#6E8B6F,stroke:#1F1C13,stroke-width:1.5px,color:#FAF8EA",
     "dec": "fill:#2E3E5C,stroke:#1F1C13,stroke-width:1.5px,color:#FAF8EA",
     "danger": "fill:#C23A26,stroke:#1F1C13,stroke-width:1.5px,color:#FAF8EA",
-    "muted": "fill:#ECE4D2,stroke:#2A2620,stroke-width:1.5px,color:#2A2620"
+    "muted": "fill:#EAE6D2,stroke:#2A2620,stroke-width:1.5px,color:#2A2620"
   }
 }

@@ -13,6 +13,8 @@
   ],
   "scripts": {
     "split:tokens": "node tokens/split.mjs",
+    "verify": "node scripts/verify.mjs",
+    "test": "node scripts/verify.mjs",
     "build:tokens": "node tokens/style-dictionary.config.mjs && node scripts/verify-tokens.mjs",
     "build:css": "npm run build --workspace @lokta/css",
     "build:deck": "npm run build --workspace @lokta/marp-theme",

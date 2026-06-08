@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lokta · Verification</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --paper:#F4F1DF; --paper0:#FAF8EA; --ink:#1F1C13; --body:#2A2620; --mut:#5C564B; --faint:#8E867A; --hair:#C2B89C; --marigold:#FBBC0E; --cinnabar:#C23A26; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:var(--paper); color:var(--body); font-family:"Archivo","Helvetica Neue",Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+  .mono{ font-family:"Spline Sans Mono",ui-monospace,Menlo,monospace; font-variant-numeric:tabular-nums; }
+  .lbl{ font-family:"Spline Sans Mono",ui-monospace,monospace; font-size:10px; letter-spacing:0.13em; text-transform:uppercase; color:var(--mut); }
+  .wrap{ max-width:1280px; margin:0 auto; padding:0 40px 120px; }
+  .rhead{ display:flex; justify-content:space-between; align-items:center; padding:14px 40px; border-bottom:1px solid var(--ink); position:sticky; top:0; background:var(--paper); z-index:5; }
+  .rhead .l{ font-family:"Spline Sans Mono",monospace; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink); }
+  h1{ font-weight:800; letter-spacing:-0.03em; font-size:52px; line-height:0.95; margin:40px 0 6px; color:var(--ink); }
+  h2{ font-weight:700; letter-spacing:-0.01em; font-size:24px; margin:0; color:var(--ink); }
+  .panel{ border:1px solid var(--ink); margin-top:24px; background:var(--paper0); }
+  .phead{ display:flex; align-items:baseline; gap:14px; padding:14px 18px; border-bottom:1px solid var(--ink); }
+  .phead .n{ font-family:"Spline Sans Mono",monospace; font-size:26px; font-weight:300; color:var(--ink); letter-spacing:-0.03em; }
+  .pbody{ padding:18px; }
+  .hatch{ height:7px; background-image:repeating-linear-gradient(-45deg,var(--body) 0,var(--body) 1px,transparent 1px,transparent 4px); }
+  table{ border-collapse:collapse; width:100%; }
+  th,td{ text-align:left; padding:7px 9px; font-size:12px; border-bottom:1px solid var(--hair); }
+  th{ font-family:"Spline Sans Mono",monospace; font-size:9.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--mut); border-bottom:1.5px solid var(--ink); }
+  .sw{ display:inline-block; width:13px; height:13px; border:1px solid var(--ink); vertical-align:middle; }
+  .pair{ display:inline-flex; }
+  .pair .sw:last-child{ margin-left:-1px; }
+  .num{ font-family:"Spline Sans Mono",monospace; font-variant-numeric:tabular-nums; }
+  .badge{ font-family:"Spline Sans Mono",monospace; font-size:9.5px; letter-spacing:0.06em; padding:1px 5px; border:1px solid currentColor; display:inline-block; }
+  .pass{ color:var(--ink); } .fail{ color:var(--cinnabar); }
+  .g-pass::before{ content:"\2714 "; } .g-fail::before{ content:"\26A0 "; }
+  .toggle{ display:inline-flex; border:1px solid var(--ink); margin-left:auto; }
+  .toggle button{ font-family:"Spline Sans Mono",monospace; font-size:10px; letter-spacing:0.06em; text-transform:uppercase; padding:6px 12px; background:var(--paper0); color:var(--mut); border:none; border-right:1px solid var(--ink); cursor:pointer; }
+  .toggle button:last-child{ border-right:none; }
+  .toggle button[aria-pressed="true"]{ background:var(--ink); color:var(--paper0); }
+  .scrow{ display:flex; gap:0; border:1px solid var(--ink); background:var(--paper0); }
+  .scrow > div{ flex:1; padding:16px 20px; border-right:1px solid var(--ink); }
+  .scrow > div:last-child{ border-right:none; }
+  .scrow .big{ font-weight:800; font-size:40px; letter-spacing:-0.03em; line-height:1; color:var(--ink); }
+  .folio{ position:fixed; right:18px; bottom:14px; font-family:"Spline Sans Mono",monospace; font-size:11px; color:var(--mut); letter-spacing:0.1em; }
+  .stockgrid{ display:grid; grid-template-columns:repeat(4,1fr); gap:0; }
+  .matrix th, .matrix td{ font-size:11px; }
+  .small{ font-size:10px; }
+  /* component gallery */
+  .gal{ display:grid; grid-template-columns:repeat(4,1fr); gap:0; }
+  .gcell{ padding:16px; border-right:1px solid var(--hair); border-bottom:1px solid var(--hair); }
+  .lk-btn{ font-family:"Spline Sans Mono",monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; min-height:36px; padding:0 16px; border:1px solid; background:transparent; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; }
+  .lk-input{ font-family:inherit; font-size:14px; min-height:36px; padding:8px 12px; border:1px solid; width:100%; background:transparent; outline:none; }
+  .lk-tag{ font-family:"Spline Sans Mono",monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.08em; padding:4px 8px; border:1px solid; display:inline-flex; }
+  .show-focus .lk-btn, .show-focus .lk-input{ outline:2px solid var(--marigold); outline-offset:2px; }
+  .modal{ border:1px solid; box-shadow:6px 6px 0 rgba(7,13,14,0.18); }
+  details{ margin-top:6px; } summary{ cursor:pointer; }
+</style>
+</head>
+<body>
+<div class="rhead"><span class="l">LOKTA · VERIFICATION</span><span class="l" id="rhead-stamp"></span></div>
+<div class="wrap">
+  <h1>Verification</h1>
+  <div class="lbl" style="margin-bottom:18px">DETERMINISTIC · EVERY FIGURE COMPUTED AT RENDER · WCAG 2.2</div>
+  <div id="scoreboard"></div>
+  <div id="panels"></div>
+</div>
+<div class="folio mono" id="folio">p. 001</div>
+
+<script>
+"use strict";
+/* ───────────────────────── DATA ───────────────────────── */
+const PRIM = {
+  "paper-00":"#FAF8EA","paper-01":"#F4F1DF","paper-02":"#EAE6D2","paper-03":"#DBD3BB","paper-04":"#C2B89C",
+  "ink-100":"#16140E","ink-90":"#1F1C13","ink-80":"#2A2620","ink-60":"#5C564B","ink-50":"#615A4C","ink-40":"#8E867A","ink-20":"#B8B0A1",
+  "marigold":"#FBBC0E","peach":"#E7A079","lavender":"#A99CB3","aubergine":"#6B4E8E","night":"#070D0E","cinnabar":"#C23A26","celadon":"#6E8B6F","indigo":"#2E3E5C",
+  "celadon-ink":"#4F6B50","cinnabar-ink":"#C23A26","aubergine-ink":"#6B4E8E",
+  "dark-success":"#8FB088","dark-danger":"#E2654F","dark-feature":"#A98FC9"
+};
+const STOCKS = {
+  paper:{ surfaces:{page:"#F4F1DF",raised:"#FAF8EA",sunken:"#EAE6D2",inset:"#DBD3BB"}, text:{primary:"#1F1C13",body:"#2A2620",secondary:"#5C564B",muted:"#615A4C",disabled:"#8E867A"}, accents:{success:"#4F6B50",danger:"#C23A26",feature:"#6B4E8E"} },
+  ink:{ surfaces:{page:"#1F1C13",raised:"#2A2620",sunken:"#16140E",inset:"#26221A"}, text:{primary:"#FAF8EA",body:"#F4F1DF",secondary:"#C2B89C",muted:"#B8B0A1",disabled:"#8E867A"}, accents:{success:"#8FB088",danger:"#E2654F",feature:"#A98FC9"} },
+  bone:{ surfaces:{page:"#EFEEE7",raised:"#F7F6F1",sunken:"#E4E3DB",inset:"#D8D7CE"}, text:{primary:"#1F1C13",body:"#2A2620",secondary:"#5C564B",muted:"#615A4C",disabled:"#8E867A"}, accents:{success:"#4F6B50",danger:"#C23A26",feature:"#6B4E8E"} },
+  indigo:{ surfaces:{page:"#1B2230",raised:"#232C3D",sunken:"#141A25",inset:"#2B3547"}, text:{primary:"#EDECE3",body:"#E2E1D6",secondary:"#AEB4C2",muted:"#9BA3B4",disabled:"#5E6675"}, accents:{success:"#8FB088",danger:"#E2654F",feature:"#A98FC9"} }
+};
+const TYPE = {xs:11,sm:13,base:15,md:18,lg:24,xl:32,"2xl":48,"3xl":72};
+const SPACE = [4,8,12,16,24,32,48,64,96];
+// Cross-surface literals: [label, actualHex, expectedPrimitiveName]
+const TYPST = [
+  ["ink","#16140E","ink-100"],["primary","#1F1C13","ink-90"],["body","#2A2620","ink-80"],["mut","#5C564B","ink-60"],
+  ["muted","#615A4C","ink-50"],["faint","#8E867A","ink-40"],["hairline","#B8B0A1","ink-20"],
+  ["paper0","#FAF8EA","paper-00"],["paper","#F4F1DF","paper-01"],["paper2","#EAE6D2","paper-02"],["paper3","#DBD3BB","paper-03"],["paper4","#C2B89C","paper-04"],
+  ["marigold","#FBBC0E","marigold"],["peach","#E7A079","peach"],["lavender","#A99CB3","lavender"],["aubergine","#6B4E8E","aubergine"],
+  ["indigo","#2E3E5C","indigo"],["celadon","#6E8B6F","celadon"],["celadon-ink","#4F6B50","celadon-ink"],["cinnabar","#C23A26","cinnabar"],["night","#070D0E","night"]
+];
+const MERMAID = [
+  ["background","#F4F1DF","paper-01"],["primaryColor","#FAF8EA","paper-00"],["primaryTextColor","#1F1C13","ink-90"],
+  ["primaryBorderColor","#2A2620","ink-80"],["lineColor","#2A2620","ink-80"],["secondaryColor","#EAE6D2","paper-02"],
+  ["noteBkgColor","#FBBC0E","marigold"],["classDef hero","#FBBC0E","marigold"],["classDef store","#6E8B6F","celadon"],
+  ["classDef dec","#2E3E5C","indigo"],["classDef danger","#C23A26","cinnabar"],["classDef muted","#EAE6D2","paper-02"]
+];
+
+/* ───────────────────────── MATH ───────────────────────── */
+const hexRgb = h => { h=h.replace('#',''); return [0,2,4].map(i=>parseInt(h.substr(i,2),16)); };
+const linz = c => { c/=255; return c<=0.03928 ? c/12.92 : Math.pow((c+0.055)/1.055,2.4); };
+const lumin = h => { const [r,g,b]=hexRgb(h); return 0.2126*linz(r)+0.7152*linz(g)+0.0722*linz(b); };
+const contrast = (a,b) => { const L1=lumin(a),L2=lumin(b),hi=Math.max(L1,L2),lo=Math.min(L1,L2); return (hi+0.05)/(lo+0.05); };
+const rgb2xyz = ([r,g,b]) => { r=linz(r);g=linz(g);b=linz(b); return [r*0.4124+g*0.3576+b*0.1805, r*0.2126+g*0.7152+b*0.0722, r*0.0193+g*0.1192+b*0.9505]; };
+const f116 = t => t>0.008856 ? Math.cbrt(t) : (7.787*t+16/116);
+const xyz2lab = ([X,Y,Z]) => { const fx=f116(X/0.95047),fy=f116(Y/1.0),fz=f116(Z/1.08883); return [116*fy-16,500*(fx-fy),200*(fy-fz)]; };
+const labOf = h => xyz2lab(rgb2xyz(hexRgb(h)));
+const deltaE = (a,b) => { const A=labOf(a),B=labOf(b); return Math.hypot(A[0]-B[0],A[1]-B[1],A[2]-B[2]); };
+const closestPrim = h => { let best=null,bd=1e9; for(const [n,v] of Object.entries(PRIM)){ const d=deltaE(h,v); if(d<bd){bd=d;best=[n,v,d];} } return best; };
+const norm = h => h.toUpperCase();
+
+/* badge at threshold set {aa, aaa} */
+function gradeBadge(ratio, aa, aaa){
+  if(ratio>=aaa) return ['AAA','pass',true];
+  if(ratio>=aa)  return ['AA','pass',true];
+  return ['FAIL','fail',false];
+}
+const sw = h => `<span class="sw" style="background:${h}"></span>`;
+const pairSw = (fg,bg) => `<span class="pair">${sw(bg)}${sw(fg)}</span>`;
+
+/* ───────────────────────── STATE / TALLY ───────────────────────── */
+let THRESH = 'small'; // small: 4.5/7 ; large: 3.0/4.5
+const tally = { total:0, pass:0, fail:0 };
+function count(ok){ tally.total++; ok?tally.pass++:tally.fail++; return ok; }
+const panelCount = () => ({total:0,pass:0,fail:0});
+
+/* ───────────────────────── RENDER ───────────────────────── */
+function render(){
+  tally.total=tally.pass=tally.fail=0;
+  const panels = document.getElementById('panels');
+  let html = '';
+  html += matrixPanel();
+  html += parityPanel();
+  html += gridPanel();
+  html += targetPanel();
+  html += spacingPanel();
+  html += nontextPanel();
+  html += hardedgePanel();
+  html += palettePanel();
+  html += galleryPanel();
+  panels.innerHTML = html;
+  measureTargets();
+  measureSpacing();
+  measureHardEdge();
+  measurePalette();
+  scoreboard();
+  document.getElementById('rhead-stamp').textContent = tally.fail===0 ? 'ALL CLEAR' : tally.fail+' FAILING';
+}
+
+/* 1 · CONTRAST MATRIX */
+function matrixPanel(){
+  const aa = THRESH==='small'?4.5:3.0, aaa = THRESH==='small'?7.0:4.5;
+  const roles = ['primary','body','secondary','muted'];
+  const surfs = ['page','raised','sunken','inset'];
+  let pc = panelCount();
+  let body = '';
+  for(const [sname,st] of Object.entries(STOCKS)){
+    let rows = '';
+    for(const role of roles){
+      let cells = `<td class="lbl">${role}</td>`;
+      for(const su of surfs){
+        const fg=st.text[role], bg=st.surfaces[su];
+        const r=contrast(fg,bg); const [bl,cls,ok]=gradeBadge(r,aa,aaa);
+        pc.total++; ok?pc.pass++:pc.fail++; count(ok);
+        cells += `<td>${pairSw(fg,bg)} <span class="num">${r.toFixed(2)}</span> <span class="badge ${cls}">${bl}</span></td>`;
+      }
+      rows += `<tr>${cells}</tr>`;
+    }
+    // disabled + accents on page only
+    const pg = st.surfaces.page;
+    const dr = contrast(st.text.disabled,pg);
+    rows += `<tr><td class="lbl">disabled</td><td>${pairSw(st.text.disabled,pg)} <span class="num">${dr.toFixed(2)}</span> <span class="badge pass">EXEMPT</span> <span class="small" style="color:var(--faint)">inactive only</span></td><td colspan="3" class="small" style="color:var(--faint)">evaluated on page</td></tr>`;
+    let acc='';
+    for(const [an,av] of Object.entries(st.accents)){
+      const r=contrast(av,pg); const [bl,cls,ok]=gradeBadge(r,aa,aaa);
+      pc.total++; ok?pc.pass++:pc.fail++; count(ok);
+      acc += `${pairSw(av,pg)} <span class="lbl" style="color:var(--mut)">${an}</span> <span class="num">${r.toFixed(2)}</span> <span class="badge ${cls}">${bl}</span> &nbsp; `;
+    }
+    rows += `<tr><td class="lbl">accents</td><td colspan="4">${acc}</td></tr>`;
+    body += `<div style="margin-bottom:18px"><div class="lbl" style="margin-bottom:6px;color:var(--ink)">STOCK · ${sname.toUpperCase()} &nbsp;·&nbsp; page ${sw(st.surfaces.page)} ${norm(st.surfaces.page)}</div>
+      <table class="matrix"><thead><tr><th>role \\ surface</th>${surfs.map(s=>`<th>${s}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+  return panel('01','Contrast matrix', pc, `
+    <div style="display:flex;align-items:center;margin-bottom:14px">
+      <span class="lbl">threshold ${aa.toFixed(1)} / ${aaa.toFixed(1)}</span>
+      <div class="toggle">
+        <button onclick="setThresh('small')" aria-pressed="${THRESH==='small'}">Small text</button>
+        <button onclick="setThresh('large')" aria-pressed="${THRESH==='large'}">Large text</button>
+      </div>
+    </div>${body}`);
+}
+function setThresh(t){ THRESH=t; render(); }
+
+/* 2 · CROSS-SURFACE PARITY */
+function parityRows(list){
+  let pc = panelCount(); let rows='';
+  for(const [label,actual,expName] of list){
+    const exp = PRIM[expName];
+    const ok = norm(actual)===norm(exp);
+    pc.total++; ok?pc.pass++:pc.fail++; count(ok);
+    let extra='';
+    if(!ok){ const [cn,cv,cd]=closestPrim(actual); extra=`<span class="num small" style="color:var(--mut)">Δ closest ${cn} (${cd.toFixed(1)})</span>`; }
+    rows += `<tr>
+      <td class="mono">${label}</td>
+      <td>${sw(actual)} <span class="num">${norm(actual)}</span></td>
+      <td class="lbl" style="color:var(--mut)">${expName}</td>
+      <td>${sw(exp)} <span class="num">${norm(exp)}</span></td>
+      <td><span class="badge ${ok?'pass':'fail'} ${ok?'g-pass':'g-fail'}">${ok?'MATCH':'DRIFT'}</span> ${extra}</td>
+    </tr>`;
+  }
+  return {rows, pc};
+}
+function parityPanel(){
+  const t = parityRows(TYPST), m = parityRows(MERMAID);
+  const merge=(a,b)=>({total:a.total+b.total,pass:a.pass+b.pass,fail:a.fail+b.fail});
+  const head = `<thead><tr><th>literal</th><th>value</th><th>should equal</th><th>primitive</th><th>verdict</th></tr></thead>`;
+  return panel('02','Cross-surface parity', merge(t.pc,m.pc), `
+    <div class="lbl" style="margin-bottom:6px;color:var(--ink)">TYPST · lokta.typ</div>
+    <table>${head}<tbody>${t.rows}</tbody></table>
+    <div class="lbl" style="margin:18px 0 6px;color:var(--ink)">MERMAID · lokta-mermaid.json</div>
+    <table>${head}<tbody>${m.rows}</tbody></table>`);
+}
+
+/* 3 · GRID + SCALE */
+function gridPanel(){
+  let pc=panelCount();
+  let sp = SPACE.map(v=>{ const ok=v%4===0; pc.total++; ok?pc.pass++:pc.fail++; count(ok);
+    return `<td>${v}<span class="badge ${ok?'pass':'fail'}" style="margin-left:6px">${ok?'÷4':'OFF'}</span></td>`; }).join('');
+  const keys=Object.keys(TYPE), vals=Object.values(TYPE);
+  let tr = keys.map((k,i)=>{ const ratio = i===0?',':(vals[i]/vals[i-1]).toFixed(2)+'×';
+    return `<tr><td class="lbl">${k}</td><td class="num">${vals[i]}px</td><td class="num" style="color:var(--mut)">${ratio}</td></tr>`; }).join('');
+  return panel('03','Grid & scale', pc, `
+    <div class="lbl" style="margin-bottom:6px;color:var(--ink)">SPACING · 8PX GRID, 4PX HALF-STEP</div>
+    <table><tbody><tr>${sp}</tr></tbody></table>
+    <div class="lbl" style="margin:18px 0 6px;color:var(--ink)">TYPE SCALE · STEP RATIOS</div>
+    <table><thead><tr><th>token</th><th>size</th><th>ratio to prev</th></tr></thead><tbody>${tr}</tbody></table>`);
+}
+
+/* 4 · TARGET SIZE (measured live) */
+function targetPanel(){
+  return panel('04','Target size', {total:0,pass:0,fail:0}, `
+    <div class="lbl" style="margin-bottom:10px">CONTROLS MUST MEASURE ≥ 36PX · GETBOUNDINGCLIENTRECT</div>
+    <div id="target-controls" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
+      <button class="lk-btn" style="background:var(--ink);color:var(--paper0);border-color:var(--ink)" data-t>Primary</button>
+      <button class="lk-btn" style="border-color:var(--ink);color:var(--ink)" data-t>Default</button>
+      <input class="lk-input" style="border-color:var(--ink);color:var(--ink);max-width:200px" placeholder="Text input" data-t />
+    </div>
+    <table id="target-table"><thead><tr><th>control</th><th>measured</th><th>verdict</th></tr></thead><tbody></tbody></table>`, 'target-panel');
+}
+function measureTargets(){
+  const ctrls = document.querySelectorAll('#target-controls [data-t]');
+  const tb = document.querySelector('#target-table tbody'); if(!tb) return;
+  let pass=0,fail=0,total=0; let rows='';
+  ctrls.forEach(el=>{
+    const h = el.getBoundingClientRect().height;
+    const ok = h>=36; total++; ok?pass++:fail++; count(ok);
+    const name = el.tagName==='INPUT'?'Text input':el.textContent;
+    rows += `<tr><td class="lbl">${name}</td><td class="num">${h.toFixed(1)}px</td><td><span class="badge ${ok?'pass':'fail'} ${ok?'g-pass':'g-fail'}">${ok?'PASS':'UNDER'}</span></td></tr>`;
+  });
+  tb.innerHTML = rows;
+  const p=document.getElementById('target-panel'); if(p) p.querySelector('[data-pc]').textContent = `${pass}/${total}`;
+}
+
+/* 5 · COMPONENT GALLERY */
+function galleryPanel(){
+  let cells='';
+  for(const [sname,st] of Object.entries(STOCKS)){
+    const t=st.text, s=st.surfaces, a=st.accents;
+    cells += `<div class="gcell" style="background:${s.page};color:${t.body}">
+      <div class="lbl" style="color:${t.secondary};margin-bottom:10px">STOCK · ${sname.toUpperCase()}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+        <button class="lk-btn" style="background:${t.primary};color:${s.raised};border-color:${t.primary}">Save</button>
+        <button class="lk-btn" style="border-color:${t.body};color:${t.body}">Cancel</button>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+        <span class="lk-tag" style="border-color:${t.body};color:${t.body}">OUTLINE</span>
+        <span class="lk-tag" style="background:${t.body};color:${s.raised};border-color:${t.body}">FILLED</span>
+      </div>
+      <div class="lbl" style="color:${t.secondary};margin-bottom:4px">Search the index</div>
+      <input class="lk-input" style="border-color:${t.body};color:${t.primary};background:${s.raised}" placeholder="Type to filter…" />
+      <div style="display:flex;gap:8px;margin-top:10px;padding:9px 11px;background:${s.raised};border:1px solid ${st===STOCKS.ink||sname==='indigo'?'#4A5365':'#8E867A'};border-left:3px solid ${a.success}">
+        <span style="color:${a.success};font-weight:700">✔</span>
+        <div><div style="font-weight:700;font-size:13px;color:${t.primary}">Saved</div><div style="font-size:12px;color:${t.body}">Billing details updated.</div></div>
+      </div>
+      <hr style="border:0;border-top:1px solid ${t.primary};margin:14px 0 6px" />
+      <div class="hatch" style="width:80px;background-image:repeating-linear-gradient(-45deg,${t.body} 0,${t.body} 1px,transparent 1px,transparent 4px)"></div>
+      <div style="margin-top:14px;display:flex;justify-content:center">
+        <div class="modal" style="width:100%;background:${s.raised};border-color:${t.primary===t.body?t.body:t.primary}">
+          <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid ${st===STOCKS.ink||sname==='indigo'?'#4A5365':'#8E867A'}">
+            <span style="color:${a.danger}">⚠</span><span style="font-weight:700;font-size:13px;color:${t.primary}">Cancel plan?</span>
+            <span style="margin-left:auto;color:${t.muted}">✕</span>
+          </div>
+          <div style="padding:10px 12px;font-size:12px;color:${t.body}">Read-only after 12 Apr.</div>
+          <div style="display:flex;gap:6px;justify-content:flex-end;padding:8px 12px;border-top:1px solid ${st===STOCKS.ink||sname==='indigo'?'#4A5365':'#8E867A'}">
+            <button class="lk-btn" style="border-color:${t.body};color:${t.body}">Keep</button>
+            <button class="lk-btn" style="background:${a.danger};color:${s.page};border-color:${a.danger}">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+  return panel('09','Component gallery', null, `
+    <div style="display:flex;align-items:center;margin-bottom:14px">
+      <span class="lbl">VISUAL INSPECTION · FLAT · HARD-EDGED · 1PX INK BORDERS · NO SHADOW EXCEPT MODAL</span>
+      <div class="toggle"><button id="focusbtn" onclick="toggleFocus()" aria-pressed="false">Show focus rings</button></div>
+    </div>
+    <div class="gal">${cells}</div>`);
+}
+let FOCUS=false;
+function toggleFocus(){ FOCUS=!FOCUS; document.body.classList.toggle('show-focus',FOCUS); document.getElementById('focusbtn').setAttribute('aria-pressed',FOCUS); }
+
+/* ── extra deterministic helpers ── */
+const SCALE = [0,4,8,12,16,24,32,48,64,96];
+const onScale = v => SCALE.includes(Math.round(v));
+const pxNum = s => parseFloat(s)||0;
+const rgbToHex = s => { const m=(s||'').match(/[\d.]+/g); if(!m) return null; const a=m.length>3?parseFloat(m[3]):1; if(a===0) return null; return '#'+m.slice(0,3).map(n=>Math.round(+n).toString(16).padStart(2,'0')).join('').toUpperCase(); };
+const primList = Object.entries(PRIM);
+const closestPrimE = h => { let bd=1e9,bn=null,bv=null; for(const [n,v] of primList){ const d=deltaE(h,v); if(d<bd){bd=d;bn=n;bv=v;} } return [bn,bv,bd]; };
+
+/* 05 · SPACING CONFORMANCE (computed + measured) */
+function spacingPanel(){
+  return panel('05','Spacing conformance', {total:0,pass:0,fail:0}, `
+    <div class="lbl" style="margin-bottom:10px">GETCOMPUTEDSTYLE PADDING / GAP · GETBOUNDINGCLIENTRECT INTER-ELEMENT DISTANCE · MUST LAND ON {0,4,8,12,16,24,32,48,64,96}</div>
+    <div id="rig" style="display:inline-block;margin-bottom:14px">
+      <div class="rig-card" style="padding:16px;border:1px solid var(--ink);background:var(--paper0);width:300px">
+        <div class="lbl" style="margin-bottom:12px">CARD · 映画</div>
+        <button class="lk-btn rig-el" data-name="button" style="background:var(--ink);color:var(--paper0);border-color:var(--ink)">Save</button>
+        <div class="rig-el rig-row" data-name="tag-row" style="display:flex;gap:8px;margin-top:16px">
+          <span class="lk-tag" style="border-color:var(--body);color:var(--body)">OUTLINE</span>
+          <span class="lk-tag" style="background:var(--body);color:var(--paper0);border-color:var(--body)">FILLED</span>
+        </div>
+        <input class="lk-input rig-el" data-name="input" placeholder="Search" style="margin-top:16px;border-color:var(--ink);color:var(--ink)" />
+        <div class="rig-el rig-note" data-name="note" style="margin-top:16px;padding:12px;border-left:3px solid var(--marigold);background:var(--paper);font-size:12px;color:var(--body)">Note body.</div>
+      </div>
+    </div>
+    <table id="spacing-table"><thead><tr><th>element · metric</th><th>value</th><th>verdict</th></tr></thead><tbody></tbody></table>`, 'spacing-panel');
+}
+function measureSpacing(){
+  const tb=document.querySelector('#spacing-table tbody'); if(!tb) return;
+  let rows='',pass=0,total=0;
+  const add=(n,val,ok)=>{ total++; if(ok)pass++; count(ok); rows+=`<tr><td class="lbl">${n}</td><td class="num">${val}</td><td><span class="badge ${ok?'pass':'fail'} ${ok?'g-pass':'g-fail'}">${ok?'ON-GRID':'OFF'}</span></td></tr>`; };
+  const card=document.querySelector('.rig-card'); if(!card) return;
+  for(const [n,sel,prop] of [['card · padding','.rig-card','paddingTop'],['note · padding','.rig-note','paddingTop'],['tag-row · gap','.rig-row','columnGap']]){
+    const el=document.querySelector(sel); const v=pxNum(getComputedStyle(el)[prop]); add(n,v+'px',onScale(v));
+  }
+  const els=[...card.querySelectorAll(':scope > .rig-el')];
+  for(let i=1;i<els.length;i++){ const a=els[i-1].getBoundingClientRect(), b=els[i].getBoundingClientRect(); const gap=Math.round(b.top-a.bottom); add('Δ '+els[i-1].dataset.name+' → '+els[i].dataset.name, gap+'px', onScale(gap)); }
+  tb.innerHTML=rows;
+  const p=document.getElementById('spacing-panel'); if(p) p.querySelector('[data-pc]').textContent=`${pass}/${total}`;
+}
+
+/* 06 · NON-TEXT CONTRAST (1.4.11) */
+function nontextPanel(){
+  const N={ paper:{page:'#F4F1DF',bs:'#2A2620',fr:'#16140E'}, ink:{page:'#1F1C13',bs:'#C2B89C',fr:'#FAF8EA'}, bone:{page:'#EFEEE7',bs:'#2A2620',fr:'#16140E'}, indigo:{page:'#1B2230',bs:'#C2B89C',fr:'#EDECE3'} };
+  let pc=panelCount(),rows='';
+  for(const [sn,v] of Object.entries(N)) for(const [label,fg] of [['border-strong',v.bs],['focus-ring',v.fr]]){
+    const r=contrast(fg,v.page), ok=r>=3.0; pc.total++; ok?pc.pass++:pc.fail++; count(ok);
+    rows+=`<tr><td class="lbl">${sn} · ${label}</td><td>${pairSw(fg,v.page)} <span class="num">${r.toFixed(2)}</span></td><td><span class="badge ${ok?'pass':'fail'} ${ok?'g-pass':'g-fail'}">${ok?'≥3:1':'FAIL'}</span></td></tr>`;
+  }
+  return panel('06','Non-text contrast', pc, `<div class="lbl" style="margin-bottom:10px">WCAG 1.4.11 · COMPONENT BOUNDARY + FOCUS RING ≥ 3:1 VS SURFACE</div><table><thead><tr><th>stock · element</th><th>ratio</th><th>verdict</th></tr></thead><tbody>${rows}</tbody></table>`);
+}
+
+/* 07 · HARD EDGE (computed radius + border) */
+function hardedgePanel(){
+  return panel('07','Hard edge', {total:0,pass:0,fail:0}, `<div class="lbl" style="margin-bottom:10px">GETCOMPUTEDSTYLE · BORDER-RADIUS = 0 · BORDER-WIDTH = 1PX (FLAT, NO ROUNDING)</div><table id="hardedge-table"><thead><tr><th>element</th><th>radius</th><th>border</th><th>verdict</th></tr></thead><tbody></tbody></table>`, 'hardedge-panel');
+}
+function measureHardEdge(){
+  const tb=document.querySelector('#hardedge-table tbody'); if(!tb) return; let rows='',pass=0,total=0;
+  for(const [n,sel,chk] of [['card','.rig-card',true],['button','.rig-el.lk-btn',true],['tag','.rig-card .lk-tag',true],['input','.rig-el.lk-input',true],['note','.rig-note',false]]){
+    const el=document.querySelector(sel); if(!el) continue; const cs=getComputedStyle(el);
+    const rad=pxNum(cs.borderTopLeftRadius), bw=pxNum(cs.borderTopWidth), lw=pxNum(cs.borderLeftWidth);
+    const okR=Math.round(rad)===0, okB=!chk||(Math.round(Math.max(bw,lw))===1), ok=okR&&okB; total++; if(ok)pass++; count(ok);
+    rows+=`<tr><td class="lbl">${n}</td><td class="num">${rad}px</td><td class="num">${Math.max(bw,lw)}px${chk?'':' · accent'}</td><td><span class="badge ${ok?'pass':'fail'} ${ok?'g-pass':'g-fail'}">${ok?'FLAT':'OFF'}</span></td></tr>`;
+  }
+  tb.innerHTML=rows; const p=document.getElementById('hardedge-panel'); if(p) p.querySelector('[data-pc]').textContent=`${pass}/${total}`;
+}
+
+/* 08 · PALETTE INTEGRITY (no stray hex) */
+function palettePanel(){
+  return panel('08','Palette integrity', {total:0,pass:0,fail:0}, `<div class="lbl" style="margin-bottom:10px">EVERY RENDERED COLOUR RESOLVES TO A PRIMITIVE (CIE76 ΔE ≤ 2) · NO STRAY HEX</div><table id="palette-table"><thead><tr><th>node · property</th><th>computed</th><th>nearest primitive</th><th>verdict</th></tr></thead><tbody></tbody></table>`, 'palette-panel');
+}
+function measurePalette(){
+  const tb=document.querySelector('#palette-table tbody'); if(!tb) return; let rows='',pass=0,total=0; const seen=new Set();
+  document.querySelectorAll('#rig .rig-card, #rig .rig-card *').forEach(el=>{
+    const cs=getComputedStyle(el);
+    for(const prop of ['color','backgroundColor','borderTopColor','borderLeftColor']){
+      const hex=rgbToHex(cs[prop]); if(!hex) continue; const key=prop+hex; if(seen.has(key)) continue; seen.add(key);
+      const [bn,bv,bd]=closestPrimE(hex); const ok=bd<=2.0; total++; if(ok)pass++; count(ok);
+      rows+=`<tr><td class="lbl">${(el.className||el.tagName.toLowerCase()).split(' ')[0]} · ${prop.replace('Color','').replace('Top','').replace('Left','')}</td><td>${sw(hex)} <span class="num">${hex}</span></td><td>${sw(bv)} <span class="lbl" style="color:var(--mut)">${bn}</span> <span class="num small">Δ${bd.toFixed(1)}</span></td><td><span class="badge ${ok?'pass':'fail'} ${ok?'g-pass':'g-fail'}">${ok?'IN PALETTE':'STRAY'}</span></td></tr>`;
+    }
+  });
+  tb.innerHTML=rows; const p=document.getElementById('palette-panel'); if(p) p.querySelector('[data-pc]').textContent=`${pass}/${total}`;
+}
+
+/* panel shell */
+function panel(n,title,pc,inner,id){
+  const tag = pc ? `<span class="lbl" style="margin-left:auto" data-pc>${pc.pass}/${pc.total}</span>` : '';
+  return `<div class="panel" ${id?`id="${id}"`:''}><div class="phead"><span class="n">${n}</span><h2>${title}</h2>${tag}</div><div class="pbody">${inner}</div></div>`;
+}
+
+/* SCOREBOARD */
+function scoreboard(){
+  const failEls=[...document.querySelectorAll('#panels .badge.fail')];
+  const list=failEls.map(b=>{ const tr=b.closest('tr'); const td=b.closest('td'); let lbl=tr?(tr.querySelector('td')||{}).textContent||'':(td?td.parentElement.textContent:''); return (lbl||'').replace(/\s+/g,' ').trim().slice(0,30); });
+  const failCell = tally.fail ? `<div class="lbl">Failing</div>${list.map(l=>`<div class="mono" style="color:var(--cinnabar);font-size:9px;letter-spacing:0.04em">⚠ ${l}</div>`).join('')}` : `<div style="flex:1"><div class="hatch"></div></div>`;
+  document.getElementById('scoreboard').innerHTML = `
+    <div class="scrow">
+      <div><div class="lbl">Total checks</div><div class="big num">${tally.total}</div></div>
+      <div><div class="lbl">Passing</div><div class="big num g-pass" style="color:var(--ink)">${tally.pass}</div></div>
+      <div><div class="lbl">Failing</div><div class="big num ${tally.fail?'g-fail':''}" style="color:${tally.fail?'var(--cinnabar)':'var(--ink)'}">${tally.fail}</div></div>
+      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:2px;align-content:center">${failCell}</div>
+    </div>`;
+}
+
+render();
+window.addEventListener('resize', ()=>measureTargets());
+</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+/* Lokta extra stocks. Cool and enterprise grounds beyond the four token stocks
+   (paper, ink, bone, indigo). Each re-points the semantic layer; load a token
+   theme first so the primitive vars resolve. All AA-validated (see npm run verify).
+   Stocks: pine, mulberry, slate, steel, onyx, and the *-light variants. */
+
+[data-theme="pine"] {
+  --surface-page:    #16231C;
+  --surface-raised:  #1E2E25;
+  --surface-sunken:  #101A14;
+  --surface-inset:   #24382C;
+  --surface-inverse: #F3F0E6;
+  --text-primary:    #EEEFE6;
+  --text-body:       #E0E4D9;
+  --text-secondary:  #AFBBA8;
+  --text-muted:      #889184;
+  --text-disabled:   #5E665C;
+  --text-on-fill:    #EEEFE6;
+  --text-on-marigold:var(--ink-100);
+  --border-strong:   #AFBBA8;
+  --border-default:  #495449;
+  --border-hairline: #2E3A32;
+  --accent-success:      #9DC08F;
+  --accent-success-fill: var(--pigment-celadon);
+  --accent-danger:       #E2654F;
+  --accent-danger-fill:  var(--pigment-cinnabar);
+  --accent-feature:      #D8B36A;
+  --accent-feature-fill: var(--pigment-aubergine);
+  --accent-feature-ground: var(--pigment-marigold);
+  --accent-warning-fill: var(--pigment-marigold);
+  --accent-info-fill:    var(--pigment-indigo);
+  --field-bg:          #101A14;
+  --field-border:      #495449;
+  --field-placeholder: #889184;
+  --focus-ring:       #EEEFE6;
+}
+
+[data-theme="mulberry"] {
+  --surface-page:    #241620;
+  --surface-raised:  #2E1E29;
+  --surface-sunken:  #1A0F16;
+  --surface-inset:   #382433;
+  --surface-inverse: #F3EEEF;
+  --text-primary:    #F0E9EC;
+  --text-body:       #E5DBDF;
+  --text-secondary:  #C0AEB7;
+  --text-muted:      #9A8791;
+  --text-disabled:   #6A5A63;
+  --text-on-fill:    #F0E9EC;
+  --text-on-marigold:var(--ink-100);
+  --border-strong:   #C0AEB7;
+  --border-default:  #574A52;
+  --border-hairline: #3A2C35;
+  --accent-success:      #8FB088;
+  --accent-success-fill: var(--pigment-celadon);
+  --accent-danger:       #E2654F;
+  --accent-danger-fill:  var(--pigment-cinnabar);
+  --accent-feature:      #D199C2;
+  --accent-feature-fill: var(--pigment-aubergine);
+  --accent-feature-ground: var(--pigment-marigold);
+  --accent-warning-fill: var(--pigment-marigold);
+  --accent-info-fill:    var(--pigment-indigo);
+  --field-bg:          #1A0F16;
+  --field-border:      #574A52;
+  --field-placeholder: #9A8791;
+  --focus-ring:       #F0E9EC;
+}
+
+[data-theme="slate"]{
+  --surface-page:#21252C;--surface-raised:#2A2F38;--surface-sunken:#181C22;--surface-inset:#2B313A;--surface-inverse:#ECEEF1;
+  --text-primary:#ECEEF1;--text-body:#DDE0E4;--text-secondary:#B4B9C2;--text-muted:#9DA4AF;--text-disabled:#5E636D;--text-on-fill:#ECEEF1;--text-on-marigold:var(--ink-100);
+  --border-strong:#B4B9C2;--border-default:#4A515C;--border-hairline:#343A44;
+  --accent-success:#8FB088;--accent-success-fill:var(--pigment-celadon);--accent-danger:#E2654F;--accent-danger-fill:var(--pigment-cinnabar);--accent-feature:#A6AFCB;--accent-feature-fill:var(--pigment-aubergine);--accent-feature-ground:var(--pigment-marigold);--accent-warning-fill:var(--pigment-marigold);--accent-info-fill:var(--pigment-indigo);
+  --field-bg:#181C22;--field-border:#4A515C;--field-placeholder:#9DA4AF;
+  --focus-ring:#ECEEF1;
+}
+
+[data-theme="steel"]{
+  --surface-page:#16282B;--surface-raised:#1F3438;--surface-sunken:#0F1D20;--surface-inset:#21383C;--surface-inverse:#E9EEED;
+  --text-primary:#E9EEED;--text-body:#D8E2E1;--text-secondary:#ABC0C0;--text-muted:#95ABAB;--text-disabled:#5C6E6E;--text-on-fill:#E9EEED;--text-on-marigold:var(--ink-100);
+  --border-strong:#ABC0C0;--border-default:#3A5458;--border-hairline:#234044;
+  --accent-success:#8FB088;--accent-success-fill:var(--pigment-celadon);--accent-danger:#E2654F;--accent-danger-fill:var(--pigment-cinnabar);--accent-feature:#D4B06A;--accent-feature-fill:var(--pigment-aubergine);--accent-feature-ground:var(--pigment-marigold);--accent-warning-fill:var(--pigment-marigold);--accent-info-fill:var(--pigment-indigo);
+  --field-bg:#0F1D20;--field-border:#3A5458;--field-placeholder:#95ABAB;
+  --focus-ring:#E9EEED;
+}
+
+[data-theme="onyx"]{
+  --surface-page:#1E1F22;--surface-raised:#27282C;--surface-sunken:#161719;--surface-inset:#2A2B30;--surface-inverse:#ECECEE;
+  --text-primary:#ECECEE;--text-body:#DEDEE0;--text-secondary:#B2B2B7;--text-muted:#9C9CA2;--text-disabled:#5C5C61;--text-on-fill:#ECECEE;--text-on-marigold:var(--ink-100);
+  --border-strong:#B2B2B7;--border-default:#45464B;--border-hairline:#313237;
+  --accent-success:#8FB088;--accent-success-fill:var(--pigment-celadon);--accent-danger:#E2654F;--accent-danger-fill:var(--pigment-cinnabar);--accent-feature:#A99BC0;--accent-feature-fill:var(--pigment-aubergine);--accent-feature-ground:var(--pigment-marigold);--accent-warning-fill:var(--pigment-marigold);--accent-info-fill:var(--pigment-indigo);
+  --field-bg:#161719;--field-border:#45464B;--field-placeholder:#9C9CA2;
+  --focus-ring:#ECECEE;
+}
+
+[data-theme="slate-light"]{
+  --surface-page:#EDEEF1;--surface-raised:#F6F7F9;--surface-sunken:#E2E4E9;--surface-inset:#D8DAE0;--surface-inverse:#EDEEF1;
+  --text-primary:#1A1D23;--text-body:#272A30;--text-secondary:#515761;--text-muted:#555A63;--text-disabled:#9097A0;--text-on-fill:#FAF8EA;--text-on-marigold:var(--ink-100);
+  --border-strong:#272A30;--border-default:#9097A0;--border-hairline:#C3C7CE;
+  --accent-success:#4F6B50;--accent-success-fill:var(--pigment-celadon);--accent-danger:#C23A26;--accent-danger-fill:var(--pigment-cinnabar);--accent-feature:#45557F;--accent-feature-fill:var(--pigment-aubergine);--accent-feature-ground:var(--pigment-marigold);--accent-warning-fill:var(--pigment-marigold);--accent-info-fill:var(--pigment-indigo);
+  --field-bg:#F6F7F9;--field-border:#1A1D23;--field-placeholder:#555A63;
+  --focus-ring:#1A1D23;
+}
+
+[data-theme="steel-light"]{
+  --surface-page:#E7EEED;--surface-raised:#F2F7F6;--surface-sunken:#DBE6E4;--surface-inset:#D0DEDC;--surface-inverse:#E7EEED;
+  --text-primary:#14201F;--text-body:#232E2D;--text-secondary:#4B5958;--text-muted:#4F5B5A;--text-disabled:#8CA09E;--text-on-fill:#FAF8EA;--text-on-marigold:var(--ink-100);
+  --border-strong:#232E2D;--border-default:#8CA09E;--border-hairline:#BFD0CE;
+  --accent-success:#4F6B50;--accent-success-fill:var(--pigment-celadon);--accent-danger:#C23A26;--accent-danger-fill:var(--pigment-cinnabar);--accent-feature:#5C4A22;--accent-feature-fill:var(--pigment-aubergine);--accent-feature-ground:var(--pigment-marigold);--accent-warning-fill:var(--pigment-marigold);--accent-info-fill:var(--pigment-indigo);
+  --field-bg:#F2F7F6;--field-border:#14201F;--field-placeholder:#4F5B5A;
+  --focus-ring:#14201F;
+}
+
+[data-theme="onyx-light"]{
+  --surface-page:#ECECEE;--surface-raised:#F6F6F7;--surface-sunken:#E1E1E4;--surface-inset:#D6D6DA;--surface-inverse:#ECECEE;
+  --text-primary:#1A1A1D;--text-body:#28282B;--text-secondary:#515156;--text-muted:#5D5D63;--text-disabled:#909096;--text-on-fill:#FAF8EA;--text-on-marigold:var(--ink-100);
+  --border-strong:#28282B;--border-default:#909096;--border-hairline:#C3C3C8;
+  --accent-success:#4F6B50;--accent-success-fill:var(--pigment-celadon);--accent-danger:#C23A26;--accent-danger-fill:var(--pigment-cinnabar);--accent-feature:#5A4E70;--accent-feature-fill:var(--pigment-aubergine);--accent-feature-ground:var(--pigment-marigold);--accent-warning-fill:var(--pigment-marigold);--accent-info-fill:var(--pigment-indigo);
+  --field-bg:#F6F6F7;--field-border:#1A1A1D;--field-placeholder:#5D5D63;
+  --focus-ring:#1A1A1D;
+}

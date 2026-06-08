@@ -21,7 +21,10 @@ const copies = [
   ['packages/css/fonts.css', 'fonts.css'],
   ['packages/css/lokta-base.css', 'lokta-base.css'],
   ['packages/css/lokta-components.css', 'lokta-components.css'],
+  ['packages/css/lokta-stocks.css', 'lokta-stocks.css'],
   ['packages/css/lokta.css', 'lokta.css'],
+  // The deterministic verification dashboard (the proof).
+  ['proof/lokta-verification.html', 'verification.html'],
   // Mermaid: theme config, web ESM, CSS, and the pre-rendered demo diagram.
   ['packages/mermaid/index.mjs', 'lokta.mermaid.mjs'],
   ['packages/mermaid/lokta-mermaid.json', 'lokta-mermaid.json'],
@@ -64,6 +67,17 @@ const STOCKS = [
   { id: 'ink', name: 'Ink', sub: 'warm dark' },
   { id: 'bone', name: 'Bone', sub: 'cool light' },
   { id: 'indigo', name: 'Indigo', sub: 'cool dark' },
+];
+// Extra stocks shipped via lokta-stocks.css (not token-built, but AA-validated).
+const EXTRA_STOCKS = [
+  { id: 'pine', name: 'Pine' },
+  { id: 'mulberry', name: 'Mulberry' },
+  { id: 'slate', name: 'Slate' },
+  { id: 'steel', name: 'Steel' },
+  { id: 'onyx', name: 'Onyx' },
+  { id: 'slate-light', name: 'Slate L' },
+  { id: 'steel-light', name: 'Steel L' },
+  { id: 'onyx-light', name: 'Onyx L' },
 ];
 const stockCards = STOCKS.map(
   (s) => `
@@ -241,6 +255,7 @@ const html = `<!doctype html>
 <link rel="stylesheet" href="lokta.tokens.css">
 <link rel="stylesheet" href="lokta-base.css">
 <link rel="stylesheet" href="lokta-components.css">
+<link rel="stylesheet" href="lokta-stocks.css">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body class="lk lk-sheet">
@@ -258,7 +273,7 @@ const html = `<!doctype html>
     <a href="#tokens">Tokens</a>
   </nav>
   <div class="switcher" role="group" aria-label="Theme">
-    ${STOCKS.map((s) => `<button class="lk-btn theme-btn" type="button" data-set-theme="${s.id}" aria-pressed="${s.id === 'paper'}">${esc(s.name)}</button>`).join('')}
+    ${[...STOCKS, ...EXTRA_STOCKS].map((s) => `<button class="lk-btn theme-btn" type="button" data-set-theme="${s.id}" aria-pressed="${s.id === 'paper'}">${esc(s.name)}</button>`).join('')}
   </div>
 </header>
 
@@ -447,7 +462,8 @@ const html = `<!doctype html>
 
   <section id="tokens">
     <h2 class="sec-h">Tokens reference</h2>
-    <p class="muted">Generated from <code>tokens/lokta.tokens.json</code>. References like <code>{ink.90}</code> resolve through the semantic layer at build time.</p>
+    <p class="muted">Generated from <code>tokens/lokta.tokens.json</code>. References like <code>{ink.90}</code> resolve through the semantic layer at build time. The values are checked on every push by <code>npm run verify</code>: WCAG AA contrast for every text role on every surface in every stock, cross-surface parity (the Typst and Mermaid literals equal their primitive), and the 8px grid.</p>
+    <p class="lk-row"><a class="lk-btn" href="verification.html">View the verification dashboard</a></p>
     ${tokenTables}
   </section>
 

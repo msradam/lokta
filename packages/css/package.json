@@ -6,6 +6,7 @@
   "files": [
     "lokta-base.css",
     "lokta-components.css",
+    "lokta-stocks.css",
     "lokta.css",
     "fonts.css",
     "fonts"
