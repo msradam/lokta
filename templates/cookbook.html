@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>映画の料理 · Cookbook demo · Lokta</title>
+<link rel="stylesheet" href="lokta.css">
+<style>
+  /* Composition only; every colour and type value comes from Lokta tokens. */
+  body { margin: 0; background: var(--surface-page); }
+  .cb-cover { aspect-ratio: 16 / 9; display: flex; align-items: flex-end; justify-content: flex-end; padding: var(--space-3); }
+  .cb-mark { font-family: "Archivo", sans-serif; font-weight: var(--wt-black); font-size: var(--type-3xl); line-height: 0.8; }
+  .recipe-card { display: flex; flex-direction: column; background: var(--surface-raised); border: var(--rule-1) solid var(--border-default); }
+  .recipe-body { padding: var(--space-4); flex: 1; }
+  .cb-toolbar { position: sticky; top: 0; z-index: 5; }
+  #toast { position: fixed; right: 24px; bottom: 24px; z-index: 20; }
+  [hidden] { display: none !important; }
+  @media (max-width: 640px) { .cb-search { width: 100%; } }
+</style>
+</head>
+<body class="lk">
+<a class="lk-sr-only" href="#main">Skip to content</a>
+
+<header class="lk-topbar cb-toolbar">
+  <div class="lk-cluster">
+    <span class="lk-sidebar-brand" style="padding:0;" lang="ja">映画の料理</span>
+    <span class="lk-eyebrow">Cookbook</span>
+  </div>
+  <div class="lk-cluster">
+    <label class="lk-sr-only" for="q">Search recipes</label>
+    <input class="lk-input cb-search" id="q" type="search" placeholder="Search dish, film, tag…" autocomplete="off">
+    <label class="lk-sr-only" for="stock">Stock</label>
+    <select class="lk-select" id="stock" aria-label="Stock">
+      <option value="paper">Paper</option>
+      <option value="bone">Bone</option>
+      <option value="ink">Ink</option>
+      <option value="indigo">Indigo</option>
+    </select>
+    <button class="lk-btn" id="savedBtn" type="button">
+      <svg class="lk-icon" width="16" height="16" aria-hidden="true"><use href="lokta-icons.svg#lk-i-star"></use></svg>
+      Saved <span class="lk-badge" id="savedCount">0</span>
+    </button>
+  </div>
+</header>
+
+<main id="main" class="lk-content lk-wrap-wide lk-stack lk-stack-5">
+  <div class="lk-stack lk-stack-2" style="max-width: 60ch;">
+    <span class="lk-eyebrow">After Cuisine on Screen</span>
+    <h1 class="lk-h1">Dishes from the films.</h1>
+    <p class="lk-lede">A small kitchen of plates that appeared on screen. Filter by cuisine, open a card for the method, and save the ones you want to cook.</p>
+  </div>
+
+  <div class="lk-cluster" id="tags" role="group" aria-label="Filter by tag"></div>
+
+  <div id="grid" class="lk-grid lk-grid-auto" style="--lk-min: 260px;" aria-live="polite"></div>
+
+  <div id="empty" class="lk-empty" hidden>
+    <svg class="lk-icon" width="28" height="28" aria-hidden="true"><use href="lokta-icons.svg#lk-i-search"></use></svg>
+    <div class="lk-empty-title">Nothing on the menu</div>
+    <p>No dish matches that search. Clear the filters and try again.</p>
+    <button class="lk-btn" type="button" id="clearBtn">Clear filters</button>
+  </div>
+</main>
+
+<div class="lk-modal-backdrop" id="dialog" role="dialog" aria-modal="true" aria-labelledby="rd-title" hidden>
+  <div class="lk-modal" style="max-width: 720px;">
+    <div class="lk-modal-head">
+      <div>
+        <span class="lk-eyebrow" id="rd-film"></span>
+        <h2 class="lk-modal-title" id="rd-title" style="margin-top:4px;"></h2>
+      </div>
+      <button class="lk-btn lk-btn-icon" type="button" data-close aria-label="Close">
+        <svg class="lk-icon" width="16" height="16" aria-hidden="true"><use href="lokta-icons.svg#lk-i-x"></use></svg>
+      </button>
+    </div>
+    <div class="lk-modal-body lk-stack lk-stack-4">
+      <dl class="lk-cluster" id="rd-stats" style="gap: var(--space-6);"></dl>
+      <div class="lk-cluster" id="rd-tags"></div>
+      <div class="lk-grid lk-cols-2">
+        <div class="lk-stack lk-stack-2">
+          <h3 class="lk-eyebrow">Ingredients</h3>
+          <table class="lk-table"><tbody id="rd-ing"></tbody></table>
+        </div>
+        <div class="lk-stack lk-stack-2">
+          <h3 class="lk-eyebrow">Method</h3>
+          <ol id="rd-steps" class="lk-stack lk-stack-2" style="padding-left: 1.2em; margin: 0;"></ol>
+        </div>
+      </div>
+    </div>
+    <div class="lk-modal-foot">
+      <button class="lk-btn" type="button" data-close>Close</button>
+      <button class="lk-btn lk-btn-primary" type="button" id="rd-save"></button>
+    </div>
+  </div>
+</div>
+
+<div class="lk-toast lk-toast-success" id="toast" role="status" hidden>
+  <svg class="lk-icon" width="18" height="18" aria-hidden="true"><use href="lokta-icons.svg#lk-i-check"></use></svg>
+  <div class="lk-stack lk-stack-1">
+    <span class="lk-toast-title" id="toast-title">Saved</span>
+    <span id="toast-body"></span>
+  </div>
+</div>
+
+<script>
+const DATA = [
+  { id:'dashi', title:'Dashi Broth', film:'Spirited Away', pig:'marigold', dark:false, time:'20 min', serves:'2', diff:'Easy', tags:['Japanese','Broth'],
+    ing:[['Kombu','10 g'],['Bonito flakes','20 g'],['Water','1 L'],['Soy sauce','1 tbsp']],
+    steps:['Soak the kombu in cold water for 20 minutes, then heat gently to just below a boil and remove it.','Add the bonito flakes, take off the heat, and let stand 2 minutes.','Strain through a cloth. Season with soy and serve clear.'] },
+  { id:'ramen', title:'Tampopo Ramen', film:'Tampopo', pig:'peach', dark:false, time:'45 min', serves:'2', diff:'Medium', tags:['Japanese','Noodles'],
+    ing:[['Fresh ramen','200 g'],['Pork belly','150 g'],['Soft egg','2'],['Spring onion','2'],['Dashi','800 ml']],
+    steps:['Simmer the pork belly in the dashi until tender, then slice.','Cook the noodles until just springy and divide into bowls.','Ladle over the broth, top with pork, egg, and onion. Eat with respect.'] },
+  { id:'courtesan', title:'Courtesan au Chocolat', film:'The Grand Budapest Hotel', pig:'lavender', dark:false, time:'2 hr', serves:'6', diff:'Hard', tags:['Pastry','Sweet'],
+    ing:[['Choux paste','1 batch'],['Chocolate cream','300 g'],['Icing, three tones','as needed']],
+    steps:['Pipe three rounds of choux, large to small, and bake until hollow.','Fill with chocolate cream and stack into a tower.','Glaze each tier a different pastel and box neatly.'] },
+  { id:'ratatouille', title:'Confit Byaldi', film:'Ratatouille', pig:'cinnabar', dark:true, time:'1.5 hr', serves:'4', diff:'Medium', tags:['French','Vegetable'],
+    ing:[['Courgette','1'],['Aubergine','1'],['Tomato','3'],['Pepper sauce','200 ml'],['Thyme','few sprigs']],
+    steps:['Slice the vegetables into thin coins and fan them over the pepper sauce.','Cover with paper and bake low until tender.','Finish with a thyme vinaigrette and serve in a spiral.'] },
+  { id:'timpano', title:'Timpano', film:'Big Night', pig:'aubergine', dark:true, time:'3 hr', serves:'8', diff:'Hard', tags:['Italian','Baked'],
+    ing:[['Pasta dough','1 batch'],['Ziti','500 g'],['Meatballs','300 g'],['Egg','6'],['Ragu','1 L']],
+    steps:['Line a deep bowl with pasta dough.','Layer ziti, meatballs, egg, and ragu, then seal the top.','Bake until set, rest, and turn out the drum whole.'] },
+  { id:'bourguignon', title:'Beef Bourguignon', film:'Julie & Julia', pig:'night', dark:true, time:'4 hr', serves:'6', diff:'Medium', tags:['French','Stew'],
+    ing:[['Beef chuck','1.2 kg'],['Red wine','750 ml'],['Lardons','150 g'],['Pearl onion','12'],['Mushroom','250 g']],
+    steps:['Brown the beef and lardons, then deglaze with the wine.','Braise low and slow until the meat gives.','Glaze the onions and mushrooms and fold them through.'] },
+  { id:'krabby', title:'Krabby Patty', film:'SpongeBob SquarePants', pig:'celadon', dark:false, time:'15 min', serves:'1', diff:'Easy', tags:['Burger','Fun'],
+    ing:[['Patty','1'],['Sesame bun','1'],['Lettuce','1 leaf'],['Secret sauce','1 tbsp']],
+    steps:['Grill the patty to order.','Build bun, sauce, lettuce, patty, bun.','Guard the formula with your life.'] },
+  { id:'spaghetti', title:'Spaghetti & Meatballs', film:'Lady and the Tramp', pig:'indigo', dark:true, time:'40 min', serves:'2', diff:'Easy', tags:['Italian','Pasta'],
+    ing:[['Spaghetti','200 g'],['Meatballs','8'],['Tomato sauce','400 ml'],['Parmesan','to serve']],
+    steps:['Simmer the meatballs in the sauce.','Toss the cooked spaghetti through.','Share one plate, push the last meatball across.'] },
+  { id:'butterbeer', title:'Butterbeer', film:'Harry Potter', pig:'marigold', dark:false, time:'10 min', serves:'2', diff:'Easy', tags:['Drink','Sweet'],
+    ing:[['Cream soda','500 ml'],['Butterscotch','3 tbsp'],['Cream','100 ml'],['Salt','a pinch']],
+    steps:['Warm the butterscotch with a pinch of salt.','Stir into the soda.','Float salted whipped cream on top and serve foaming.'] },
+];
+
+const $ = (s, r=document) => r.querySelector(s);
+const grid = $('#grid'), tagsBar = $('#tags'), empty = $('#empty');
+const dialog = $('#dialog');
+const saved = new Set();
+let activeTag = null, lastFocus = null;
+
+const ALL_TAGS = [...new Set(DATA.flatMap(d => d.tags))].sort();
+tagsBar.innerHTML = ALL_TAGS.map(t =>
+  `<button class="lk-tag" type="button" data-tag="${t}" aria-pressed="false">${t}</button>`).join('');
+
+function matches(d, q) {
+  if (activeTag && !d.tags.includes(activeTag)) return false;
+  if (!q) return true;
+  const hay = (d.title + ' ' + d.film + ' ' + d.tags.join(' ')).toLowerCase();
+  return hay.includes(q);
+}
+
+function render() {
+  const q = $('#q').value.trim().toLowerCase();
+  const list = DATA.filter(d => matches(d, q));
+  empty.hidden = list.length > 0;
+  grid.innerHTML = list.map(d => `
+    <article class="recipe-card">
+      <div class="cb-cover lk-on-pigment${d.dark ? '-dark' : ''}" style="background: var(--pigment-${d.pig});">
+        <span class="cb-mark" aria-hidden="true">${d.title[0]}</span>
+      </div>
+      <div class="recipe-body lk-stack lk-stack-2">
+        <span class="lk-eyebrow">${d.film}</span>
+        <h2 class="lk-h3">${d.title}</h2>
+        <div class="lk-cluster">${d.tags.map(t => `<span class="lk-tag">${t}</span>`).join('')}</div>
+        <p class="lk-eyebrow" style="margin:0;">${d.time} · serves ${d.serves}</p>
+        <button class="lk-btn recipe-open" type="button" data-id="${d.id}">View recipe</button>
+      </div>
+    </article>`).join('');
+}
+
+function stat(label, value) {
+  return `<div><dt class="lk-eyebrow">${label}</dt><dd style="margin:0; font-weight: var(--wt-semibold); color: var(--text-primary);">${value}</dd></div>`;
+}
+
+function openDialog(id) {
+  const d = DATA.find(x => x.id === id);
+  if (!d) return;
+  lastFocus = document.activeElement;
+  $('#rd-film').textContent = d.film;
+  $('#rd-title').textContent = d.title;
+  $('#rd-stats').innerHTML = stat('Time', d.time) + stat('Serves', d.serves) + stat('Difficulty', d.diff);
+  $('#rd-tags').innerHTML = d.tags.map(t => `<span class="lk-tag lk-tag-filled">${t}</span>`).join('');
+  $('#rd-ing').innerHTML = d.ing.map(([n, a]) =>
+    `<tr><td>${n}</td><td class="lk-table-num">${a}</td></tr>`).join('');
+  $('#rd-steps').innerHTML = d.steps.map(s => `<li>${s}</li>`).join('');
+  const save = $('#rd-save');
+  save.dataset.id = d.id;
+  save.textContent = saved.has(d.id) ? 'Saved ✓' : 'Save to list';
+  dialog.hidden = false;
+  $('[data-close]', dialog).focus();
+  document.addEventListener('keydown', onKey);
+}
+
+function closeDialog() {
+  dialog.hidden = true;
+  document.removeEventListener('keydown', onKey);
+  if (lastFocus) lastFocus.focus();
+}
+
+function onKey(e) {
+  if (e.key === 'Escape') return closeDialog();
+  if (e.key !== 'Tab') return;
+  const f = [...dialog.querySelectorAll('button, [href], input, select, [tabindex]:not([tabindex="-1"])')].filter(el => !el.disabled && el.offsetParent !== null);
+  if (!f.length) return;
+  const first = f[0], last = f[f.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+}
+
+let toastTimer;
+function toast(title, body) {
+  $('#toast-title').textContent = title;
+  $('#toast-body').textContent = body;
+  $('#toast').hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { $('#toast').hidden = true; }, 2600);
+}
+
+$('#q').addEventListener('input', render);
+$('#clearBtn').addEventListener('click', () => {
+  $('#q').value = ''; activeTag = null;
+  tagsBar.querySelectorAll('[data-tag]').forEach(b => b.setAttribute('aria-pressed', 'false'));
+  render();
+});
+tagsBar.addEventListener('click', e => {
+  const btn = e.target.closest('[data-tag]'); if (!btn) return;
+  const t = btn.dataset.tag;
+  activeTag = activeTag === t ? null : t;
+  tagsBar.querySelectorAll('[data-tag]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.tag === activeTag)));
+  render();
+});
+grid.addEventListener('click', e => {
+  const btn = e.target.closest('.recipe-open'); if (btn) openDialog(btn.dataset.id);
+});
+dialog.addEventListener('click', e => {
+  if (e.target === dialog || e.target.closest('[data-close]')) closeDialog();
+});
+$('#rd-save').addEventListener('click', e => {
+  const id = e.currentTarget.dataset.id;
+  const d = DATA.find(x => x.id === id);
+  if (saved.has(id)) { saved.delete(id); e.currentTarget.textContent = 'Save to list'; }
+  else { saved.add(id); e.currentTarget.textContent = 'Saved ✓'; toast('Added to your list', `${d.title} (${d.film})`); }
+  $('#savedCount').textContent = String(saved.size);
+});
+$('#savedBtn').addEventListener('click', () => {
+  toast(saved.size ? `${saved.size} dish${saved.size > 1 ? 'es' : ''} saved` : 'Your list is empty',
+    saved.size ? [...saved].map(id => DATA.find(d => d.id === id).title).join(', ') : 'Open a recipe and save it to start a list.');
+});
+$('#stock').addEventListener('change', e => document.documentElement.setAttribute('data-theme', e.target.value));
+
+render();
+</script>
+</body>
+</html>

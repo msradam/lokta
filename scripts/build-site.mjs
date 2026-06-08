@@ -32,6 +32,7 @@ const copies = [
   // Publishable example templates, built only from Lokta classes.
   ['templates/dashboard.html', 'dashboard.html'],
   ['templates/landing.html', 'landing.html'],
+  ['templates/cookbook.html', 'cookbook.html'],
   // External icon sprite the templates reference via <use href>.
   ['packages/css/icons/lokta-icons.svg', 'lokta-icons.svg'],
   ['packages/css/lokta-behaviors.js', 'lokta-behaviors.js'],
@@ -614,11 +615,13 @@ ${iconSprite}
 
   <section id="templates">
     <h2 class="sec-h">Templates</h2>
-    <p class="muted">Whole-page examples built only from Lokta classes (app shell, stat cards, marketing kit). Copy the markup as a starting point. Both are part of the axe-core suite.</p>
+    <p class="muted">Whole-page examples built only from Lokta classes (app shell, stat cards, marketing kit), plus a small interactive demo app. Copy the markup as a starting point. All are part of the axe-core suite.</p>
     <p class="lk-row">
+      <a class="lk-btn lk-btn-primary" href="cookbook.html">Open the cookbook demo</a>
       <a class="lk-btn lk-btn-primary" href="dashboard.html">Open the dashboard template</a>
       <a class="lk-btn lk-btn-primary" href="landing.html">Open the landing template</a>
     </p>
+    <p class="muted">The cookbook is a film-dish browser (after <em>Cuisine on Screen</em>): live search, tag filters, a recipe dialog with an ingredient table, save-to-list with a toast, and a stock switcher.</p>
   </section>
 
   <section id="diagrams">
