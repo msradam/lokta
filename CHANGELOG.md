@@ -44,6 +44,16 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `lk-stat-flat`, a neutral KPI delta with its own glyph.
 - The Figma Variables manifest now carries all fourteen stocks as Semantic modes,
   not just the four token-built themes (`build:figma` reads `lokta-stocks.css`).
+- Data surfaces, held to deterministic standards. Charts: a retuned `--viz`
+  categorical palette (light and dark) that clears WCAG 1.4.11 (3:1 vs surface
+  and adjacent) and stays CVD-distinguishable, a perceptually uniform sequential
+  scale, a diverging scale, and pattern fills, gated by `validate/viz.mjs`. Code:
+  a 10-role syntax theme (`packages/code`, a `.tmTheme` plus Prism and
+  highlight.js CSS), AA per token on every stock with a greyscale cue, gated by
+  `validate/code-aa.mjs`. Tables: a captioned, scoped data table and an
+  interactive ARIA grid (roving tabindex, arrow keys). Documents: tagged PDF/UA-1
+  output from the Typst templates. Plus an APCA advisory beside the WCAG numbers
+  in `verify` (never blocking).
 - Manuscript-fusion / namesake: two stocks, Manuscript (warm aged-lokta ivory)
   and Highland (stone-cool dark), each clearing the full role x surface AA matrix
   (verify is now 234 checks); the heritage pigment palette (Pala dye tones

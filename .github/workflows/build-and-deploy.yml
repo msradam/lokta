@@ -25,6 +25,10 @@ jobs:
       - run: npm run verify
       # 1b. Static design-rule lint (no stray hex, radius/shadow discipline, focus rings).
       - run: npm run lint:rules
+      # 1c. Data-surface gates: chart palette (WCAG 1.4.11 + CVD/CIEDE2000) and the
+      #     code theme (per-token AA per stock + greyscale cue).
+      - run: npm run validate:viz
+      - run: npm run validate:code
       # 2. Build design tokens (Style Dictionary -> dist/css, scss, js) and verify,
       #    plus the Figma Variables manifest (collections, stock modes, aliases).
       - run: npm run build:tokens
