@@ -47,6 +47,11 @@ const copies = [
 ];
 for (const [from, to] of copies) await cp(join(root, from), join(site, to));
 
+// Example thumbnails for the hub cards.
+await mkdir(join(site, 'docs'), { recursive: true });
+for (const t of ['ex-cookbook', 'ex-dashboard', 'ex-landing', 'ex-patterns'])
+  await cp(join(root, 'docs', `${t}.png`), join(site, 'docs', `${t}.png`));
+
 // Self-contained drop-in for the site: import the tokens first so a single
 // <link href="lokta.css"> is genuinely batteries-included (the @lokta/css
 // package keeps tokens separate; here everything is co-located).
@@ -674,15 +679,24 @@ npm install github:msradam/lokta-mermaid</pre>
   </section>
 
   <section id="templates">
-    <h2 class="sec-h">Templates</h2>
-    <p class="muted">Whole-page examples built only from Lokta classes (app shell, stat cards, marketing kit), plus a small interactive demo app. Copy the markup as a starting point. All are part of the axe-core suite.</p>
-    <p class="lk-row">
-      <a class="lk-btn lk-btn-primary" href="cookbook.html">Open the cookbook demo</a>
-      <a class="lk-btn lk-btn-primary" href="dashboard.html">Open the dashboard template</a>
-      <a class="lk-btn lk-btn-primary" href="landing.html">Open the landing template</a>
-      <a class="lk-btn" href="patterns.html">Patterns gallery</a>
-    </p>
-    <p class="muted">The cookbook is a film-dish browser (after <em>Cuisine on Screen</em>): live search, tag filters, a recipe dialog with an ingredient table, save-to-list with a toast, and a stock switcher.</p>
+    <h2 class="sec-h">Examples</h2>
+    <p class="muted">Whole pages built only from Lokta classes, each part of the axe-core suite. Open one, or copy its markup as a starting point.</p>
+    <div class="ex-grid">
+      ${[
+        ['cookbook.html', 'ex-cookbook.png', 'Cookbook demo', 'A film-dish browser: live search, tag filters, a recipe dialog, save-to-list, and a stock switcher.'],
+        ['dashboard.html', 'ex-dashboard.png', 'Dashboard', 'App shell, KPI stat cards, a data table, segmented control, toast, and an empty state.'],
+        ['landing.html', 'ex-landing.png', 'Landing page', 'The marketing kit: an on-pigment hero, features, pricing, a testimonial, and a CTA band.'],
+        ['patterns.html', 'ex-patterns.png', 'Patterns gallery', 'Every application-tier component on the drop-in, with a live stock switcher.'],
+      ]
+        .map(
+          ([href, img, title, desc]) => `
+      <a class="ex-card" href="${href}">
+        <img src="docs/${img}" alt="${esc(title)} screenshot" loading="lazy">
+        <div class="ex-body"><h3>${esc(title)}</h3><p>${esc(desc)}</p></div>
+      </a>`,
+        )
+        .join('')}
+    </div>
   </section>
 
   <section id="diagrams">
@@ -863,8 +877,17 @@ section { padding: 64px 0; border-bottom: var(--rule-1) solid var(--border-hairl
 .install-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin: 18px 0; align-items: start; }
 .install-grid pre.lk-code { white-space: pre-wrap; word-break: break-word; overflow-x: auto; }
 
+.ex-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 18px; }
+.ex-card { display: block; border: 1px solid var(--border-default); background: var(--surface-raised); color: inherit; text-decoration: none; transition: border-color var(--dur-fast) var(--ease-paper); }
+.ex-card:hover { border-color: var(--text-primary); }
+.ex-card img { display: block; width: 100%; height: auto; border-bottom: 1px solid var(--border-default); }
+.ex-card .ex-body { padding: 14px 18px; }
+.ex-card h3 { font-family: "Archivo", sans-serif; font-weight: 700; font-size: var(--type-lg); color: var(--text-primary); margin: 0 0 6px; }
+.ex-card p { color: var(--text-body); font-size: var(--type-sm); line-height: 1.5; margin: 0; }
+
 @media (max-width: 900px) {
   .install-grid { grid-template-columns: 1fr; }
+  .ex-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
   .topnav { display: none; }
