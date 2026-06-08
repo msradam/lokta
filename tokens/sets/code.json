@@ -1,0 +1,15 @@
+{
+  "code": {
+    "comment":     { "$value": { "light": "#615A4C", "dark": "#9A9384" }, "cue": "italic" },
+    "keyword":     { "$value": { "light": "#8E2C49", "dark": "#D67A95" }, "cue": "bold" },
+    "string":      { "$value": { "light": "#4F6B50", "dark": "#8FB088" }, "cue": "none" },
+    "number":      { "$value": { "light": "#8A5A12", "dark": "#D9A642" }, "cue": "none" },
+    "function":    { "$value": { "light": "#1F5C92", "dark": "#6FA8D8" }, "cue": "bold" },
+    "type":        { "$value": { "light": "#5F4080", "dark": "#A98FC9" }, "cue": "none" },
+    "variable":    { "$value": { "light": "#2A2620", "dark": "#E2E1D6" }, "cue": "none" },
+    "operator":    { "$value": { "light": "#B23320", "dark": "#E2654F" }, "cue": "none" },
+    "punctuation": { "$value": { "light": "#5C564B", "dark": "#ADB2AE" }, "cue": "none" },
+    "keyword2":    { "$value": { "light": "#2F6F6D", "dark": "#5FB0AD" }, "cue": "italic" },
+    "_proof": { "min-AA-light": "4.5+ on #FAF8EA", "min-AA-dark": "4.5+ on #16140E", "per-token-cue": true, "gate": "validate/code-aa.mjs" }
+  }
+}
