@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patterns · Lokta</title>
+<link rel="stylesheet" href="lokta.css">
+<style>
+  body { margin: 0; background: var(--surface-page); }
+  .pat { border: var(--rule-1) solid var(--border-default); background: var(--surface-raised); padding: var(--space-5); }
+  .pat-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+  .pat-cls { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: var(--type-xs); color: var(--text-secondary); }
+</style>
+</head>
+<body class="lk">
+<a class="lk-sr-only" href="#main">Skip to content</a>
+
+<header class="lk-topbar">
+  <div class="lk-cluster">
+    <span class="lk-sidebar-brand" style="padding:0;">Lokta</span>
+    <span class="lk-eyebrow">Patterns</span>
+  </div>
+  <label class="lk-sr-only" for="stock">Stock</label>
+  <select class="lk-select" id="stock" aria-label="Stock"
+    onchange="document.documentElement.setAttribute('data-theme', this.value)">
+    <option value="paper">Paper</option>
+    <option value="bone">Bone</option>
+    <option value="ink">Ink</option>
+    <option value="indigo">Indigo</option>
+  </select>
+</header>
+
+<main id="main" class="lk-wrap-wide lk-stack lk-stack-6" style="padding-block: var(--space-6);">
+  <div class="lk-stack lk-stack-2" style="max-width:60ch">
+    <span class="lk-eyebrow">Application tier</span>
+    <h1 class="lk-h1">Every class the app, data, and marketing layers ship.</h1>
+    <p class="lk-lede">A live gallery on the <code>lokta.css</code> drop-in. Switch the stock above; everything holds WCAG 2.2 AA on each.</p>
+  </div>
+
+  <section class="pat lk-stack lk-stack-4" aria-labelledby="p-shell">
+    <div class="pat-head"><h2 id="p-shell" class="lk-h3">App shell &amp; navigation</h2><span class="pat-cls">lk-shell · lk-sidebar · lk-topbar · lk-nav · lk-nav-item</span></div>
+    <nav class="lk-nav" style="max-width:260px;border:var(--rule-1) solid var(--border-default)">
+      <span class="lk-nav-section">Workspace</span>
+      <a class="lk-nav-item" href="#main" aria-current="page">Overview</a>
+      <a class="lk-nav-item" href="#main">Customers</a>
+      <a class="lk-nav-item" href="#main">Settings</a>
+    </nav>
+    <p class="lk-lede" style="font-size:var(--type-sm)">A sidebar + main grid. The active item takes <code>aria-current</code>.</p>
+  </section>
+
+  <section class="pat lk-stack lk-stack-4" aria-labelledby="p-data">
+    <div class="pat-head"><h2 id="p-data" class="lk-h3">Stat &amp; data viz</h2><span class="pat-cls">lk-stat · lk-barlist · lk-legend · --viz-1..8</span></div>
+    <div class="lk-grid lk-cols-2">
+      <div class="lk-stat">
+        <span class="lk-stat-label">Revenue</span>
+        <span class="lk-stat-value">$48.2k</span>
+        <span class="lk-stat-delta lk-stat-up">12.4%</span>
+      </div>
+      <div class="lk-stat">
+        <span class="lk-stat-label">Churn</span>
+        <span class="lk-stat-value">2.3%</span>
+        <span class="lk-stat-delta lk-stat-down">0.6%</span>
+      </div>
+    </div>
+    <div class="lk-barlist">
+      <div class="lk-barlist-row"><span class="lk-barlist-label">Paper</span><span class="lk-bar-track"><span class="lk-bar-fill lk-viz-2" style="--pct:72%"></span></span><span class="lk-barlist-val">72</span></div>
+      <div class="lk-barlist-row"><span class="lk-barlist-label">Ink</span><span class="lk-bar-track"><span class="lk-bar-fill lk-viz-1" style="--pct:46%"></span></span><span class="lk-barlist-val">46</span></div>
+      <div class="lk-barlist-row"><span class="lk-barlist-label">Celadon</span><span class="lk-bar-track"><span class="lk-bar-fill lk-viz-4" style="--pct:58%"></span></span><span class="lk-barlist-val">58</span></div>
+    </div>
+    <div class="lk-legend">
+      <span class="lk-legend-item"><span class="lk-swatch lk-viz-1"></span>Ink</span>
+      <span class="lk-legend-item"><span class="lk-swatch lk-viz-2"></span>Paper</span>
+      <span class="lk-legend-item"><span class="lk-swatch lk-viz-4"></span>Celadon</span>
+    </div>
+  </section>
+
+  <section class="pat lk-stack lk-stack-4" aria-labelledby="p-control">
+    <div class="pat-head"><h2 id="p-control" class="lk-h3">Controls</h2><span class="pat-cls">lk-segment · lk-switch · lk-badge · lk-avatar</span></div>
+    <div class="lk-cluster" style="gap:var(--space-6)">
+      <div class="lk-segment" role="group" aria-label="Range">
+        <button type="button" aria-pressed="false">Week</button>
+        <button type="button" aria-pressed="true">Month</button>
+        <button type="button" aria-pressed="false">Year</button>
+      </div>
+      <label class="lk-switch"><input type="checkbox" checked> Notifications</label>
+      <span class="lk-badge">8 new</span>
+      <span class="lk-badge lk-badge-accent">Beta</span>
+      <span class="lk-avatar lk-avatar-sm" aria-hidden="true">AR</span>
+      <span class="lk-avatar" aria-hidden="true">SH</span>
+      <span class="lk-avatar lk-avatar-lg" aria-hidden="true">SK</span>
+    </div>
+  </section>
+
+  <section class="pat lk-stack lk-stack-4" aria-labelledby="p-feedback">
+    <div class="pat-head"><h2 id="p-feedback" class="lk-h3">Feedback</h2><span class="pat-cls">lk-toast · lk-empty · lk-skeleton</span></div>
+    <div class="lk-cluster" style="align-items:flex-start;gap:var(--space-5)">
+      <div class="lk-toast lk-toast-success" role="status" style="position:static">
+        <svg class="lk-icon" width="18" height="18" aria-hidden="true"><use href="lokta-icons.svg#lk-i-check"></use></svg>
+        <div class="lk-stack lk-stack-1"><span class="lk-toast-title">Saved</span><span>Your report is ready.</span></div>
+      </div>
+      <div class="lk-empty" style="min-width:220px">
+        <svg class="lk-icon" width="24" height="24" aria-hidden="true"><use href="lokta-icons.svg#lk-i-search"></use></svg>
+        <div class="lk-empty-title">No results</div>
+        <p>Nothing matches that filter.</p>
+      </div>
+      <div class="lk-stack lk-stack-2" style="flex:1;min-width:200px">
+        <span class="lk-skeleton lk-skeleton-title"></span>
+        <span class="lk-skeleton lk-skeleton-text"></span>
+        <span class="lk-skeleton lk-skeleton-text"></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="pat lk-stack lk-stack-4" aria-labelledby="p-form">
+    <div class="pat-head"><h2 id="p-form" class="lk-h3">Forms</h2><span class="pat-cls">lk-fieldset · lk-input-group · lk-file · lk-char-count</span></div>
+    <div class="lk-stack lk-stack-4" style="max-width:440px">
+      <fieldset class="lk-fieldset">
+        <legend>Account</legend>
+        <div class="lk-field"><label class="lk-label" for="ag">Site</label>
+          <div class="lk-input-group"><span class="lk-input-addon">https://</span><input class="lk-input" id="ag" value="lokta"></div>
+        </div>
+      </fieldset>
+      <label class="lk-file"><svg class="lk-icon" width="16" height="16" aria-hidden="true"><use href="lokta-icons.svg#lk-i-upload"></use></svg> Choose file <span class="lk-file-name">none</span><input type="file"></label>
+      <p class="lk-char-count">42 / 280</p>
+    </div>
+  </section>
+
+  <section class="pat lk-stack lk-stack-5" aria-labelledby="p-mkt">
+    <div class="pat-head"><h2 id="p-mkt" class="lk-h3">Marketing</h2><span class="pat-cls">lk-feature · lk-plan · lk-quote · lk-cta · lk-logos · lk-on-pigment · lk-link</span></div>
+    <div class="lk-grid lk-cols-2">
+      <div class="lk-feature">
+        <h3 class="lk-feature-title">AA by construction</h3>
+        <p>Contrast and grid are verified in CI, not by eye.</p>
+      </div>
+      <div class="lk-plan lk-plan-featured">
+        <span class="lk-plan-name">Team</span>
+        <span class="lk-plan-price">$24<small>/mo</small></span>
+        <ul class="lk-plan-list"><li>All stocks</li><li>Figma library</li></ul>
+        <a class="lk-btn lk-btn-primary" href="#main">Choose</a>
+      </div>
+    </div>
+    <blockquote class="lk-quote">It reads like a book and audits like a spec.<span class="lk-quote-cite"><span class="lk-avatar" aria-hidden="true">SH</span><span><cite>Sachiyo H.</cite></span></span></blockquote>
+    <div class="lk-cta"><div class="lk-stack lk-stack-1"><h2 class="lk-h2">Start with a clean page.</h2></div><a class="lk-btn lk-btn-xl" href="#main">Get Lokta</a></div>
+    <div class="lk-logos"><span>Harada</span><span>Prestel</span><span>Folio</span></div>
+    <div class="lk-on-pigment lk-section-sm" style="background:var(--pigment-marigold);padding-inline:var(--space-5)">
+      <div class="lk-stack lk-stack-2" style="max-width:60ch">
+        <span class="lk-eyebrow">Feature ground</span>
+        <p style="margin:0">Drop a section on a pigment and <code>lk-on-pigment</code> recolours the furniture and buttons to read on it. Inline links use <a class="lk-link" href="#main">lk-link</a>.</p>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

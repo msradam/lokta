@@ -4,7 +4,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const PAGES = ['dashboard.html', 'landing.html', 'cookbook.html'];
+const PAGES = ['dashboard.html', 'landing.html', 'cookbook.html', 'patterns.html'];
 const STOCKS = ['paper', 'ink', 'indigo'];
 
 for (const pageName of PAGES) {
