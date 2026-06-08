@@ -39,6 +39,9 @@ jobs:
       #     border-radius and target size). Serves site/ via the playwright config.
       - run: npx playwright install --with-deps chromium
       - run: npm run test:components
+      # 4c. Visual regression. Runs inside the pinned Playwright image (matching
+      #     the committed Linux baselines), so font rendering is identical.
+      - run: docker run --rm -v "$PWD":/work -w /work --network host mcr.microsoft.com/playwright:v1.60.0-jammy npx playwright test visual.spec.mjs
       # 5. Render the Marp deck to HTML + PDF into the site. Fonts and the diagram
       #    SVG resolve from site/, which build:site populated.
       - run: npx @marp-team/marp-cli@latest packages/marp-theme/example-deck.md --theme packages/marp-theme/lokta.marp.css --html --allow-local-files -o site/deck.html

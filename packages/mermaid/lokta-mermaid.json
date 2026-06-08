@@ -34,7 +34,12 @@
     "transitionLabelColor": "#1F1C13"
   },
   "flowchart": { "curve": "linear", "htmlLabels": true, "padding": 16, "nodeSpacing": 44, "rankSpacing": 56 },
-  "sequence": { "mirrorActors": false, "actorMargin": 64, "messageFontFamily": "\"Spline Sans Mono\", monospace", "noteFontFamily": "\"Spline Sans Mono\", monospace" },
+  "sequence": {
+    "mirrorActors": false,
+    "actorMargin": 64,
+    "messageFontFamily": "\"Spline Sans Mono\", monospace",
+    "noteFontFamily": "\"Spline Sans Mono\", monospace"
+  },
   "_classDefs": {
     "_comment": "Reusable node classes, add to any flowchart with `classDef`.",
     "hero": "fill:#FBBC0E,stroke:#1F1C13,stroke-width:1.5px,color:#1F1C13",

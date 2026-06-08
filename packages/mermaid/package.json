@@ -18,7 +18,8 @@
     "lokta-mermaid.css",
     "lokta-mermaid.print.css",
     "example.mmd",
-    "example.svg"
+    "example.svg",
+    "index.d.ts"
   ],
   "peerDependencies": {
     "mermaid": ">=10"
@@ -34,5 +35,6 @@
     "theme",
     "lokta",
     "design-system"
-  ]
+  ],
+  "types": "index.d.ts"
 }

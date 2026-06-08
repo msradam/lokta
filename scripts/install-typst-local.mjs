@@ -12,7 +12,8 @@ const pkg = join(here, '..', 'packages/typst');
 
 function localPackagesDir() {
   const env = process.env;
-  if (platform() === 'win32') return join(env.APPDATA || join(homedir(), 'AppData/Roaming'), 'typst/packages/local');
+  if (platform() === 'win32')
+    return join(env.APPDATA || join(homedir(), 'AppData/Roaming'), 'typst/packages/local');
   if (platform() === 'darwin') return join(homedir(), 'Library/Application Support/typst/packages/local');
   return join(env.XDG_DATA_HOME || join(homedir(), '.local/share'), 'typst/packages/local');
 }

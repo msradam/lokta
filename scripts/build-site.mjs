@@ -21,6 +21,7 @@ const copies = [
   ['packages/css/fonts.css', 'fonts.css'],
   ['packages/css/lokta-base.css', 'lokta-base.css'],
   ['packages/css/lokta-components.css', 'lokta-components.css'],
+  ['packages/css/lokta-icons.css', 'lokta-icons.css'],
   ['packages/css/lokta-stocks.css', 'lokta-stocks.css'],
   ['packages/css/lokta.css', 'lokta.css'],
   // The deterministic verification dashboard (the proof).
@@ -44,13 +45,19 @@ const typstPdfs = ['example', 'example-recipe', 'example-cover'];
 const typstHere = {};
 for (const name of typstPdfs) {
   const src = join(root, 'packages/typst/dist', `${name}.pdf`);
-  typstHere[name] = await access(src).then(() => true, () => false);
+  typstHere[name] = await access(src).then(
+    () => true,
+    () => false,
+  );
   if (typstHere[name]) await cp(src, join(site, `${name}.pdf`));
 }
 
 // Figma Variables manifest, if built (build:figma).
 const figmaSrc = join(root, 'packages/tokens/dist/figma/lokta.variables.json');
-const figmaHere = await access(figmaSrc).then(() => true, () => false);
+const figmaHere = await access(figmaSrc).then(
+  () => true,
+  () => false,
+);
 if (figmaHere) await cp(figmaSrc, join(site, 'lokta.variables.json'));
 
 // ── helpers ─────────────────────────────────────────────────────────────────
@@ -67,9 +74,15 @@ const swatch = (name, value, note) => `
 
 // ── colour ──────────────────────────────────────────────────────────────────
 const p = tokens.primitives;
-const paperSwatches = Object.entries(p.paper).map(([k, v]) => swatch(`paper.${k}`, v.$value, v.$description)).join('');
-const inkSwatches = Object.entries(p.ink).map(([k, v]) => swatch(`ink.${k}`, v.$value, v.$description)).join('');
-const pigmentSwatches = Object.entries(p.pigment).map(([k, v]) => swatch(`pigment.${k}`, v.$value, v.$description)).join('');
+const paperSwatches = Object.entries(p.paper)
+  .map(([k, v]) => swatch(`paper.${k}`, v.$value, v.$description))
+  .join('');
+const inkSwatches = Object.entries(p.ink)
+  .map(([k, v]) => swatch(`ink.${k}`, v.$value, v.$description))
+  .join('');
+const pigmentSwatches = Object.entries(p.pigment)
+  .map(([k, v]) => swatch(`pigment.${k}`, v.$value, v.$description))
+  .join('');
 
 const STOCKS = [
   { id: 'paper', name: 'Paper', sub: 'light, default' },
@@ -147,17 +160,33 @@ const MOTION = [
   ['--dur-base', '200ms', 'Most transitions'],
   ['--dur-slow', '320ms', 'Overlays'],
 ];
-const motionRows = MOTION.map(([n, v, u]) => `<tr><td><code>${esc(n)}</code></td><td class="lk-mono">${esc(v)}</td><td>${esc(u)}</td></tr>`).join('');
+const motionRows = MOTION.map(
+  ([n, v, u]) =>
+    `<tr><td><code>${esc(n)}</code></td><td class="lk-mono">${esc(v)}</td><td>${esc(u)}</td></tr>`,
+).join('');
 
-// ── icon (square-capped Tabler-style strokes) ───────────────────────────────
-const icon = (paths) =>
-  `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter">${paths}</svg>`;
-const icons = [
-  icon('<path d="M5 12h14M13 6l6 6-6 6"/>'),
-  icon('<rect x="4" y="4" width="16" height="16"/><path d="M9 12l2 2 4-4"/>'),
-  icon('<path d="M12 3v18M3 12h18"/>'),
-  icon('<path d="M4 6h16M4 12h16M4 18h10"/>'),
-];
+// ── icons (self-hosted sharpened sprite; vendored by build:icons) ───────────
+const spriteFile = join(root, 'packages/css/icons/lokta-icons.svg');
+const iconSprite = await access(spriteFile).then(
+  () => readFile(spriteFile, 'utf8'),
+  () => '',
+);
+const ico = (name, size = 28) =>
+  `<svg class="lk-ico" style="width:${size}px;height:${size}px" aria-hidden="true"><use href="#lk-i-${name}"></use></svg>`;
+const iconRow = [
+  'arrow-right',
+  'check',
+  'alert-triangle',
+  'circle',
+  'chevron-right',
+  'search',
+  'settings',
+  'star',
+  'download',
+  'external-link',
+]
+  .map((n) => ico(n))
+  .join('');
 
 // ── tokens reference table (generated from the JSON) ────────────────────────
 const SETS = ['primitives', 'semantic-paper', 'semantic-ink', 'stock-bone', 'stock-indigo'];
@@ -166,7 +195,12 @@ function flatten(obj, prefix = []) {
   for (const [k, v] of Object.entries(obj)) {
     if (k.startsWith('$')) continue;
     if (v && typeof v === 'object' && '$value' in v) {
-      rows.push({ path: [...prefix, k].join('.'), type: v.$type || '', value: v.$value, note: v.$description || '' });
+      rows.push({
+        path: [...prefix, k].join('.'),
+        type: v.$type || '',
+        value: v.$value,
+        note: v.$description || '',
+      });
     } else if (v && typeof v === 'object') {
       rows.push(...flatten(v, [...prefix, k]));
     }
@@ -190,7 +224,10 @@ const tokenTables = SETS.map((set) => {
 }).join('');
 
 // ── deck link (rendered by CI; degrade gracefully when absent) ──────────────
-const deckHere = await access(join(site, 'deck.html')).then(() => true, () => false);
+const deckHere = await access(join(site, 'deck.html')).then(
+  () => true,
+  () => false,
+);
 const deckLinks = `
   <p>The Lokta Marp theme renders this brief as slides, with the same fonts and pigments.</p>
   <div class="lk-row">
@@ -264,11 +301,13 @@ const html = `<!doctype html>
 <link rel="stylesheet" href="lokta.tokens.css">
 <link rel="stylesheet" href="lokta-base.css">
 <link rel="stylesheet" href="lokta-components.css">
+<link rel="stylesheet" href="lokta-icons.css">
 <link rel="stylesheet" href="lokta-stocks.css">
 <link rel="stylesheet" href="styles.css">
 <script src="lokta-behaviors.js" defer></script>
 </head>
 <body class="lk lk-sheet">
+${iconSprite}
 <a class="lk-sr-only" href="#main">Skip to content</a>
 
 <header class="topbar">
@@ -341,8 +380,8 @@ const html = `<!doctype html>
     <table class="lk-table"><thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead><tbody>${motionRows}</tbody></table>
 
     <h3 class="sub-h">Icons</h3>
-    <p class="muted">Tabler as the base, sharpened: square line caps, miter joins, 2px stroke. Myna UI is the alternative set. Icons match the hard-edged geometry of the controls.</p>
-    <div class="icon-row">${icons.join('')}</div>
+    <p class="muted">Tabler as the base, sharpened: square line caps, miter joins, 2px stroke, currentColor. Self-hosted as a vendored sprite (<code>npm run build:icons</code>); Myna UI is the alternative set. The live searchable browser is on the <a href="components.html">components reference</a>.</p>
+    <div class="icon-row">${iconRow}</div>
   </section>
 
   <section id="components">
@@ -351,18 +390,29 @@ const html = `<!doctype html>
     <p class="lk-row"><a class="lk-btn lk-btn-primary" href="components.html">Open the components, icons, and accessibility reference</a></p>
     <p class="muted">The reference page is keyboard-operable (tabs, accordion, dialog, menu) with the ARIA wiring from <code>lokta-behaviors.js</code>, and a live icon browser. It is what the Playwright and axe suite tests.</p>
 
-    ${component('Buttons', 'Printed keys. 36px minimum target, square caps, optional radius via --lk-radius.', `
+    ${component(
+      'Buttons',
+      'Printed keys. 36px minimum target, square caps, optional radius via --lk-radius.',
+      `
       <button class="lk-btn" type="button">Default</button>
       <button class="lk-btn lk-btn-primary" type="button">Primary</button>
       <button class="lk-btn lk-btn-lg" type="button">Large</button>
-      <button class="lk-btn" type="button" disabled>Disabled</button>`)}
+      <button class="lk-btn" type="button" disabled>Disabled</button>`,
+    )}
 
-    ${component('Tags', 'Hard-cornered metadata pills.', `
+    ${component(
+      'Tags',
+      'Hard-cornered metadata pills.',
+      `
       <span class="lk-tag">Outline</span>
       <span class="lk-tag lk-tag-filled">Filled</span>
-      <span class="lk-tag lk-tag-pigment">Pigment</span>`)}
+      <span class="lk-tag lk-tag-pigment">Pigment</span>`,
+    )}
 
-    ${component('Inputs', 'Text, select, textarea, with placeholder and disabled states.', `
+    ${component(
+      'Inputs',
+      'Text, select, textarea, with placeholder and disabled states.',
+      `
       <div class="lk-field" style="max-width:320px">
         <label class="lk-label" for="d-in">Field</label>
         <input class="lk-input" id="d-in" placeholder="Placeholder text">
@@ -371,15 +421,23 @@ const html = `<!doctype html>
         <label class="lk-label" for="d-sel">Select</label>
         <select class="lk-select" id="d-sel"><option>Paper</option><option>Ink</option></select>
       </div>
-      <input class="lk-input" style="max-width:320px" value="Disabled" disabled>`)}
+      <input class="lk-input" style="max-width:320px" value="Disabled" disabled>`,
+    )}
 
-    ${component('Checkbox &amp; radio', 'Square caps; the radio reads with an inner filled square.', `
+    ${component(
+      'Checkbox &amp; radio',
+      'Square caps; the radio reads with an inner filled square.',
+      `
       <label class="lk-check"><input type="checkbox" checked> Checked</label>
       <label class="lk-check"><input type="checkbox"> Unchecked</label>
       <label class="lk-radio"><input type="radio" name="d-r" checked> Selected</label>
-      <label class="lk-radio"><input type="radio" name="d-r"> Option</label>`)}
+      <label class="lk-radio"><input type="radio" name="d-r"> Option</label>`,
+    )}
 
-    ${component('Tabs', 'Live: click or use Left/Right, Home/End. Roving tabindex, real ARIA.', `
+    ${component(
+      'Tabs',
+      'Live: click or use Left/Right, Home/End. Roving tabindex, real ARIA.',
+      `
       <div style="max-width:520px">
         <div class="lk-tabs" role="tablist" data-tabs aria-label="Example tabs">
           <button class="lk-tab" role="tab" id="t1" aria-controls="tp1" aria-selected="true">Overview</button>
@@ -389,17 +447,25 @@ const html = `<!doctype html>
         <div id="tp1" role="tabpanel" aria-labelledby="t1" style="padding:14px 2px">The overview panel.</div>
         <div id="tp2" role="tabpanel" aria-labelledby="t2" style="padding:14px 2px" hidden>The detail panel.</div>
         <div id="tp3" role="tabpanel" aria-labelledby="t3" style="padding:14px 2px" hidden>The history panel.</div>
-      </div>`)}
+      </div>`,
+    )}
 
-    ${component('Accordion', 'Live: Enter or Space toggles each panel (aria-expanded + region).', `
+    ${component(
+      'Accordion',
+      'Live: Enter or Space toggles each panel (aria-expanded + region).',
+      `
       <div class="lk-accordion" style="max-width:520px">
         <button class="lk-acc-head" aria-expanded="true" aria-controls="acp1">What is a stock?</button>
         <div class="lk-acc-body" id="acp1" role="region">A stock re-points the semantic layer: Paper, Ink, Bone, Indigo.</div>
         <button class="lk-acc-head" aria-expanded="false" aria-controls="acp2">Is it accessible?</button>
         <div class="lk-acc-body" id="acp2" role="region" hidden>Every text role clears WCAG 2.2 AA on its surface, in every stock.</div>
-      </div>`)}
+      </div>`,
+    )}
 
-    ${component('Menu', 'Live: ArrowDown opens, arrows move, Escape closes and restores focus.', `
+    ${component(
+      'Menu',
+      'Live: ArrowDown opens, arrows move, Escape closes and restores focus.',
+      `
       <div class="lk-menu" data-menu>
         <button class="lk-btn lk-menu-btn" data-menu-btn aria-haspopup="true" aria-expanded="false">Actions</button>
         <ul class="lk-menu-list" role="menu" data-menu-list hidden>
@@ -407,9 +473,13 @@ const html = `<!doctype html>
           <li><button role="menuitem">Export</button></li>
           <li><button role="menuitem">Delete</button></li>
         </ul>
-      </div>`)}
+      </div>`,
+    )}
 
-    ${component('Dialog', 'Live: opens with focus trap, Escape closes, focus returns to the trigger.', `
+    ${component(
+      'Dialog',
+      'Live: opens with focus trap, Escape closes, focus returns to the trigger.',
+      `
       <button class="lk-btn lk-btn-primary" data-open-dialog="siteDialog">Open dialog</button>
       <div class="lk-modal-backdrop" id="siteDialog" role="dialog" aria-modal="true" aria-labelledby="siteDialog-t" hidden>
         <div class="lk-modal">
@@ -417,71 +487,116 @@ const html = `<!doctype html>
           <p>Choose a paper for the run. The choice re-points every semantic token.</p>
           <div class="lk-modal-foot"><button class="lk-btn" data-close-dialog="siteDialog">Cancel</button><button class="lk-btn lk-btn-primary" data-close-dialog="siteDialog">Confirm</button></div>
         </div>
-      </div>`)}
+      </div>`,
+    )}
 
-    ${component('Inline notifications', 'Color is paired with a glyph, so meaning never relies on hue.', `
+    ${component(
+      'Inline notifications',
+      'Color is paired with a glyph, so meaning never relies on hue.',
+      `
       <div class="lk-note lk-note-success" style="max-width:520px"><div><span class="lk-note-title">Saved</span><div>The page was written to the press.</div></div></div>
       <div class="lk-note lk-note-danger" style="max-width:520px"><div><span class="lk-note-title">Failed</span><div>The plate did not register.</div></div></div>
-      <div class="lk-note lk-note-info" style="max-width:520px"><div><span class="lk-note-title">Note</span><div>Marigold demands dark text.</div></div></div>`)}
+      <div class="lk-note lk-note-info" style="max-width:520px"><div><span class="lk-note-title">Note</span><div>Marigold demands dark text.</div></div></div>`,
+    )}
 
-    ${component('Breadcrumb', '', `
-      <ol class="lk-breadcrumb"><li><a href="#">Library</a></li><li><a href="#">Stocks</a></li><li aria-current="page">Paper</li></ol>`)}
+    ${component(
+      'Breadcrumb',
+      '',
+      `
+      <ol class="lk-breadcrumb"><li><a href="#">Library</a></li><li><a href="#">Stocks</a></li><li aria-current="page">Paper</li></ol>`,
+    )}
 
-    ${component('Pagination', '', `
+    ${component(
+      'Pagination',
+      '',
+      `
       <div class="lk-pagination">
         <button class="lk-page" type="button">Prev</button>
         <button class="lk-page" aria-current="page" type="button">1</button>
         <button class="lk-page" type="button">2</button>
         <button class="lk-page" type="button">3</button>
         <button class="lk-page" type="button">Next</button>
-      </div>`)}
+      </div>`,
+    )}
 
-    ${component('Progress', '', `
-      <div class="lk-progress" style="max-width:420px" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100"><div class="lk-progress-bar" style="width:64%"></div></div>`)}
+    ${component(
+      'Progress',
+      '',
+      `
+      <div class="lk-progress" style="max-width:420px" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100"><div class="lk-progress-bar" style="width:64%"></div></div>`,
+    )}
 
     ${component('Slider', '', `<input class="lk-slider" type="range" min="0" max="100" value="40" style="max-width:420px" aria-label="Demo slider">`)}
 
-    ${component('Tooltip', 'Hover or focus the button.', `
+    ${component(
+      'Tooltip',
+      'Hover or focus the button.',
+      `
       <button class="lk-btn lk-has-tooltip" type="button" data-tooltip="Hatched end-mark">Hover me</button>
-      <span class="lk-tooltip">Static tooltip</span>`)}
+      <span class="lk-tooltip">Static tooltip</span>`,
+    )}
 
-    ${component('Status', '', `
+    ${component(
+      'Status',
+      '',
+      `
       <span class="lk-status lk-status-done">Done</span>
       <span class="lk-status lk-status-alert">Alert</span>
-      <span class="lk-status lk-status-pending">Pending</span>`)}
+      <span class="lk-status lk-status-pending">Pending</span>`,
+    )}
 
-    ${component('Code', '', `
+    ${component(
+      'Code',
+      '',
+      `
       <pre class="lk-code">npm install @lokta/tokens @lokta/css</pre>
-      <p>Inline <code class="lk-code-inline">--surface-page</code> too.</p>`)}
+      <p>Inline <code class="lk-code-inline">--surface-page</code> too.</p>`,
+    )}
 
-    ${component('Data table', 'Tracked mono headers, hairline rules, striped rows, tabular figures.', `
+    ${component(
+      'Data table',
+      'Tracked mono headers, hairline rules, striped rows, tabular figures.',
+      `
       <table class="lk-table" style="max-width:520px"><thead><tr><th>Stock</th><th>Surface</th><th class="lk-table-num">Roles</th></tr></thead>
       <tbody><tr><td>Paper</td><td><code>paper-01</code></td><td class="lk-table-num">12</td></tr>
       <tr><td>Ink</td><td><code>ink-90</code></td><td class="lk-table-num">12</td></tr>
-      <tr><td>Indigo</td><td><code>#1B2230</code></td><td class="lk-table-num">12</td></tr></tbody></table>`)}
+      <tr><td>Indigo</td><td><code>#1B2230</code></td><td class="lk-table-num">12</td></tr></tbody></table>`,
+    )}
 
-    ${component('Modal', 'The one shadow in the system: a single hard offset, no blur.', `
+    ${component(
+      'Modal',
+      'The one shadow in the system: a single hard offset, no blur.',
+      `
       <div class="lk-modal" style="position:static">
         <div class="lk-modal-head"><span class="lk-modal-title">Set the stock</span><button class="lk-btn" type="button" aria-label="Close">✕</button></div>
         <p>Choose a paper for the run. The choice re-points every semantic token.</p>
         <div class="lk-modal-foot"><button class="lk-btn" type="button">Cancel</button><button class="lk-btn lk-btn-primary" type="button">Confirm</button></div>
-      </div>`)}
+      </div>`,
+    )}
 
-    ${component('Editorial marks', 'Rules, the measured rule, and the hatched end-mark.', `
+    ${component(
+      'Editorial marks',
+      'Rules, the measured rule, and the hatched end-mark.',
+      `
       <div style="display:grid;gap:14px;max-width:520px">
         <hr class="lk-rule">
         <hr class="lk-rule-thick">
         <hr class="lk-rule-double">
         <div class="lk-measure"><span class="lk-measure-line" style="width:160px"></span><span class="lk-measure-gap"></span><span class="lk-measure-hatch"></span></div>
         <span class="lk-endmark"></span>
-      </div>`)}
+      </div>`,
+    )}
 
-    ${component('Page furniture', 'Running head, colophon, folio.', `
+    ${component(
+      'Page furniture',
+      'Running head, colophon, folio.',
+      `
       <div style="display:grid;gap:14px;max-width:520px">
         <div class="lk-running-head"><span>Chapter · Stocks</span><span>p. 12</span></div>
         <div class="lk-colophon"><span>Lokta</span><span>Set in Archivo &amp; Spline Sans Mono</span></div>
         <div class="lk-folio">012</div>
-      </div>`)}
+      </div>`,
+    )}
   </section>
 
   <section id="diagrams">

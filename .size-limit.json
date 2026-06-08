@@ -1,0 +1,6 @@
+[
+  { "name": "tokens (all stocks)", "path": "packages/tokens/dist/css/lokta.css", "limit": "16 kB" },
+  { "name": "components CSS", "path": "packages/css/lokta-components.css", "limit": "12 kB" },
+  { "name": "behaviors JS", "path": "packages/css/lokta-behaviors.js", "limit": "6 kB" },
+  { "name": "mermaid ESM", "path": "packages/mermaid/index.mjs", "limit": "3 kB" }
+]

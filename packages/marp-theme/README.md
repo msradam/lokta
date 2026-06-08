@@ -26,12 +26,12 @@ marp deck.md --theme lokta.marp.css -o deck.html
 
 Set a class on a slide with `<!-- _class: NAME -->`.
 
-| Class | Effect |
-| --- | --- |
-| `lead` | Cover slide. Centered, oversized headline. |
-| `invert` | Ink dark stock. |
-| `marigold` | Marigold feature ground (dark text). |
-| `peach` | Peach heritage ground (dark text). |
+| Class      | Effect                                     |
+| ---------- | ------------------------------------------ |
+| `lead`     | Cover slide. Centered, oversized headline. |
+| `invert`   | Ink dark stock.                            |
+| `marigold` | Marigold feature ground (dark text).       |
+| `peach`    | Peach heritage ground (dark text).         |
 
 Inline helpers: a backtick `LABEL` on its own line renders as a tracked eyebrow.
 `---` becomes the hatched end-mark divider. `>` blockquotes set in Source Serif.
@@ -65,8 +65,8 @@ nodes, ink strokes, mono edge labels). Two ways to get a diagram into a deck:
   ```
 
 - Live in an HTML deck. Render with `marp.config.mjs` (it turns ```mermaid fences
-  into `<div class="mermaid">`), then include mermaid and initialize it with
-  `@lokta/mermaid`:
+into `<div class="mermaid">`), then include mermaid and initialize it with
+`@lokta/mermaid`:
 
   ```sh
   marp example-deck.md --config-file marp.config.mjs --theme lokta.marp.css -o deck.html

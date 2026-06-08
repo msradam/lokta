@@ -16,14 +16,16 @@ npm install @lokta/tokens @lokta/css
 Load a token theme first (it defines the semantic variables), then this package.
 
 ```css
-@import "@lokta/tokens/css/lokta.css"; /* all four themes */
-@import "@lokta/css/lokta.css";        /* fonts + base + components */
+@import '@lokta/tokens/css/lokta.css'; /* all four themes */
+@import '@lokta/css/lokta.css'; /* fonts + base + components */
 ```
 
 Set the stock on the root element. Paper is the default.
 
 ```html
-<html data-theme="ink"> ... </html>
+<html data-theme="ink">
+  ...
+</html>
 ```
 
 `lokta.css` pulls in three files you can also load individually:
@@ -45,13 +47,13 @@ EU. To re-fetch the files, run `npm run fonts` from the repo root.
 Apps may override the brand layer. Everything else (type scale, 8px grid, AA
 rules, component structure, hard-edged character) is locked.
 
-| Knob | How | Default |
-| --- | --- | --- |
-| Accent pigment | `--lk-accent` | marigold |
-| Control radius | `--lk-radius` (0 to 3px) | `0px` |
-| Density | `data-density="compact"` | comfortable |
-| Grain | `data-grain="off"` | on |
-| Stock | `data-theme="paper \| ink \| bone \| indigo"` | paper |
+| Knob           | How                                           | Default     |
+| -------------- | --------------------------------------------- | ----------- |
+| Accent pigment | `--lk-accent`                                 | marigold    |
+| Control radius | `--lk-radius` (0 to 3px)                      | `0px`       |
+| Density        | `data-density="compact"`                      | comfortable |
+| Grain          | `data-grain="off"`                            | on          |
+| Stock          | `data-theme="paper \| ink \| bone \| indigo"` | paper       |
 
 ## License
 

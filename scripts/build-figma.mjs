@@ -26,14 +26,16 @@ const stockSets = Object.fromEntries(await Promise.all(STOCKS.map(async (s) => [
 const isRef = (v) => typeof v === 'string' && v.startsWith('{');
 const refToPath = (v) => v.replace(/[{}]/g, '').replace(/\./g, '/'); // {ink.90} -> ink/90
 const dimToFloat = (v) => parseFloat(String(v)); // "24px" -> 24, "0.5px" -> 0.5
-const figType = (t) => (t === 'color' ? 'COLOR' : t === 'dimension' ? 'FLOAT' : t === 'fontFamily' ? 'STRING' : 'STRING');
+const figType = (t) =>
+  t === 'color' ? 'COLOR' : t === 'dimension' ? 'FLOAT' : t === 'fontFamily' ? 'STRING' : 'STRING';
 
 // Flatten a token set into [{ path, type, value }] leaves.
 function leaves(obj, prefix = []) {
   const out = [];
   for (const [k, v] of Object.entries(obj)) {
     if (k.startsWith('$')) continue;
-    if (v && typeof v === 'object' && '$value' in v) out.push({ path: [...prefix, k], type: v.$type, value: v.$value });
+    if (v && typeof v === 'object' && '$value' in v)
+      out.push({ path: [...prefix, k], type: v.$type, value: v.$value });
     else if (v && typeof v === 'object') out.push(...leaves(v, [...prefix, k]));
   }
   return out;
@@ -56,7 +58,10 @@ for (const mode of STOCKS.map((s) => s.mode)) {
   for (const l of leaves(stockSets[mode])) {
     if (l.type !== 'color') continue;
     const name = l.path.join('/');
-    if (!seen.has(name)) { seen.add(name); roleOrder.push(name); }
+    if (!seen.has(name)) {
+      seen.add(name);
+      roleOrder.push(name);
+    }
   }
 }
 const roleValue = (mode, name) => {
@@ -69,7 +74,10 @@ const semantic = roleOrder.map((name) => {
     // fall back to the paper (default) value when a stock omits a role (e.g. bone accents).
     let v = roleValue(mode, name);
     let fellBack = false;
-    if (v == null) { v = roleValue('paper', name); fellBack = true; }
+    if (v == null) {
+      v = roleValue('paper', name);
+      fellBack = true;
+    }
     if (v == null) continue;
     if (isRef(v) && primNames.has(refToPath(v))) values[mode] = { alias: refToPath(v) };
     else values[mode] = v;
@@ -80,16 +88,51 @@ const semantic = roleOrder.map((name) => {
 
 const manifest = {
   $generatedFrom: 'tokens/lokta.tokens.json',
-  $note: 'Deterministic Figma Variables manifest. References are variable aliases. Modes on the Semantic collection are the stocks.',
+  $note:
+    'Deterministic Figma Variables manifest. References are variable aliases. Modes on the Semantic collection are the stocks.',
   collections: [
     { name: 'Lokta Primitives', modes: ['Value'], hideFromPublishing: true, variables: primitives },
     { name: 'Lokta Semantic', modes: STOCKS.map((s) => s.mode), variables: semantic },
   ],
 };
 
+// ── Integrity check (deterministic): the export must round-trip the tokens ───
+// Every alias resolves to a real primitive, every mode is filled, every COLOR is
+// a hex, and a few semantic values resolve to the exact reference hex.
+let fails = 0;
+const bad = (m) => {
+  fails++;
+  console.error('  x ' + m);
+};
+const isHex = (v) => /^#[0-9a-fA-F]{6}$/.test(v);
+const primByName = Object.fromEntries(primitives.map((v) => [v.name, v.values.Value]));
+const SPOT = {
+  'surface/page': { paper: '#F4F1DF', ink: '#1F1C13' },
+  'text/primary': { paper: '#1F1C13', ink: '#FAF8EA' },
+};
+for (const v of semantic) {
+  for (const { mode } of STOCKS) {
+    const val = v.values[mode];
+    if (val == null) {
+      bad(`${v.name}: missing mode ${mode}`);
+      continue;
+    }
+    const hex = val && val.alias ? primByName[val.alias] : val;
+    if (val && val.alias && !(val.alias in primByName))
+      bad(`${v.name}.${mode}: alias ${val.alias} has no primitive`);
+    if (!isHex(hex)) bad(`${v.name}.${mode}: not a colour (${JSON.stringify(val)})`);
+    if (SPOT[v.name] && SPOT[v.name][mode] && hex.toUpperCase() !== SPOT[v.name][mode])
+      bad(`${v.name}.${mode}: ${hex} != ${SPOT[v.name][mode]}`);
+  }
+}
+if (fails) {
+  console.error(`Figma export FAILED ${fails} integrity check(s).`);
+  process.exit(1);
+}
+
 const outDir = join(root, 'packages/tokens/dist/figma');
 await mkdir(outDir, { recursive: true });
 await writeFile(join(outDir, 'lokta.variables.json'), JSON.stringify(manifest, null, 2) + '\n');
 console.log(
-  `Built Figma variables: ${primitives.length} primitives, ${semantic.length} semantic roles x ${STOCKS.length} modes -> packages/tokens/dist/figma/lokta.variables.json`,
+  `Built + verified Figma variables: ${primitives.length} primitives, ${semantic.length} semantic roles x ${STOCKS.length} modes -> packages/tokens/dist/figma/lokta.variables.json`,
 );

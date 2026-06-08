@@ -46,3 +46,18 @@ joins, no rounded controls by default, no shadows except the modal's single hard
 offset. Brand customisation is limited to the documented layer (accent, density,
 radius, grain, stock). Proposals that soften the system at large should be
 opened as an issue for discussion first.
+
+## Releases
+
+The repo is tagged with SemVer (`v0.1.0`). To cut a release:
+
+1. Run `npm run validate` (token math, design-rule lint, component a11y, visual
+   regression) and `npm run build`. All must pass.
+2. Move the `Unreleased` block in `CHANGELOG.md` to the new version with the date.
+3. Commit, then `git tag vX.Y.Z` and `git push --tags`.
+4. `gh release create vX.Y.Z --notes-from-tag` (or paste the changelog section).
+
+The standalone repos (`lokta-css`, `lokta-marp`, `lokta-typst`, `lokta-mermaid`)
+are tagged in lockstep. They install from GitHub today
+(`npm install github:msradam/lokta-css`); to publish to npm, set the package
+`name`/`version`, then `npm publish --access public` per package.

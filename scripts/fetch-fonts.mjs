@@ -12,23 +12,95 @@ const CDN = 'https://cdn.jsdelivr.net/npm/@fontsource';
 
 // family, fontsource package, [subset, weight, style] tuples.
 const FULL = [
-  ['archivo', 'archivo', [['latin', 400, 'normal'], ['latin', 500, 'normal'], ['latin', 600, 'normal'], ['latin', 700, 'normal'], ['latin', 800, 'normal']]],
-  ['spline-sans-mono', 'spline-sans-mono', [['latin', 400, 'normal'], ['latin', 500, 'normal'], ['latin', 600, 'normal']]],
-  ['source-serif-4', 'source-serif-4', [['latin', 400, 'normal'], ['latin', 600, 'normal'], ['latin', 400, 'italic'], ['latin', 500, 'italic']]],
-  ['noto-sans-jp', 'noto-sans-jp', [['latin', 400, 'normal'], ['japanese', 400, 'normal'], ['japanese', 700, 'normal']]],
-  ['anek-bangla', 'anek-bangla', [['latin', 400, 'normal'], ['bengali', 400, 'normal'], ['bengali', 500, 'normal'], ['bengali', 700, 'normal']]],
+  [
+    'archivo',
+    'archivo',
+    [
+      ['latin', 400, 'normal'],
+      ['latin', 500, 'normal'],
+      ['latin', 600, 'normal'],
+      ['latin', 700, 'normal'],
+      ['latin', 800, 'normal'],
+    ],
+  ],
+  [
+    'spline-sans-mono',
+    'spline-sans-mono',
+    [
+      ['latin', 400, 'normal'],
+      ['latin', 500, 'normal'],
+      ['latin', 600, 'normal'],
+    ],
+  ],
+  [
+    'source-serif-4',
+    'source-serif-4',
+    [
+      ['latin', 400, 'normal'],
+      ['latin', 600, 'normal'],
+      ['latin', 400, 'italic'],
+      ['latin', 500, 'italic'],
+    ],
+  ],
+  [
+    'noto-sans-jp',
+    'noto-sans-jp',
+    [
+      ['latin', 400, 'normal'],
+      ['japanese', 400, 'normal'],
+      ['japanese', 700, 'normal'],
+    ],
+  ],
+  [
+    'anek-bangla',
+    'anek-bangla',
+    [
+      ['latin', 400, 'normal'],
+      ['bengali', 400, 'normal'],
+      ['bengali', 500, 'normal'],
+      ['bengali', 700, 'normal'],
+    ],
+  ],
 ];
 
 // Lighter set for the slide deck: display, mono, serif, and a JP face for the header.
 const DECK = [
-  ['archivo', 'archivo', [['latin', 400, 'normal'], ['latin', 500, 'normal'], ['latin', 700, 'normal'], ['latin', 800, 'normal']]],
-  ['spline-sans-mono', 'spline-sans-mono', [['latin', 400, 'normal'], ['latin', 500, 'normal'], ['latin', 600, 'normal']]],
-  ['source-serif-4', 'source-serif-4', [['latin', 400, 'italic'], ['latin', 500, 'italic']]],
+  [
+    'archivo',
+    'archivo',
+    [
+      ['latin', 400, 'normal'],
+      ['latin', 500, 'normal'],
+      ['latin', 700, 'normal'],
+      ['latin', 800, 'normal'],
+    ],
+  ],
+  [
+    'spline-sans-mono',
+    'spline-sans-mono',
+    [
+      ['latin', 400, 'normal'],
+      ['latin', 500, 'normal'],
+      ['latin', 600, 'normal'],
+    ],
+  ],
+  [
+    'source-serif-4',
+    'source-serif-4',
+    [
+      ['latin', 400, 'italic'],
+      ['latin', 500, 'italic'],
+    ],
+  ],
   ['noto-sans-jp', 'noto-sans-jp', [['japanese', 400, 'normal']]],
 ];
 
 const file = (family, subset, weight, style) => `${family}-${subset}-${weight}-${style}.woff2`;
-const exists = (p) => access(p).then(() => true, () => false);
+const exists = (p) =>
+  access(p).then(
+    () => true,
+    () => false,
+  );
 
 async function fetchSet(set, outDir) {
   await mkdir(outDir, { recursive: true });

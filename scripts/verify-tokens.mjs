@@ -59,4 +59,6 @@ if (mismatches.length) {
   process.exit(1);
 }
 
-console.log(`OK: ${shared.length} shared variables match the reference; ${core.length} core variables present.`);
+console.log(
+  `OK: ${shared.length} shared variables match the reference; ${core.length} core variables present.`,
+);

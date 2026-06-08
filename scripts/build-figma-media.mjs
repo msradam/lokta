@@ -14,11 +14,21 @@ const out = join(root, 'docs/figma/media');
 await mkdir(out, { recursive: true });
 
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-if (!(await access(CHROME).then(() => true, () => false))) {
+if (
+  !(await access(CHROME).then(
+    () => true,
+    () => false,
+  ))
+) {
   console.error('Chrome not found; this generator is for local use.');
   process.exit(1);
 }
-if (!(await access(join(site, 'lokta.tokens.css')).then(() => true, () => false))) {
+if (
+  !(await access(join(site, 'lokta.tokens.css')).then(
+    () => true,
+    () => false,
+  ))
+) {
   console.error('Run npm run build:site first.');
   process.exit(1);
 }
@@ -78,7 +88,10 @@ const tok = JSON.parse(await readFile(join(root, 'tokens/lokta.tokens.json'), 'u
 const pig = tok.primitives.pigment;
 const pigSw = Object.entries(pig)
   .filter(([k]) => !k.endsWith('-ink'))
-  .map(([k, v]) => `<figure class="sw"><div class="chip" style="background:${v.$value}"></div><code>${k}</code><code>${v.$value}</code></figure>`)
+  .map(
+    ([k, v]) =>
+      `<figure class="sw"><div class="chip" style="background:${v.$value}"></div><code>${k}</code><code>${v.$value}</code></figure>`,
+  )
   .join('');
 
 const cards = {
@@ -148,12 +161,35 @@ const cards = {
 
 // Recipe PNG for card 6, if available.
 const recipePng = join(site, 'example-recipe.png');
-if (!(await access(recipePng).then(() => true, () => false))) {
+if (
+  !(await access(recipePng).then(
+    () => true,
+    () => false,
+  ))
+) {
   const src = join(root, 'packages/typst/dist/example-recipe.pdf');
-  if (await access(src).then(() => true, () => false)) {
-    spawnSync('typst', ['compile', '--font-path', 'fonts', '--ignore-system-fonts', 'example-recipe.typ', join(site, 'example-recipe.png'), '--ppi', '150'], {
-      cwd: join(root, 'packages/typst'),
-    });
+  if (
+    await access(src).then(
+      () => true,
+      () => false,
+    )
+  ) {
+    spawnSync(
+      'typst',
+      [
+        'compile',
+        '--font-path',
+        'fonts',
+        '--ignore-system-fonts',
+        'example-recipe.typ',
+        join(site, 'example-recipe.png'),
+        '--ppi',
+        '150',
+      ],
+      {
+        cwd: join(root, 'packages/typst'),
+      },
+    );
   }
 }
 
@@ -161,7 +197,20 @@ for (const [name, html] of Object.entries(cards)) {
   const tmp = join(site, `_fig-${name}.html`);
   await writeFile(tmp, head + html + '</body></html>');
   const big = join(out, `${name}@2x.png`);
-  spawnSync(CHROME, ['--headless', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=2', '--window-size=1920,1080', `--screenshot=${big}`, '--virtual-time-budget=4000', `file://${tmp}`], { stdio: 'ignore' });
+  spawnSync(
+    CHROME,
+    [
+      '--headless',
+      '--disable-gpu',
+      '--hide-scrollbars',
+      '--force-device-scale-factor=2',
+      '--window-size=1920,1080',
+      `--screenshot=${big}`,
+      '--virtual-time-budget=4000',
+      `file://${tmp}`,
+    ],
+    { stdio: 'ignore' },
+  );
   spawnSync('sips', ['-z', '1080', '1920', big, '--out', join(out, `${name}.png`)], { stdio: 'ignore' });
   spawnSync('rm', ['-f', tmp, big]);
   console.log('rendered', `${name}.png`);

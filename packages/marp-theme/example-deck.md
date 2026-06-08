@@ -2,8 +2,8 @@
 marp: true
 theme: lokta
 paginate: true
-header: "映画の料理 · LOKTA"
-footer: "After Cuisine on Screen · Prestel"
+header: '映画の料理 · LOKTA'
+footer: 'After Cuisine on Screen · Prestel'
 ---
 
 <!-- _class: lead -->
@@ -18,14 +18,14 @@ One cookbook's page system, ported to the screen.
 
 ## Where it comes from
 
-Lokta adapts the page layout of *Cuisine on Screen* by Sachiyo Harada (Prestel), a collection of dishes from Japanese cult cinema.
+Lokta adapts the page layout of _Cuisine on Screen_ by Sachiyo Harada (Prestel), a collection of dishes from Japanese cult cinema.
 
 - a warm cream stock, never pure white
 - a vertical **映画の料理** spine
 - hatched rules that let a section breathe
 - grotesk titles run hard to the right margin
 
-The peach grounds and Bengali type follow Siddika Kabir's *Ranna Khaddo Pushti*.
+The peach grounds and Bengali type follow Siddika Kabir's _Ranna Khaddo Pushti_.
 
 ---
 
@@ -35,7 +35,7 @@ The book pairs a neutral grotesk, a paper-friendly mono, and an editorial serif.
 
 - **Archivo** carries display and body
 - **Spline Sans Mono** sets labels, folios, and figures
-- *Source Serif* handles the film notes and pull quotes
+- _Source Serif_ handles the film notes and pull quotes
 
 ---
 

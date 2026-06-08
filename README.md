@@ -1,7 +1,7 @@
 # Lokta
 
 Lokta is an editorial UI design system adapted from the page layout of one book:
-*Cuisine on Screen* by Sachiyo Harada (Prestel, 2024), a collection of dishes
+_Cuisine on Screen_ by Sachiyo Harada (Prestel, 2024), a collection of dishes
 from Japanese cult cinema, several of them Studio Ghibli films. That book sets a
 cookbook with unusual severity: a warm cream stock, a vertical 映画の料理 spine,
 hatched rules that give a section room to breathe, heavy grotesk titles run hard
@@ -14,13 +14,13 @@ and holds every text role to WCAG 2.2 AA.
 It runs across surfaces from one set of tokens: web components, a Marp slide
 theme, Typst document themes, and a Mermaid diagram theme.
 
-| | |
-| --- | --- |
-| ![Lokta components.](docs/components.png) | ![A Lokta-themed Mermaid flowchart.](docs/mermaid.png) |
-| ![A Typst recipe document.](docs/typst-recipe.png) | ![A Lokta slide with a diagram.](docs/deck.png) |
+|                                                    |                                                        |
+| -------------------------------------------------- | ------------------------------------------------------ |
+| ![Lokta components.](docs/components.png)          | ![A Lokta-themed Mermaid flowchart.](docs/mermaid.png) |
+| ![A Typst recipe document.](docs/typst-recipe.png) | ![A Lokta slide with a diagram.](docs/deck.png)        |
 
 A second thread runs through the dark stocks and the peach grounds: Professor
-Siddika Kabir's *Ranna Khaddo Pushti*, the standard household cookbook of
+Siddika Kabir's _Ranna Khaddo Pushti_, the standard household cookbook of
 Bangladesh, and the Bengali type that sits beside it.
 
 The result is deliberately flat (layering comes from borders and surface tokens,
@@ -42,12 +42,12 @@ static documentation site deployed to GitHub Pages.
 This is the source and docs hub. Each surface also ships as its own standalone,
 plug-and-play repo you can install on its own.
 
-| Repo | What it is | Install |
-| --- | --- | --- |
-| [lokta-css](https://github.com/msradam/lokta-css) | Tokens (four stocks) and component CSS, self-hosted fonts. | `npm install github:msradam/lokta-css` |
-| [lokta-marp](https://github.com/msradam/lokta-marp) | Marp slide theme with per-slide Mermaid theming. | `npm install github:msradam/lokta-marp` |
-| [lokta-typst](https://github.com/msradam/lokta-typst) | Editorial document themes for Typst. | `git clone` + `node install.mjs` |
-| [lokta-mermaid](https://github.com/msradam/lokta-mermaid) | Mermaid diagram theme, web and print. | `npm install github:msradam/lokta-mermaid` |
+| Repo                                                      | What it is                                                 | Install                                    |
+| --------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------ |
+| [lokta-css](https://github.com/msradam/lokta-css)         | Tokens (four stocks) and component CSS, self-hosted fonts. | `npm install github:msradam/lokta-css`     |
+| [lokta-marp](https://github.com/msradam/lokta-marp)       | Marp slide theme with per-slide Mermaid theming.           | `npm install github:msradam/lokta-marp`    |
+| [lokta-typst](https://github.com/msradam/lokta-typst)     | Editorial document themes for Typst.                       | `git clone` + `node install.mjs`           |
+| [lokta-mermaid](https://github.com/msradam/lokta-mermaid) | Mermaid diagram theme, web and print.                      | `npm install github:msradam/lokta-mermaid` |
 
 This repo also builds the same surfaces as workspace packages under `packages/`
 (`@lokta/tokens`, `@lokta/css`, `@lokta/marp-theme`, `@lokta/typst`,
@@ -62,21 +62,21 @@ npm install github:msradam/lokta-css
 ```
 
 ```css
-@import "lokta-css/lokta.css";
+@import 'lokta-css/lokta.css';
 ```
 
 Or zero install, straight from the CDN:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/msradam/lokta-css@main/lokta.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/msradam/lokta-css@main/lokta.css" />
 ```
 
 Diagrams:
 
 ```html
 <script type="module">
-  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-  import { initLoktaMermaid } from "https://cdn.jsdelivr.net/gh/msradam/lokta-mermaid@main/index.mjs";
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  import { initLoktaMermaid } from 'https://cdn.jsdelivr.net/gh/msradam/lokta-mermaid@main/index.mjs';
   initLoktaMermaid(mermaid);
 </script>
 ```
@@ -91,15 +91,15 @@ set the stock with `data-theme` on the root element. Paper is the default.
 
 ```css
 /* all four stocks in one file */
-@import "@lokta/tokens/css/lokta.css";
-@import "@lokta/css/lokta.css";
+@import '@lokta/tokens/css/lokta.css';
+@import '@lokta/css/lokta.css';
 ```
 
 Or load a single stock:
 
 ```css
-@import "@lokta/tokens/css/lokta.paper.css";
-@import "@lokta/css/lokta.css";
+@import '@lokta/tokens/css/lokta.paper.css';
+@import '@lokta/css/lokta.css';
 ```
 
 ```html
@@ -120,13 +120,13 @@ product UI.
 Apps may override the brand layer. Everything else (type scale, 8px grid, AA
 rules, component structure, hard-edged character) is locked.
 
-| Knob | How | Default |
-| --- | --- | --- |
-| Accent pigment | `--lk-accent` | marigold |
-| Control radius | `--lk-radius` (0 to 3px) | `0px` |
-| Density | `data-density="compact"` | comfortable |
-| Grain | `data-grain="off"` | on |
-| Stock | `data-theme` | paper |
+| Knob           | How                      | Default     |
+| -------------- | ------------------------ | ----------- |
+| Accent pigment | `--lk-accent`            | marigold    |
+| Control radius | `--lk-radius` (0 to 3px) | `0px`       |
+| Density        | `data-density="compact"` | comfortable |
+| Grain          | `data-grain="off"`       | on          |
+| Stock          | `data-theme`             | paper       |
 
 ## Build
 
@@ -176,11 +176,11 @@ is shown in the workflow's deploy step and in Settings, Pages.
 Lokta is an interpretation of two cookbooks, not a reproduction of either. It
 ships no text, photography, or artwork from them.
 
-- *Cuisine on Screen*, Sachiyo Harada (Prestel, 2024). The structural language:
+- _Cuisine on Screen_, Sachiyo Harada (Prestel, 2024). The structural language:
   the cream stock, the vertical 映画の料理 spine, the hatched breath rules, the
   right-aligned grotesk display, the labels turned up the gutter, the folios and
   running feet, and marigold as the full-bleed film-opener ground.
-- *Ranna Khaddo Pushti*, Professor Siddika Kabir (1931 to 2012). The heritage
+- _Ranna Khaddo Pushti_, Professor Siddika Kabir (1931 to 2012). The heritage
   thread: the peach (salmon) grounds and the Bengali type, set in Anek Bangla.
 
 A typeface pairing and a layout grammar are not themselves copyrightable; the

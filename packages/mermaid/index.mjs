@@ -7,7 +7,7 @@
 //   initLoktaMermaid(mermaid);   // then mermaid.run() or startOnLoad handles it
 //
 // The JSON is imported with an import attribute (Node 20+ and current browsers).
-import config from "./lokta-mermaid.json" with { type: "json" };
+import config from './lokta-mermaid.json' with { type: 'json' };
 
 const { _comment, _classDefs, ...base } = config;
 
@@ -16,7 +16,7 @@ export const loktaMermaidConfig = base;
 
 // Reusable node classes for `classDef` in a flowchart (hero / store / dec / danger / muted).
 export const loktaClassDefs = _classDefs
-  ? Object.fromEntries(Object.entries(_classDefs).filter(([k]) => !k.startsWith("_")))
+  ? Object.fromEntries(Object.entries(_classDefs).filter(([k]) => !k.startsWith('_')))
   : {};
 
 // Same rules as packages/mermaid/lokta-mermaid.css and the .mermaid block in lokta.marp.css.
@@ -32,10 +32,10 @@ export const loktaMermaidCSS = `
 `;
 
 export function injectLoktaMermaidCSS() {
-  if (typeof document === "undefined") return;
-  if (document.head.querySelector("style[data-lokta-mermaid]")) return;
-  const style = document.createElement("style");
-  style.setAttribute("data-lokta-mermaid", "");
+  if (typeof document === 'undefined') return;
+  if (document.head.querySelector('style[data-lokta-mermaid]')) return;
+  const style = document.createElement('style');
+  style.setAttribute('data-lokta-mermaid', '');
   style.textContent = loktaMermaidCSS;
   document.head.appendChild(style);
 }

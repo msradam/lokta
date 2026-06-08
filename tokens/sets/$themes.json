@@ -36,12 +36,6 @@
     }
   ],
   "$metadata": {
-    "tokenSetOrder": [
-      "primitives",
-      "semantic-paper",
-      "semantic-ink",
-      "stock-bone",
-      "stock-indigo"
-    ]
+    "tokenSetOrder": ["primitives", "semantic-paper", "semantic-ink", "stock-bone", "stock-indigo"]
   }
 }

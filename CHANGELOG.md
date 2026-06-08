@@ -8,6 +8,18 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- A self-hosted icon set: sharpened Tabler glyphs vendored as an SVG sprite
+  (`packages/css/icons/lokta-icons.svg`) plus `lokta-icons.css`, built by
+  `npm run build:icons`. The system no longer needs a runtime icon CDN.
+- The interactive components (tabs, accordion, dialog, menu) are live on the
+  docs site, wired by `lokta-behaviors.js`.
+- The full validation suite as the merge gate: `verify` (token math), `lint:rules`
+  (design-rule lint), `test:components` (Playwright + axe across stocks), and
+  `test:visual` (visual regression in a pinned Linux image), plus `validate`.
+- A Figma Variables manifest (`build:figma`) that self-verifies on build, and a
+  Figma listing kit (1920x1080 media, copy, Code Connect config).
+- Type definitions for `@lokta/css` behaviors and `@lokta/mermaid`, and
+  `size-limit` budgets. Prettier and Stylelint configs.
 - `scripts/verify.mjs`, wired as `npm run verify` and `test` and as the first CI
   gate. A pure-Node check of WCAG AA contrast (every text role on every surface
   in every stock), cross-surface parity (the Typst and Mermaid literals equal
@@ -30,9 +42,9 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-- An editorial UI system after the page layout of *Cuisine on Screen* by Sachiyo
+- An editorial UI system after the page layout of _Cuisine on Screen_ by Sachiyo
   Harada (Prestel, 2024), with a heritage thread from Professor Siddika Kabir's
-  *Ranna Khaddo Pushti*.
+  _Ranna Khaddo Pushti_.
 - Three-tier design tokens (primitives, semantic, stocks) in Tokens Studio
   (DTCG) format, with four stocks: Paper (light), Ink (warm dark), Bone (cool
   light), and Indigo (cool dark). Every text role clears WCAG 2.2 AA on its

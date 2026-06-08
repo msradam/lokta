@@ -12,19 +12,19 @@ Typst.
 Mermaid is a peer dependency. Pass your own instance in.
 
 ```js
-import mermaid from "mermaid";
-import { initLoktaMermaid } from "@lokta/mermaid";
+import mermaid from 'mermaid';
+import { initLoktaMermaid } from '@lokta/mermaid';
 
 initLoktaMermaid(mermaid); // initialize + inject the hard-edge CSS
-mermaid.run();             // or rely on startOnLoad
+mermaid.run(); // or rely on startOnLoad
 ```
 
 Zero install, straight from the docs site:
 
 ```html
 <script type="module">
-  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-  import { initLoktaMermaid } from "https://msradam.github.io/lokta/lokta.mermaid.mjs";
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  import { initLoktaMermaid } from 'https://msradam.github.io/lokta/lokta.mermaid.mjs';
   initLoktaMermaid(mermaid);
 </script>
 <pre class="mermaid">
@@ -69,13 +69,13 @@ with no `.mermaid` wrapper.
 
 Add to any flowchart with `classDef`, or use the values from `loktaClassDefs`.
 
-| Class | Use |
-| --- | --- |
-| `hero` | marigold, the one node to look at first |
-| `store` | celadon, a datastore |
-| `dec` | indigo, a decision |
-| `danger` | cinnabar, a failure or drop |
-| `muted` | paper, secondary |
+| Class    | Use                                     |
+| -------- | --------------------------------------- |
+| `hero`   | marigold, the one node to look at first |
+| `store`  | celadon, a datastore                    |
+| `dec`    | indigo, a decision                      |
+| `danger` | cinnabar, a failure or drop             |
+| `muted`  | paper, secondary                        |
 
 ## License
 

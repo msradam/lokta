@@ -10,7 +10,10 @@
     "lokta.css",
     "lokta-behaviors.js",
     "fonts.css",
-    "fonts"
+    "fonts",
+    "lokta-icons.css",
+    "icons",
+    "lokta-behaviors.d.ts"
   ],
   "scripts": {
     "build": "node ../../scripts/fetch-fonts.mjs"
