@@ -45,17 +45,27 @@
 }
 
 /* ── DATA VIZ ──────────────────────────────────────────────────────────────
- * A categorical series palette from the pigments (constant across stocks).
- * Pair colour with a label; never encode by colour alone. */
+ * Categorical series tuned to WCAG 1.4.11 (3:1 vs surface and adjacent) and
+ * CVD-distinguishable (Machado 2009 + CIEDE2000). Two perceptual sets of one
+ * palette: deeper for light stocks, lifted for dark. Gated by validate/viz.mjs.
+ * Colour is safe for three series; beyond that the pattern + label is mandatory. */
 :root {
-  --viz-1: var(--pigment-indigo);
-  --viz-2: var(--pigment-marigold);
-  --viz-3: var(--pigment-cinnabar);
-  --viz-4: var(--pigment-celadon);
-  --viz-5: var(--pigment-aubergine);
-  --viz-6: var(--pigment-peach);
-  --viz-7: var(--pigment-lavender);
-  --viz-8: var(--pigment-night);
+  --viz-1: #1F5C92; --viz-2: #8A5A12; --viz-3: #4F6B50; --viz-4: #8E2C49;
+  --viz-5: #2F6F6D; --viz-6: #5F4080; --viz-7: #B23320; --viz-8: #4A535E;
+}
+[data-theme="ink"], [data-theme="indigo"], [data-theme="highland"],
+[data-theme="pine"], [data-theme="mulberry"], [data-theme="slate"],
+[data-theme="steel"], [data-theme="onyx"] {
+  --viz-1: #6FA8D8; --viz-2: #D9A642; --viz-3: #8FB088; --viz-4: #D67A95;
+  --viz-5: #5FB0AD; --viz-6: #A98FC9; --viz-7: #E2654F; --viz-8: #9AA3AE;
+}
+/* Sequential (perceptually uniform, L* monotonic) and diverging scales. */
+:root {
+  --viz-seq-0: #F5EED3; --viz-seq-1: #E4D6B7; --viz-seq-2: #D2BF9B; --viz-seq-3: #C1A880;
+  --viz-seq-4: #AF9166; --viz-seq-5: #9D7C4D; --viz-seq-6: #8A6634; --viz-seq-7: #78521B; --viz-seq-8: #653E00;
+  --viz-div-0: #AB3429; --viz-div-1: #BF5C4D; --viz-div-2: #D08272; --viz-div-3: #DEA699;
+  --viz-div-4: #E9CBC2; --viz-div-5: #F0F1ED; --viz-div-6: #C9D3DB; --viz-div-7: #A1B6CA;
+  --viz-div-8: #789AB8; --viz-div-9: #4C7EA7; --viz-div-10: #006495;
 }
 .lk-viz-1 { --viz: var(--viz-1); }
 .lk-viz-2 { --viz: var(--viz-2); }
@@ -82,6 +92,19 @@
 /* Sparkline / inline chart: style a bare inline SVG with the series stroke. */
 .lk-spark { display: inline-block; vertical-align: middle; }
 .lk-spark path, .lk-spark polyline { fill: none; stroke: var(--viz, var(--viz-1)); stroke-width: 1.5; stroke-linejoin: miter; stroke-linecap: square; }
+
+/* Pattern fills: the colour-independent fallback (WCAG 1.4.1). Apply .lk-pat-N
+   beside .lk-viz-N on a bar or swatch; colour is safe for three series, the
+   pattern carries the rest. Add .lk-pat-light to lift the line on dark series. */
+.lk-bar-fill, .lk-swatch { --lk-pat-ink: rgba(31, 20, 14, 0.55); background-repeat: repeat; }
+.lk-pat-light { --lk-pat-ink: rgba(250, 248, 234, 0.6); }
+.lk-pat-2 { background-image: repeating-linear-gradient(45deg, var(--lk-pat-ink) 0, var(--lk-pat-ink) 2px, transparent 2px, transparent 5px); }
+.lk-pat-3 { background-image: radial-gradient(var(--lk-pat-ink) 1.4px, transparent 1.5px); background-size: 6px 6px; }
+.lk-pat-4 { background-image: repeating-linear-gradient(45deg, var(--lk-pat-ink) 0, var(--lk-pat-ink) 1.5px, transparent 1.5px, transparent 5px), repeating-linear-gradient(-45deg, var(--lk-pat-ink) 0, var(--lk-pat-ink) 1.5px, transparent 1.5px, transparent 5px); }
+.lk-pat-5 { background-image: repeating-linear-gradient(90deg, var(--lk-pat-ink) 0, var(--lk-pat-ink) 2px, transparent 2px, transparent 5px); }
+.lk-pat-6 { background-image: repeating-linear-gradient(0deg, var(--lk-pat-ink) 0, var(--lk-pat-ink) 2px, transparent 2px, transparent 5px); }
+.lk-pat-7 { background-image: repeating-linear-gradient(0deg, var(--lk-pat-ink) 0, var(--lk-pat-ink) 1.5px, transparent 1.5px, transparent 6px), repeating-linear-gradient(90deg, var(--lk-pat-ink) 0, var(--lk-pat-ink) 1.5px, transparent 1.5px, transparent 6px); }
+.lk-pat-8 { background-image: radial-gradient(circle, transparent 2px, var(--lk-pat-ink) 2.5px, var(--lk-pat-ink) 3.5px, transparent 4px); background-size: 7px 7px; }
 
 /* ── MANUSCRIPT MATERIAL (opt-in motifs from the namesake) ─────────────────── */
 /* Deckle edge: clips a block's right or bottom edge into a torn lokta deckle. */

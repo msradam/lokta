@@ -1,0 +1,44 @@
+{
+  "viz": {
+    "$type": "color",
+    "light": {
+      "1": { "$value": "#1F5C92", "$description": "azure" },
+      "2": { "$value": "#8A5A12", "$description": "ochre" },
+      "3": { "$value": "#4F6B50", "$description": "celadon" },
+      "4": { "$value": "#8E2C49", "$description": "lac" },
+      "5": { "$value": "#2F6F6D", "$description": "teal" },
+      "6": { "$value": "#5F4080", "$description": "aubergine" },
+      "7": { "$value": "#B23320", "$description": "cinnabar" },
+      "8": { "$value": "#4A535E", "$description": "slate" }
+    },
+    "dark": {
+      "1": { "$value": "#6FA8D8" },
+      "2": { "$value": "#D9A642" },
+      "3": { "$value": "#8FB088" },
+      "4": { "$value": "#D67A95" },
+      "5": { "$value": "#5FB0AD" },
+      "6": { "$value": "#A98FC9" },
+      "7": { "$value": "#E2654F" },
+      "8": { "$value": "#9AA3AE" }
+    },
+    "sequential": {
+      "0": { "$value": "#F5EED3" }, "1": { "$value": "#E4D6B7" }, "2": { "$value": "#D2BF9B" },
+      "3": { "$value": "#C1A880" }, "4": { "$value": "#AF9166" }, "5": { "$value": "#9D7C4D" },
+      "6": { "$value": "#8A6634" }, "7": { "$value": "#78521B" }, "8": { "$value": "#653E00" }
+    },
+    "diverging": {
+      "0": { "$value": "#AB3429" }, "1": { "$value": "#BF5C4D" }, "2": { "$value": "#D08272" },
+      "3": { "$value": "#DEA699" }, "4": { "$value": "#E9CBC2" }, "5": { "$value": "#F0F1ED" },
+      "6": { "$value": "#C9D3DB" }, "7": { "$value": "#A1B6CA" }, "8": { "$value": "#789AB8" },
+      "9": { "$value": "#4C7EA7" }, "10": { "$value": "#006495" }
+    },
+    "_proof": {
+      "min-1.4.11-light": "3.0+ on paper/manuscript/bone",
+      "min-1.4.11-dark": "3.0+ on ink/highland/indigo",
+      "adjacent-ciede2000": ">= 11",
+      "cvd-safe-series": 3,
+      "fallback": "pattern + direct label required beyond 3 series",
+      "gate": "validate/viz.mjs"
+    }
+  }
+}
