@@ -77,6 +77,8 @@ const figmaHere = await access(figmaSrc).then(
   () => false,
 );
 if (figmaHere) await cp(figmaSrc, join(site, 'lokta.variables.json'));
+const figmaProSrc = join(root, 'packages/tokens/dist/figma/lokta.variables.pro.json');
+if (await access(figmaProSrc).then(() => true, () => false)) await cp(figmaProSrc, join(site, 'lokta.variables.pro.json'));
 
 // ── helpers ─────────────────────────────────────────────────────────────────
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

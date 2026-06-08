@@ -21,21 +21,34 @@ The token graph is already emitted as a Figma Variables manifest:
 
 ```
 npm run build:figma
-# -> packages/tokens/dist/figma/lokta.variables.json
+# -> packages/tokens/dist/figma/lokta.variables.json       (14 modes, Org+)
+# -> packages/tokens/dist/figma/lokta.variables.pro.json   (10 modes, Professional)
 ```
 
-It has two collections: Lokta Primitives (one mode) and Lokta Semantic (a mode
-per stock: Paper, Ink, Bone, Indigo). References stay as aliases, so the tier
-graph survives the import. Two ways to get it into a file:
+Two collections: Lokta Primitives (one mode) and Lokta Semantic (a mode per
+stock). References stay as aliases, so the tier graph survives the import. Get it
+into a file two ways:
 
-- Tokens Studio plugin (any plan): import `tokens/lokta.tokens.json` (DTCG /
-  Tokens Studio format), then push to Figma variables. Use the `$themes` to map
-  each stock to a mode.
-- Enterprise Variables REST API: POST `lokta.variables.json` to
-  `POST /v1/files/:file_key/variables`. The manifest is already in that shape.
+- Tokens Studio plugin: import `tokens/lokta.tokens.json` (DTCG format), then push
+  to Figma variables, mapping each stock to a mode.
+- Variables REST API: POST the manifest to `POST /v1/files/:file_key/variables`.
 
 Hide the Primitives collection from publishing so consumers build against the
 Semantic layer, where theming and AA come for free.
+
+### Plan, seat, and the mode cap (read before paying)
+
+- **Seat.** Running the plugin and building components needs a **Full seat**, not
+  the $3 Collab seat (comment-only) or the $12 Dev seat (inspect-only). Cheapest
+  Full seat is Professional at **$15/month annual** ($20 monthly).
+- **Mode cap.** Figma caps variable modes per collection by plan: Professional
+  **10**, Organization **20**, Enterprise 40. Lokta ships **14 stocks**.
+  - On **Professional ($15)**, use `lokta.variables.pro.json` (Paper, Ink, Bone,
+    Indigo, Manuscript, Highland, Slate, Slate L, Steel, Onyx). It imports without
+    trimming.
+  - For all 14 stocks, use `lokta.variables.json` on **Organization ($55)**.
+- **Publishing** a free Community file does not itself need a paid plan; the paid
+  seat is for building the variable-driven library.
 
 ## 2. Build the components
 

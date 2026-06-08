@@ -169,6 +169,38 @@ if (fails) {
 const outDir = join(root, 'packages/tokens/dist/figma');
 await mkdir(outDir, { recursive: true });
 await writeFile(join(outDir, 'lokta.variables.json'), JSON.stringify(manifest, null, 2) + '\n');
+
+// Professional-tier variant: Figma caps the Professional plan at 10 variable modes
+// per collection, so emit a 10-stock manifest that imports without trimming on a
+// $15 seat. The full 14-mode file needs Organization (20-mode cap).
+const PRO_MODES = ['paper', 'ink', 'bone', 'indigo', 'manuscript', 'highland', 'slate', 'slate-light', 'steel', 'onyx'];
+const proSemantic = semantic.map((v) => {
+  const values = {};
+  for (const m of PRO_MODES) {
+    if (m in v.values) values[m] = v.values[m];
+    if (`${m}$note` in v.values) values[`${m}$note`] = v.values[`${m}$note`];
+  }
+  return { ...v, values };
+});
+const proManifest = {
+  ...manifest,
+  $note: `${manifest.$note} Professional-tier: ${PRO_MODES.length} modes (the Professional plan caps a collection at 10).`,
+  collections: [
+    { name: 'Lokta Primitives', modes: ['Value'], hideFromPublishing: true, variables: primitives },
+    { name: 'Lokta Semantic', modes: PRO_MODES, variables: proSemantic },
+  ],
+};
+// Re-verify: every pro mode is filled (a subset of the already-verified full set).
+for (const v of proSemantic)
+  for (const mode of PRO_MODES)
+    if (v.values[mode] == null) bad(`pro ${v.name}: missing mode ${mode}`);
+if (fails) {
+  console.error(`Figma pro export FAILED.`);
+  process.exit(1);
+}
+await writeFile(join(outDir, 'lokta.variables.pro.json'), JSON.stringify(proManifest, null, 2) + '\n');
+
 console.log(
-  `Built + verified Figma variables: ${primitives.length} primitives, ${semantic.length} semantic roles x ${ALL_MODES.length} modes -> packages/tokens/dist/figma/lokta.variables.json`,
+  `Built + verified Figma variables: ${primitives.length} primitives, ${semantic.length} semantic roles -> ` +
+    `lokta.variables.json (${ALL_MODES.length} modes, Org+) and lokta.variables.pro.json (${PRO_MODES.length} modes, Professional).`,
 );
