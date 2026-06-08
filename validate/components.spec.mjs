@@ -107,3 +107,28 @@ test('targets: buttons and inputs are >= 36px', async ({ page }) => {
   );
   for (const h of heights) expect(h).toBeGreaterThanOrEqual(35.5);
 });
+
+// ── TABLE · accessible structure (caption + scoped headers) ───────────────────
+test('table: data table has a caption and scoped column headers', async ({ page }) => {
+  const t = page.locator('#table table.lk-table');
+  await expect(t.locator('caption')).toHaveCount(1);
+  const ths = t.locator('thead th');
+  const n = await ths.count();
+  for (let i = 0; i < n; i++) await expect(ths.nth(i)).toHaveAttribute('scope', 'col');
+});
+
+// ── GRID · ARIA grid keyboard navigation (roving tabindex + arrows) ───────────
+test('grid: arrow keys move the focused cell, one cell in the tab order', async ({ page }) => {
+  const cells = page.locator('#grid-demo [role="gridcell"]');
+  // exactly one cell is tabbable at rest (roving tabindex); the first is a header
+  const tabbable = await page.locator('#grid-demo [role="gridcell"][tabindex="0"], #grid-demo [role="columnheader"][tabindex="0"]').count();
+  expect(tabbable).toBe(1);
+  await cells.first().focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(cells.nth(1)).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  // moved to the second row, second column (index 1 + 3 columns = 4)
+  await expect(cells.nth(4)).toBeFocused();
+  await page.keyboard.press('Home');
+  await expect(cells.nth(3)).toBeFocused();
+});

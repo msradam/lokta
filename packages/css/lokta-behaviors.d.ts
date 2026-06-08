@@ -5,3 +5,4 @@ export function wireAccordion(root: Element): void;
 export function openDialog(id: string, trigger?: Element): void;
 export function closeDialog(id: string): void;
 export function wireMenus(): void;
+export function wireGrid(grid: Element): void;

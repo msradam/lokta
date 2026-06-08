@@ -1571,11 +1571,12 @@ svg.lk-icon * {
         <header><h3 class="comp">lk-table</h3><span class="lk-tag">data · sortable</span></header>
         <div class="demo" style="padding:0">
           <table class="lk-table" data-sortable>
+            <caption class="lk-sr-only">Experiment results, sortable by column</caption>
             <thead><tr>
-              <th data-sort="text" aria-sort="none" tabindex="0">Experiment</th>
-              <th data-sort="text" aria-sort="none" tabindex="0">Owner</th>
-              <th data-sort="num" aria-sort="none" tabindex="0" class="lk-num">Lift</th>
-              <th>Status</th>
+              <th scope="col" data-sort="text" aria-sort="none" tabindex="0">Experiment</th>
+              <th scope="col" data-sort="text" aria-sort="none" tabindex="0">Owner</th>
+              <th scope="col" data-sort="num" aria-sort="none" tabindex="0" class="lk-num">Lift</th>
+              <th scope="col">Status</th>
             </tr></thead>
             <tbody>
               <tr><td>Onboarding checklist v3</td><td>M. Reyes</td><td class="lk-num lk-num">+4.2</td><td><span class="lk-status lk-status-done">DONE</span></td></tr>
@@ -1586,6 +1587,22 @@ svg.lk-icon * {
           </table>
         </div>
         <div class="block"><h4>Accessibility</h4><p class="muted">Sortable headers are focusable and toggle <code class="lk-code-inline">aria-sort</code> between ascending and descending. Click or press <span class="kbd">Enter</span> on a header. Numerals are tabular and right-aligned.</p></div>
+      </div>
+      <div class="card" id="grid-demo">
+        <header><h3 class="comp">interactive grid</h3><span class="lk-tag">ARIA grid · keyboard</span></header>
+        <div class="demo" style="padding:0">
+          <table class="lk-table" role="grid" aria-label="Cohorts">
+            <thead><tr role="row">
+              <th scope="col" role="columnheader">Cohort</th><th scope="col" role="columnheader" class="lk-num">Users</th><th scope="col" role="columnheader" class="lk-num">Retained</th>
+            </tr></thead>
+            <tbody>
+              <tr role="row"><td role="gridcell">Week 1</td><td role="gridcell" class="lk-num">1,204</td><td role="gridcell" class="lk-num">68%</td></tr>
+              <tr role="row"><td role="gridcell">Week 2</td><td role="gridcell" class="lk-num">980</td><td role="gridcell" class="lk-num">54%</td></tr>
+              <tr role="row"><td role="gridcell">Week 3</td><td role="gridcell" class="lk-num">812</td><td role="gridcell" class="lk-num">47%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="block"><h4>Keyboard</h4><p class="muted">Arrow keys move the focused cell, <span class="kbd">Home</span>/<span class="kbd">End</span> jump to the row ends (<span class="kbd">Ctrl</span> for the grid ends). Only one cell is in the tab order (roving tabindex), per the ARIA Grid pattern.</p></div>
       </div>
     </section>
 
@@ -1959,6 +1976,22 @@ document.addEventListener("DOMContentLoaded", ()=>{
   // dialog triggers
   document.querySelectorAll("[data-open-dialog]").forEach(b=>b.addEventListener("click", ()=>openDialog(b.dataset.openDialog, b)));
   document.querySelectorAll("[data-close-dialog]").forEach(b=>b.addEventListener("click", ()=>closeDialog(b.dataset.closeDialog)));
+
+  // interactive grid (ARIA APG pattern): roving tabindex + arrow keys
+  document.querySelectorAll('[role="grid"]').forEach(grid=>{
+    const M=[...grid.querySelectorAll('[role="row"]')].map(r=>[...r.querySelectorAll('[role="gridcell"],[role="columnheader"]')]);
+    if(!M.length||!M[0].length)return;
+    let cur={r:0,c:0}; const all=M.flat();
+    const setTab=()=>{ all.forEach(c=>c.tabIndex=-1); if(M[cur.r]&&M[cur.r][cur.c])M[cur.r][cur.c].tabIndex=0; };
+    const go=(r,c)=>{ r=Math.max(0,Math.min(M.length-1,r)); if(!M[r])return; c=Math.max(0,Math.min(M[r].length-1,c)); cur={r,c}; setTab(); M[r][c].focus(); };
+    setTab(); M.forEach((row,r)=>row.forEach((cell,c)=>cell.addEventListener("focus",()=>cur={r,c})));
+    grid.addEventListener("keydown",e=>{ const k=e.key; let h=true;
+      if(k==="ArrowRight")go(cur.r,cur.c+1); else if(k==="ArrowLeft")go(cur.r,cur.c-1);
+      else if(k==="ArrowDown")go(cur.r+1,cur.c); else if(k==="ArrowUp")go(cur.r-1,cur.c);
+      else if(k==="Home")go(e.ctrlKey?0:cur.r,0); else if(k==="End")go(e.ctrlKey?M.length-1:cur.r,(M[cur.r]||[]).length-1);
+      else h=false; if(h)e.preventDefault();
+    });
+  });
 });
 
 </script>

@@ -197,7 +197,43 @@ function wireTables() {
   });
 }
 
+// ── Interactive grid (ARIA APG pattern: roving tabindex + arrow keys) ───────
+function wireGrid(grid) {
+  const rows = [...grid.querySelectorAll('[role="row"]')];
+  const M = rows.map((r) => [...r.querySelectorAll('[role="gridcell"], [role="columnheader"]')]);
+  if (!M.length || !M[0].length) return;
+  let cur = { r: 0, c: 0 };
+  const all = M.flat();
+  const setTab = () => {
+    all.forEach((c) => (c.tabIndex = -1));
+    if (M[cur.r] && M[cur.r][cur.c]) M[cur.r][cur.c].tabIndex = 0;
+  };
+  const focusCell = (r, c) => {
+    r = Math.max(0, Math.min(M.length - 1, r));
+    if (!M[r]) return;
+    c = Math.max(0, Math.min(M[r].length - 1, c));
+    cur = { r, c };
+    setTab();
+    M[r][c].focus();
+  };
+  setTab();
+  M.forEach((row, r) => row.forEach((cell, c) => cell.addEventListener('focus', () => (cur = { r, c }))));
+  grid.addEventListener('keydown', (e) => {
+    const k = e.key;
+    let h = true;
+    if (k === 'ArrowRight') focusCell(cur.r, cur.c + 1);
+    else if (k === 'ArrowLeft') focusCell(cur.r, cur.c - 1);
+    else if (k === 'ArrowDown') focusCell(cur.r + 1, cur.c);
+    else if (k === 'ArrowUp') focusCell(cur.r - 1, cur.c);
+    else if (k === 'Home') focusCell(e.ctrlKey ? 0 : cur.r, 0);
+    else if (k === 'End') focusCell(e.ctrlKey ? M.length - 1 : cur.r, (M[cur.r] || []).length - 1);
+    else h = false;
+    if (h) e.preventDefault();
+  });
+}
+
 function initLoktaBehaviors() {
+  document.querySelectorAll('[role="grid"]').forEach(wireGrid);
   document.querySelectorAll('[data-tabs]').forEach(wireTabs);
   document.querySelectorAll('.lk-accordion').forEach(wireAccordion);
   wireTooltips();
@@ -218,5 +254,5 @@ if (typeof document !== 'undefined') {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { initLoktaBehaviors, wireTabs, wireAccordion, openDialog, closeDialog, wireMenus };
+  module.exports = { initLoktaBehaviors, wireTabs, wireAccordion, openDialog, closeDialog, wireMenus, wireGrid };
 }
