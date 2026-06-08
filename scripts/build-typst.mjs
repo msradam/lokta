@@ -16,20 +16,24 @@ if (has.status !== 0) {
   process.exit(1);
 }
 
-const examples = (await readdir(pkg)).filter((f) => f.startsWith('example') && f.endsWith('.typ'));
+// Top-level example*.typ plus the lokta-hitec sub-package example.
+const examples = (await readdir(pkg))
+  .filter((f) => f.startsWith('example') && f.endsWith('.typ'))
+  .map((f) => [f, f.replace(/\.typ$/, '.pdf')]);
+examples.push(['lokta-hitec/example.typ', 'lokta-hitec-example.pdf']);
+
 let failed = 0;
-for (const f of examples.sort()) {
-  const out = f.replace(/\.typ$/, '.pdf');
+for (const [src, out] of examples.sort()) {
   const r = spawnSync(
     'typst',
-    ['compile', '--font-path', 'fonts', '--ignore-system-fonts', f, join('dist', out)],
+    ['compile', '--font-path', 'fonts', '--ignore-system-fonts', src, join('dist', out)],
     { cwd: pkg, encoding: 'utf8' },
   );
   if (r.status === 0) {
     console.log('OK   ', out);
   } else {
     failed++;
-    console.error('FAIL ', f, '\n', r.stderr);
+    console.error('FAIL ', src, '\n', r.stderr);
   }
 }
 if (failed) process.exit(1);

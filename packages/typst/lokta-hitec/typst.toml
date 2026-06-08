@@ -1,0 +1,9 @@
+[package]
+name = "lokta-hitec"
+version = "0.1.0"
+entrypoint = "lib.typ"
+authors = ["Lokta"]
+license = "MIT"
+description = "A Lokta rendering of the HITEC technical-document template: escape-the-academic-look reports with Lokta design tokens."
+keywords = ["report", "technical", "documentation", "hitec", "lokta"]
+categories = ["report"]

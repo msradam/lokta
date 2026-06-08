@@ -13,7 +13,8 @@
     "example-bulletin.typ",
     "example-letter.typ",
     "example-report.typ",
-    "fonts"
+    "fonts",
+    "lokta-hitec"
   ],
   "scripts": {
     "build": "node ../../scripts/build-typst.mjs"

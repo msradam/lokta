@@ -67,6 +67,33 @@ npm run build:typst        # compiles every example*.typ to packages/typst/dist
 There is one example per template. `typst compile example.typ` is the canonical
 check.
 
+## lokta-hitec
+
+`lokta-hitec/` is a self-contained sub-package that mirrors the upstream
+[HITEC](https://github.com/ShabbyGayBar/hitec) technical-document template API
+1:1, wearing Lokta tokens and furniture (Archivo and Spline Sans Mono, ink and
+indigo and marigold, the measured rule and hatch, mono labels). An existing HITEC
+document compiles by changing only the import.
+
+```typ
+#import "lokta-hitec/lib.typ": *
+#let (title, author, company, confidential, date, double-sided, print,
+      doc, title-page, title-block) = documentclass(
+  title: [Ingestion Pipeline],
+  author: ("K. Adeyemi", "M. Reyes"),
+  company: [Folio Analytics, Ltd],
+)
+#show: doc
+#title-block()   // or #title-page() for a full cover
+```
+
+```sh
+typst compile --font-path fonts lokta-hitec/example.typ
+```
+
+It also re-exports `hitec-note`, `hitec-measure`, and `hitec-label`. Install it as
+its own Typst package the same way (`@local` or direct import).
+
 ## Diagrams
 
 Pre-render a Mermaid diagram to SVG with `@lokta/mermaid` and place it:
