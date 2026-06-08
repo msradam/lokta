@@ -144,8 +144,12 @@
 
 // ── Technical report (white paper, hitec-style) ──────────────────────────────
 #let lokta-tech(
-  title: "", subtitle: none, org: "", doc-id: "", meta: (:), accent: lk-indigo, body,
+  title: "", subtitle: none, org: "", doc-id: "", meta: (:), accent: lk-indigo, lang: "en", body,
 ) = {
+  // Document metadata + language enable a tagged PDF/UA-1 structure tree
+  // (typst compile --pdf-standard ua-1), validatable by veraPDF.
+  set document(title: title, description: subtitle)
+  set text(lang: lang)
   set page(
     paper: "a4", fill: white, margin: (x: 2cm, y: 2.2cm),
     header: context {
@@ -218,7 +222,9 @@
 }
 
 // ── Editorial report (cream, warm counterpart to lokta-tech) ─────────────────
-#let lokta-report(title: "", subtitle: none, org: "", meta: (:), accent: lk-aubergine, body) = {
+#let lokta-report(title: "", subtitle: none, org: "", meta: (:), accent: lk-aubergine, lang: "en", body) = {
+  set document(title: title, description: subtitle)
+  set text(lang: lang)
   set page(paper: "a4", fill: lk-paper, margin: (x: 2.2cm, y: 2.4cm),
     header: context {
       if counter(page).get().first() > 1 {

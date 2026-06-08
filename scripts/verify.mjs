@@ -168,6 +168,22 @@ for (const [label, actual, expName] of [...TYPST, ...MERMAID])
 console.log('GRID · spacing divisible by 4');
 for (const v of SPACE) ok(v % 4 === 0, `space ${v} not divisible by 4`);
 
+// APCA advisory (WCAG 3 draft). Reported beside the WCAG numbers, never gates:
+// the algorithm is undecided (APCA was pulled from the WCAG 3 working draft).
+const apcaY = (h) => { const c = (n) => Math.pow(parseInt(n, 16) / 255, 2.4); return 0.2126729 * c(h.slice(1, 3)) + 0.7151522 * c(h.slice(3, 5)) + 0.072175 * c(h.slice(5, 7)); };
+const apca = (txt, bg) => {
+  const clamp = (y) => (y < 0.022 ? y + Math.pow(0.022 - y, 1.414) : y);
+  const Yt = clamp(apcaY(txt)), Yb = clamp(apcaY(bg));
+  if (Math.abs(Yt - Yb) < 0.0005) return 0;
+  let o;
+  if (Yb > Yt) { o = (Math.pow(Yb, 0.56) - Math.pow(Yt, 0.57)) * 1.14; o = o < 0.1 ? 0 : (o - 0.027) * 100; }
+  else { o = (Math.pow(Yb, 0.65) - Math.pow(Yt, 0.62)) * 1.14; o = o > -0.1 ? 0 : (o + 0.027) * 100; }
+  return Math.round(o);
+};
+console.log('APCA · advisory Lc, body text on the page surface (not gated)');
+for (const [sn, st] of Object.entries(STOCKS))
+  console.log(`    ${sn}: Lc ${apca(st.text.body, st.surfaces.page)} (primary ${apca(st.text.primary, st.surfaces.page)})`);
+
 console.log(`\n${total - fails}/${total} checks passing.`);
 if (fails) {
   console.error(`FAILED: ${fails} check(s).`);

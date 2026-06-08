@@ -22,13 +22,16 @@ const examples = (await readdir(pkg))
   .map((f) => [f, f.replace(/\.typ$/, '.pdf')]);
 examples.push(['lokta-hitec/example.typ', 'lokta-hitec-example.pdf']);
 
+// The document templates emit tagged PDF/UA-1; typst enforces conformance at
+// compile, so this is the deterministic PDF/UA gate (veraPDF can cross-validate).
+const UA = new Set(['example.typ', 'example-report.typ', 'lokta-hitec/example.typ']);
+
 let failed = 0;
 for (const [src, out] of examples.sort()) {
-  const r = spawnSync(
-    'typst',
-    ['compile', '--font-path', 'fonts', '--ignore-system-fonts', src, join('dist', out)],
-    { cwd: pkg, encoding: 'utf8' },
-  );
+  const args = ['compile', '--font-path', 'fonts', '--ignore-system-fonts'];
+  if (UA.has(src)) args.push('--pdf-standard', 'ua-1');
+  args.push(src, join('dist', out));
+  const r = spawnSync('typst', args, { cwd: pkg, encoding: 'utf8' });
   if (r.status === 0) {
     console.log('OK   ', out);
   } else {
