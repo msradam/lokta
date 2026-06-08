@@ -328,6 +328,7 @@ ${iconSprite}
   <div class="brand"><span class="lk-label">Lokta</span> <span class="muted">An editorial UI system · v0.1</span></div>
   <nav class="topnav" aria-label="Sections">
     <a href="#overview">Overview</a>
+    <a href="#install">Install</a>
     <a href="#foundations">Foundations</a>
     <a href="#components">Components</a>
     <a href="#templates">Templates</a>
@@ -355,6 +356,38 @@ ${iconSprite}
       <div><span class="lk-label">Stocks</span><p>Paper, Ink, Bone, Indigo. Every text role clears AA on each.</p></div>
       <div><span class="lk-label">Tokens</span><p>Three tiers (primitives, semantic, stocks) built with Style Dictionary to CSS, SCSS, and JS.</p></div>
     </div>
+  </section>
+
+  <section id="install">
+    <h2 class="sec-h">Install</h2>
+    <p class="muted">Three ways in. Set the stock with <code>data-theme</code> on <code>&lt;html&gt;</code> (default is paper).</p>
+    <div class="install-grid">
+      <div>
+        <h3 class="sub-h">npm</h3>
+        <pre class="lk-code">npm install @lokta/tokens @lokta/css</pre>
+        <pre class="lk-code">@import "@lokta/tokens/css/lokta.css";
+@import "@lokta/css/lokta.css";</pre>
+      </div>
+      <div>
+        <h3 class="sub-h">Standalone repos</h3>
+        <pre class="lk-code">npm install github:msradam/lokta-css
+npm install github:msradam/lokta-marp
+npm install github:msradam/lokta-typst
+npm install github:msradam/lokta-mermaid</pre>
+        <p class="muted">Each repo is self-contained with its own quick start.</p>
+      </div>
+      <div>
+        <h3 class="sub-h">Drop-in (no build)</h3>
+        <pre class="lk-code">&lt;link rel="stylesheet"
+  href="https://msradam.github.io/lokta/lokta.css"&gt;</pre>
+        <p class="muted">The site <code>lokta.css</code> bundles the tokens, base, components, and utilities in one link.</p>
+      </div>
+    </div>
+    <p class="lk-row">
+      <a class="lk-btn" href="components.html">Components reference</a>
+      <a class="lk-btn" href="patterns.html">Patterns gallery</a>
+      <a class="lk-btn" href="https://github.com/msradam/lokta">Source on GitHub</a>
+    </p>
   </section>
 
   <section id="foundations">
@@ -705,7 +738,7 @@ code { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: 0.9e
 .topnav { display: flex; gap: 16px; margin-left: auto; }
 .topnav a { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: var(--type-xs); text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-secondary); text-decoration: none; }
 .topnav a:hover { color: var(--text-primary); }
-.switcher { display: flex; }
+.switcher { display: flex; flex-wrap: wrap; gap: 1px; }
 .theme-btn { margin-left: -1px; }
 .theme-btn[aria-pressed="true"] { background: var(--text-primary); color: var(--surface-raised); border-color: var(--text-primary); }
 
@@ -763,9 +796,20 @@ section { padding: 64px 0; border-bottom: var(--rule-1) solid var(--border-hairl
 .colophon-foot { max-width: 1040px; margin: 0 auto; padding: 32px 24px 64px; }
 .colophon-foot p { max-width: 72ch; margin-top: 16px; }
 
+.install-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin: 18px 0; align-items: start; }
+.install-grid pre.lk-code { white-space: pre-wrap; word-break: break-word; overflow-x: auto; }
+
+@media (max-width: 900px) {
+  .install-grid { grid-template-columns: 1fr; }
+}
 @media (max-width: 640px) {
   .topnav { display: none; }
   .grid-demo { grid-template-columns: repeat(6, 1fr); gap: 12px; }
+  .cover-grid { grid-template-columns: 1fr 1fr; }
+  pre.lk-code { white-space: pre-wrap; word-break: break-word; }
+  /* Wide data tables scroll horizontally rather than blow out the page. */
+  .lk-table { display: block; max-width: 100%; overflow-x: auto; }
+  .main, .wrap, section { min-width: 0; }
 }
 `;
 }
