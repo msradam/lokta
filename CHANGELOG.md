@@ -4,6 +4,30 @@ All notable changes to Lokta are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project
 follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- A layout + display-type utility layer (`lokta-utilities.css`): `lk-wrap`,
+  `lk-grid`/`lk-cols-*`, `lk-stack`/`lk-cluster`/`lk-between`, section spacing,
+  and a display scale (`lk-display`, `lk-h1..h3`, `lk-eyebrow`, `lk-lede`).
+- Components from dogfooding: `lk-switch` (toggle), `lk-badge`, `lk-btn-icon`,
+  `lk-btn-xl`, form states (`aria-invalid` styling, `lk-help`, `lk-error-text`,
+  `lk-ok-text`, `lk-req`), and `lk-modal-body`.
+
+### Fixed
+
+- The site `lokta.css` drop-in now imports the tokens, so a single link is
+  batteries-included (the empty-variables footgun).
+- `a.lk-btn` no longer inherits the link underline.
+- The components reference uses the canonical modal classes
+  (`lk-modal-backdrop`/`-head`/`-foot`), so copied markup styles correctly.
+- Marp: a lone backtick label renders as a tracked eyebrow, not a code chip.
+- Typst: `lokta-hitec` `lk-note` printed the literal word "body" and dropped its
+  content; the cover title justified and its footnote overprinted the rule; the
+  fallback font arrays spewed warnings. All fixed. `lokta-tech`/`lokta-report`
+  headings no longer crash on an unnumbered heading (e.g. a TOC title).
+
 ## [0.1.0] - 2026-06-08
 
 ### Added

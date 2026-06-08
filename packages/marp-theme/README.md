@@ -33,7 +33,9 @@ Set a class on a slide with `<!-- _class: NAME -->`.
 | `marigold` | Marigold feature ground (dark text).       |
 | `peach`    | Peach heritage ground (dark text).         |
 
-Inline helpers: a backtick `LABEL` on its own line renders as a tracked eyebrow.
+Inline helpers: a backtick `` `LABEL` `` on its own line renders as a tracked
+eyebrow. On a pigment or dark ground use `<span class="label">LABEL</span>` so it
+recolors with the ground.
 `---` becomes the hatched end-mark divider. `>` blockquotes set in Source Serif.
 
 ## Build

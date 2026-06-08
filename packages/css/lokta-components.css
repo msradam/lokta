@@ -189,6 +189,12 @@
 }
 .lk-btn-primary:hover { background: var(--ink-100); }
 .lk-btn-lg { min-height: calc(44px - var(--lk-density-step)); padding: 0 20px; font-size: 12px; }
+.lk-btn-xl { min-height: 56px; padding: 0 28px; font-size: 14px; }
+/* A button styled as a link must not inherit the link underline. */
+a.lk-btn { text-decoration: none; }
+/* Icon-only square button (same target as lk-btn). */
+.lk-btn-icon { padding: 0; width: calc(36px - var(--lk-density-step)); }
+.lk-btn-icon.lk-btn-lg { width: calc(44px - var(--lk-density-step)); }
 .lk-btn:disabled,
 .lk-btn[aria-disabled="true"] {
   color: var(--text-disabled);
@@ -270,6 +276,7 @@
 .lk-acc-head:focus-visible,
 .lk-menu-btn:focus-visible,
 .lk-menu-list [role="menuitem"]:focus-visible,
+.lk-switch input:focus-visible,
 .lk-focus:focus-visible,
 a:focus-visible {
   outline: var(--focus-ring-width) solid var(--focus-ring);
@@ -713,3 +720,73 @@ a:focus-visible {
 ::selection { background: var(--pigment-marigold); color: var(--ink-100); }
 ::-moz-selection { background: var(--pigment-marigold); color: var(--ink-100); }
 .lk-num, .lk-tabular, .lk-folio, .lk-mono { font-variant-numeric: tabular-nums; }
+
+/* ── FORM STATES + HELP TEXT ─────────────────────────────────────────────── */
+.lk-input[aria-invalid="true"], .lk-select[aria-invalid="true"], .lk-textarea[aria-invalid="true"],
+.lk-field-error .lk-input, .lk-field-error .lk-select, .lk-field-error .lk-textarea {
+  border-color: var(--accent-danger);
+}
+.lk-input[data-state="success"], .lk-field-success .lk-input { border-color: var(--accent-success); }
+.lk-help { font-size: var(--type-xs); color: var(--text-muted); }
+.lk-error-text, .lk-ok-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--type-xs);
+}
+.lk-error-text { color: var(--accent-danger); }
+.lk-ok-text { color: var(--accent-success); }
+.lk-error-text::before { content: "\26A0"; }
+.lk-ok-text::before { content: "\2714"; }
+.lk-req::after { content: " *"; color: var(--accent-danger); }
+
+/* ── SWITCH (hard-edged toggle; pairs with a native checkbox input) ──────── */
+.lk-switch { display: inline-flex; align-items: center; gap: 8px; min-height: calc(36px - var(--lk-density-step)); cursor: pointer; color: var(--text-body); }
+.lk-switch input {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  width: 36px;
+  height: 20px;
+  margin: 0;
+  border: var(--rule-2) solid var(--border-strong);
+  border-radius: var(--lk-radius);
+  background: var(--field-bg);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-paper);
+}
+.lk-switch input::before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 14px;
+  height: 14px;
+  background: var(--border-strong);
+  border-radius: var(--lk-radius);
+  transition: transform var(--dur-fast) var(--ease-paper);
+}
+.lk-switch input:checked { background: var(--text-primary); border-color: var(--text-primary); }
+.lk-switch input:checked::before { transform: translateX(16px); background: var(--surface-raised); }
+.lk-switch input:disabled { opacity: var(--state-disabled-opacity); cursor: not-allowed; }
+
+/* ── BADGE / COUNT ───────────────────────────────────────────────────────── */
+.lk-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  padding: 0 5px;
+  height: 18px;
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  background: var(--surface-inset);
+  color: var(--text-secondary);
+  border: var(--rule-1) solid var(--border-hairline);
+  border-radius: var(--lk-radius);
+}
+.lk-badge-accent { background: var(--accent-feature-fill); color: var(--text-on-fill); border-color: var(--accent-feature-fill); }
+
+/* ── MODAL BODY ──────────────────────────────────────────────────────────── */
+.lk-modal-body { color: var(--text-body); }

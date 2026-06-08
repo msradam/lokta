@@ -103,7 +103,7 @@
     v(if it.level == 1 { 1.4em } else { 1em })
     grid(columns: (auto, 1fr), column-gutter: 0.6em,
       text(font: lk-mono, fill: accent, size: if it.level == 1 { 13pt } else { 11pt })[
-        #context counter(heading).display(it.numbering)
+        #context { if it.numbering != none { counter(heading).display(it.numbering) } }
       ],
       text(font: lk-sans, weight: if it.level == 1 { 700 } else { 600 },
         size: if it.level == 1 { 15pt } else { 12.5pt }, fill: lk-primary)[#it.body])
@@ -169,7 +169,7 @@
     v(if it.level == 1 { 1.3em } else { 0.9em })
     grid(columns: (auto, 1fr), column-gutter: 0.6em,
       text(font: lk-mono, fill: accent, size: if it.level == 1 { 13pt } else { 11pt })[
-        #context counter(heading).display(it.numbering)],
+        #context { if it.numbering != none { counter(heading).display(it.numbering) } }],
       text(font: lk-sans, weight: if it.level == 1 { 700 } else { 600 },
         size: if it.level == 1 { 15pt } else { 12.5pt }, fill: lk-primary)[#it.body])
     v(0.3em)

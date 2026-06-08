@@ -996,12 +996,12 @@ h3.comp{ font-weight:700; letter-spacing:-0.01em; font-size:23px; margin:0; colo
 .usage-row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
 
 /* dialog */
-.lk-modal-back{ position:fixed; inset:0; background:rgba(7,13,14,0.5); display:flex; align-items:center; justify-content:center; z-index:60; padding:24px; }
+.lk-modal-backdrop{ position:fixed; inset:0; background:rgba(7,13,14,0.5); display:flex; align-items:center; justify-content:center; z-index:60; padding:24px; }
 .lk-modal{ width:100%; max-width:460px; background:var(--surface-raised); border:1px solid var(--text-primary); box-shadow:8px 8px 0 rgba(7,13,14,0.22); }
-.lk-modal-h{ display:flex; align-items:center; gap:10px; padding:14px 18px; border-bottom:1px solid var(--border-default); }
-.lk-modal-h .t{ font-weight:700; font-size:16px; color:var(--text-primary); }
-.lk-modal-b{ padding:18px; font-size:14px; line-height:1.6; color:var(--text-body); }
-.lk-modal-f{ display:flex; gap:8px; justify-content:flex-end; padding:12px 18px; border-top:1px solid var(--border-default); }
+.lk-modal-head{ display:flex; align-items:center; gap:10px; padding:14px 18px; border-bottom:1px solid var(--border-default); }
+.lk-modal-head .t{ font-weight:700; font-size:16px; color:var(--text-primary); }
+.lk-modal-body{ padding:18px; font-size:14px; line-height:1.6; color:var(--text-body); }
+.lk-modal-foot{ display:flex; gap:8px; justify-content:flex-end; padding:12px 18px; border-top:1px solid var(--border-default); }
 
 /* table */
 .lk-table{ width:100%; border-collapse:collapse; font-size:13px; }
@@ -1462,11 +1462,11 @@ svg.lk-icon * {
             <div class="specrow"><span class="k">Return</span><span class="v">Focus returns to the trigger on close</span></div>
           </div>
         </div>
-        <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;div class="lk-modal-back" role="dialog" aria-modal="true"
+        <div class="markup"><button class="copy" data-copy="prev">COPY</button><pre><code>&lt;div class="lk-modal-backdrop" role="dialog" aria-modal="true"
   aria-labelledby="dlg-t"&gt;
   &lt;div class="lk-modal"&gt;
-    &lt;div class="lk-modal-h"&gt;&lt;span class="t" id="dlg-t"&gt;Cancel plan?&lt;/span&gt;&lt;/div&gt;
-    &lt;div class="lk-modal-b"&gt;…&lt;/div&gt;
+    &lt;div class="lk-modal-head"&gt;&lt;span class="t" id="dlg-t"&gt;Cancel plan?&lt;/span&gt;&lt;/div&gt;
+    &lt;div class="lk-modal-body"&gt;…&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre></div>
       </div>
@@ -1616,11 +1616,11 @@ lokta build  # AA-checked CSS variables per stock</div>
 </div>
 
 <!-- ════ DIALOG INSTANCE ════ -->
-<div class="lk-modal-back" id="demoDialog" role="dialog" aria-modal="true" aria-labelledby="demoDialog-t" hidden>
+<div class="lk-modal-backdrop" id="demoDialog" role="dialog" aria-modal="true" aria-labelledby="demoDialog-t" hidden>
   <div class="lk-modal">
-    <div class="lk-modal-h"><span class="lk-note-ico" style="color:var(--accent-danger)" aria-hidden="true">⚠</span><span class="t" id="demoDialog-t">Cancel plan?</span></div>
-    <div class="lk-modal-b">Your workspace becomes read-only after 12 April. Members keep view access, but no one can edit until a plan is restored.</div>
-    <div class="lk-modal-f">
+    <div class="lk-modal-head"><span class="lk-note-ico" style="color:var(--accent-danger)" aria-hidden="true">⚠</span><span class="t" id="demoDialog-t">Cancel plan?</span></div>
+    <div class="lk-modal-body">Your workspace becomes read-only after 12 April. Members keep view access, but no one can edit until a plan is restored.</div>
+    <div class="lk-modal-foot">
       <button class="lk-btn" data-close-dialog="demoDialog">Keep plan</button>
       <button class="lk-btn lk-btn-primary" style="background:var(--accent-danger-fill);border-color:var(--accent-danger-fill);color:var(--paper-00)" data-close-dialog="demoDialog">Cancel plan</button>
     </div>

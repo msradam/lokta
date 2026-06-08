@@ -23,7 +23,7 @@ const copies = [
   ['packages/css/lokta-components.css', 'lokta-components.css'],
   ['packages/css/lokta-icons.css', 'lokta-icons.css'],
   ['packages/css/lokta-stocks.css', 'lokta-stocks.css'],
-  ['packages/css/lokta.css', 'lokta.css'],
+  ['packages/css/lokta-utilities.css', 'lokta-utilities.css'],
   // The deterministic verification dashboard (the proof).
   ['proof/lokta-verification.html', 'verification.html'],
   // The components, icons, and accessibility reference (self-contained page).
@@ -39,6 +39,12 @@ const copies = [
   ['packages/marp-theme/lokta-pipeline.svg', 'lokta-pipeline.svg'],
 ];
 for (const [from, to] of copies) await cp(join(root, from), join(site, to));
+
+// Self-contained drop-in for the site: import the tokens first so a single
+// <link href="lokta.css"> is genuinely batteries-included (the @lokta/css
+// package keeps tokens separate; here everything is co-located).
+const dropin = await readFile(join(root, 'packages/css/lokta.css'), 'utf8');
+await writeFile(join(site, 'lokta.css'), `@import "./lokta.tokens.css";\n${dropin}`);
 
 // Typst example PDFs, if built (build:typst runs first in the pipeline).
 const typstPdfs = ['example', 'example-recipe', 'example-cover'];
@@ -302,6 +308,7 @@ const html = `<!doctype html>
 <link rel="stylesheet" href="lokta-base.css">
 <link rel="stylesheet" href="lokta-components.css">
 <link rel="stylesheet" href="lokta-icons.css">
+<link rel="stylesheet" href="lokta-utilities.css">
 <link rel="stylesheet" href="lokta-stocks.css">
 <link rel="stylesheet" href="styles.css">
 <script src="lokta-behaviors.js" defer></script>

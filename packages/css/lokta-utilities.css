@@ -1,0 +1,45 @@
+/* Lokta utilities. Layout primitives and a display type scale bound to the
+   tokens, so page-level structure and headings do not need inline styles.
+   Load after the components. Everything here uses tokens only. */
+
+/* ── CONTAINERS ──────────────────────────────────────────────────────────── */
+.lk-wrap { width: 100%; max-width: 1120px; margin-inline: auto; padding-inline: var(--space-5); box-sizing: border-box; }
+.lk-wrap-wide { max-width: 1320px; }
+.lk-wrap-narrow { max-width: 72ch; }
+
+/* ── STACK / CLUSTER (token-spaced flow) ────────────────────────────────── */
+.lk-stack { display: flex; flex-direction: column; gap: var(--lk-gap, var(--space-4)); }
+.lk-stack-1 { --lk-gap: var(--space-1); }
+.lk-stack-2 { --lk-gap: var(--space-2); }
+.lk-stack-3 { --lk-gap: var(--space-3); }
+.lk-stack-4 { --lk-gap: var(--space-4); }
+.lk-stack-5 { --lk-gap: var(--space-5); }
+.lk-stack-6 { --lk-gap: var(--space-6); }
+.lk-stack-7 { --lk-gap: var(--space-7); }
+.lk-cluster { display: flex; flex-wrap: wrap; align-items: center; gap: var(--lk-gap, var(--space-3)); }
+.lk-between { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
+
+/* ── GRID (responsive; collapses to 1 column on narrow screens) ──────────── */
+.lk-grid { display: grid; gap: var(--lk-gap, var(--space-5)); grid-template-columns: repeat(var(--lk-cols, 1), minmax(0, 1fr)); }
+.lk-cols-2 { --lk-cols: 2; }
+.lk-cols-3 { --lk-cols: 3; }
+.lk-cols-4 { --lk-cols: 4; }
+.lk-grid-auto { grid-template-columns: repeat(auto-fit, minmax(var(--lk-min, 240px), 1fr)); }
+
+/* ── SECTION SPACING ─────────────────────────────────────────────────────── */
+.lk-section { padding-block: var(--space-8); }
+.lk-section-sm { padding-block: var(--space-6); }
+
+/* ── DISPLAY TYPE SCALE (bound to the type tokens) ───────────────────────── */
+.lk-display { font-family: "Archivo", sans-serif; font-size: var(--type-3xl); font-weight: var(--wt-black); letter-spacing: var(--track-tight); line-height: var(--lh-tight); color: var(--text-primary); text-wrap: balance; }
+.lk-h1 { font-family: "Archivo", sans-serif; font-size: var(--type-2xl); font-weight: var(--wt-black); letter-spacing: var(--track-tight); line-height: var(--lh-tight); color: var(--text-primary); text-wrap: balance; }
+.lk-h2 { font-family: "Archivo", sans-serif; font-size: var(--type-xl); font-weight: var(--wt-bold); letter-spacing: var(--track-snug); line-height: var(--lh-snug); color: var(--text-primary); text-wrap: balance; }
+.lk-h3 { font-family: "Archivo", sans-serif; font-size: var(--type-lg); font-weight: var(--wt-semibold); letter-spacing: var(--track-snug); line-height: var(--lh-snug); color: var(--text-primary); }
+.lk-eyebrow { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: var(--type-xs); text-transform: uppercase; letter-spacing: var(--track-label); font-weight: var(--wt-medium); color: var(--text-secondary); }
+.lk-lede { font-family: "Source Serif 4", serif; font-size: var(--type-md); line-height: var(--lh-relaxed); color: var(--text-body); text-wrap: pretty; }
+
+@media (max-width: 640px) {
+  .lk-cols-2, .lk-cols-3, .lk-cols-4 { --lk-cols: 1; }
+  .lk-display { font-size: var(--type-2xl); }
+  .lk-h1 { font-size: var(--type-xl); }
+}

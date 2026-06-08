@@ -30,9 +30,9 @@
   celadon:  rgb("#4F6B50"),
   cinnabar: rgb("#C23A26"),
 )
-#let lk-sans  = ("Archivo", "TeX Gyre Heros", "Helvetica Neue", "Arial")
-#let lk-mono  = ("Spline Sans Mono", "JetBrains Mono", "Menlo")
-#let lk-serif = ("Source Serif 4", "Georgia")
+#let lk-sans  = "Archivo"
+#let lk-mono  = "Spline Sans Mono"
+#let lk-serif = "Source Serif 4"
 #let accent = lk.indigo
 
 // ── FURNITURE (Lokta elements) ─────────────────────────────────────────────────
@@ -57,7 +57,8 @@
   fill: lk.paper, stroke: (left: 3pt + accent),
 )[
   #lk-label(title, fill: accent) #v(3pt, weak: true)
-  #set text(font: lk-sans, size: 9.5pt, fill: lk.body); body
+  #set text(font: lk-sans, size: 9.5pt, fill: lk.body)
+  #body
 ]
 
 // normalise author (string | array) -> array
@@ -181,6 +182,7 @@
 ) = {
   let auth = _authors(author)
   page(header: none, footer: none)[
+    #set par(justify: false)
     #block(width: 100%, height: 3pt, fill: lk.ink)
     #v(2.4cm)
     #box(width: 56pt, height: 8pt, fill: lk.marigold)
@@ -196,8 +198,8 @@
       [#lk-label("Classification") #v(3pt, weak: true) #text(weight: 600, size: 13pt, fill: accent)[#confidential]],
     )
     #v(20pt)
+    #if body != none { text(font: lk-mono, size: 8pt, fill: lk.mut)[#body]; v(8pt) }
     #block(width: 100%, height: 3pt, fill: lk.ink)
-    #if body != none { place(bottom, text(font: lk-mono, size: 8pt, fill: lk.mut)[#body]) }
   ]
 }
 

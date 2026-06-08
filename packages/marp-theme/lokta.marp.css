@@ -80,6 +80,8 @@ hr { border: 0; height: 8px; margin: 18px 0; background-image: repeating-linear-
 
 /* Tracked eyebrow label: write `LABEL` on its own line, or use a span.label */
 .label, section > p:first-child em.label { font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-60); }
+/* A lone backtick label on its own line renders as a tracked eyebrow (not a code chip). */
+section p > code:only-child { font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-60); background: none; border: 0; padding: 0; }
 
 /* LEAD / cover slide */
 section.lead { display: flex; flex-direction: column; justify-content: center; }
