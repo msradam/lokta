@@ -92,7 +92,7 @@
 .lk-barlist-label { font-size: var(--type-sm); color: var(--text-body); }
 .lk-barlist-val { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: var(--type-xs); color: var(--text-secondary); font-variant-numeric: tabular-nums; text-align: right; }
 .lk-bar-track { height: 12px; background: var(--surface-sunken); border: var(--rule-hairline) solid var(--border-hairline); }
-.lk-bar-fill { height: 100%; width: var(--pct, 0%); background: var(--viz, var(--viz-1)); }
+.lk-bar-fill { display: block; height: 100%; width: var(--pct, 0%); background: var(--viz, var(--viz-1)); }
 
 /* Sparkline / inline chart: style a bare inline SVG with the series stroke. */
 .lk-spark { display: inline-block; vertical-align: middle; }

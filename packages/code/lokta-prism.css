@@ -17,14 +17,13 @@ pre[class*="language-"] { padding: 16px 18px; overflow-x: auto; border: var(--ru
 .token.function, .token.class-name { color: var(--code-function); font-weight: 600; }
 .token.tag, .token.selector, .token.namespace { color: var(--code-type); }
 .token.attr-name, .token.property, .token.variable, .token.symbol { color: var(--code-variable); }
-.token.operator, .token.entity, .token.url, .token.deleted { color: var(--code-operator); }
+.token.operator, .token.entity, .token.url { color: var(--code-operator); }
 .token.punctuation { color: var(--code-punctuation); }
-.token.inserted { color: var(--code-string); }
 
 /* Diff lines, gutter, and line highlight. Use the Prism line-highlight /
    line-numbers plugins; the colours come from the AA-gated --code-* roles. */
-.token.inserted { background: var(--code-add-bg); color: var(--code-string); display: inline-block; width: 100%; }
-.token.deleted { background: var(--code-del-bg); color: var(--code-operator); display: inline-block; width: 100%; }
+.token.inserted { background: var(--code-add-bg); color: var(--code-add); display: inline-block; width: 100%; }
+.token.deleted { background: var(--code-del-bg); color: var(--code-del); display: inline-block; width: 100%; }
 pre[class*="language-"].line-numbers .line-numbers-rows { border-right: var(--rule-1) solid var(--border-default); }
 .line-numbers-rows > span::before { color: var(--code-gutter); }
 .line-highlight { background: var(--code-line-hl); }

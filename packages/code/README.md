@@ -28,6 +28,25 @@ Shiki and VS Code both consume TextMate themes, so point them at `lokta-light.tm
 or `lokta-dark.tmTheme` directly (Shiki: `theme: parse(readFileSync(...))`). The
 token colours then match the web Prism and highlight.js output exactly.
 
+## Diff blocks (Prism)
+
+Load the `diff-highlight` and `line-numbers` plugins, then mark the language with
+the triple class. The leading `+`/`-`/space column is significant.
+
+```html
+<pre class="language-diff-js diff-highlight line-numbers"><code>  function total(items) {
+-   return items.reduce((a, b) => a + b);
++   return items.reduce((a, b) => a + b, 0);
+  }</code></pre>
+```
+
+Added lines paint `--code-add` on `--code-add-bg`, removed lines `--code-del` on
+`--code-del-bg`, both AA on the wash composite. Use `line-numbers` for the AA
+gutter; `line-highlight` (its `data-line` attribute) drives `--code-line-hl`.
+
+A Shiki preset is in `lokta-shiki.mjs` (it loads the `.tmTheme` files into
+`createHighlighter`).
+
 ## Off-the-shelf alternative
 
 When a team wants an existing editor theme rather than the native one, **Modus

@@ -35,6 +35,21 @@ for (const [role, [light, dark, cue]] of Object.entries(ROLES)) {
   if (CUE_REQUIRED.includes(role)) ok(cue === 'bold' || cue === 'italic', `${role} needs a weight/italic cue, got "${cue}"`);
 }
 
+// Diff lines: the text sits on the wash composite (add-bg/del-bg over code-bg),
+// which is darker than bare bg, so check there. [textColour, washColour, alpha]
+const over = (fg, a, bg) => { const F = hx(fg), B = hx(bg); return '#' + [0, 1, 2].map((i) => Math.round(a * F[i] + (1 - a) * B[i]).toString(16).padStart(2, '0')).join(''); };
+const DIFF = {
+  light: { bg: '#FAF8EA', add: ['#43603C', '#4F6B50', 0.16], del: ['#B23320', '#B23320', 0.13] },
+  dark: { bg: '#16140E', add: ['#8FB088', '#8FB088', 0.16], del: ['#E2654F', '#E2654F', 0.15] },
+};
+console.log('CODE · diff text AA on the wash composite');
+for (const [mode, d] of Object.entries(DIFF))
+  for (const role of ['add', 'del']) {
+    const [text, wash, a] = d[role];
+    const comp = over(wash, a, d.bg);
+    ok(cr(text, comp) >= 4.5, `${mode} diff-${role} ${text} on ${comp}: ${cr(text, comp).toFixed(2)} < 4.5`);
+  }
+
 console.log(`\nCODE · ${checks - fails}/${checks} checks passing.`);
 if (fails) { console.error(`FAILED: ${fails} code-theme violation(s).`); process.exit(1); }
 console.log('All code-theme checks passing.');

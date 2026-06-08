@@ -232,7 +232,40 @@ function wireGrid(grid) {
   });
 }
 
+// ── Bar chart from data (bars + synced legend from one source) ──────────────
+// <div class="lk-bars" data-bars='[{"label":"North","value":72,"series":0}]'
+//   data-series='["North","South"]' data-label="...">. Colour + pattern can never
+// drift, since both derive from the series index.
+function wireBars(el) {
+  let data, names;
+  try {
+    data = JSON.parse(el.dataset.bars || '[]');
+    names = JSON.parse(el.dataset.series || '[]');
+  } catch (e) {
+    return;
+  }
+  if (!data.length) return;
+  const max = Math.max(...data.map((d) => d.value));
+  const cls = (s) => `lk-viz-${s + 1}${s > 0 ? ` lk-pat-${s + 1}` : ''}`;
+  const bars = data
+    .map(
+      (d) =>
+        `<div class="lk-barlist-row"><span class="lk-barlist-label">${d.label}</span><span class="lk-bar-track"><span class="lk-bar-fill ${cls(d.series || 0)}" style="--pct:${Math.round((d.value / max) * 100)}%"></span></span><span class="lk-barlist-val">${d.value}</span></div>`,
+    )
+    .join('');
+  const used = [...new Set(data.map((d) => d.series || 0))].sort((a, b) => a - b);
+  const legend = names.length
+    ? `<div class="lk-legend" aria-hidden="true">${used.map((s) => `<span class="lk-legend-item"><span class="lk-swatch ${cls(s)}"></span>${names[s] || ''}</span>`).join('')}</div>`
+    : '';
+  el.innerHTML = `<div class="lk-barlist">${bars}</div>${legend}`;
+  if (!el.getAttribute('role')) {
+    el.setAttribute('role', 'img');
+    el.setAttribute('aria-label', el.dataset.label || data.map((d) => `${d.label} ${d.value}`).join(', '));
+  }
+}
+
 function initLoktaBehaviors() {
+  document.querySelectorAll('.lk-bars[data-bars]').forEach(wireBars);
   document.querySelectorAll('[role="grid"]').forEach(wireGrid);
   document.querySelectorAll('[data-tabs]').forEach(wireTabs);
   document.querySelectorAll('.lk-accordion').forEach(wireAccordion);
@@ -254,5 +287,5 @@ if (typeof document !== 'undefined') {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { initLoktaBehaviors, wireTabs, wireAccordion, openDialog, closeDialog, wireMenus, wireGrid };
+  module.exports = { initLoktaBehaviors, wireTabs, wireAccordion, openDialog, closeDialog, wireMenus, wireGrid, wireBars };
 }
