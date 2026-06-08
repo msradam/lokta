@@ -245,23 +245,27 @@ function wireBars(el) {
     return;
   }
   if (!data.length) return;
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
   const max = Math.max(...data.map((d) => d.value));
   const cls = (s) => `lk-viz-${s + 1}${s > 0 ? ` lk-pat-${s + 1}` : ''}`;
+  // Decorative bars + legend (hidden from assistive tech) ...
   const bars = data
     .map(
       (d) =>
-        `<div class="lk-barlist-row"><span class="lk-barlist-label">${d.label}</span><span class="lk-bar-track"><span class="lk-bar-fill ${cls(d.series || 0)}" style="--pct:${Math.round((d.value / max) * 100)}%"></span></span><span class="lk-barlist-val">${d.value}</span></div>`,
+        `<div class="lk-barlist-row"><span class="lk-barlist-label">${esc(d.label)}</span><span class="lk-bar-track"><span class="lk-bar-fill ${cls(d.series || 0)}" style="--pct:${Math.round((d.value / max) * 100)}%"></span></span><span class="lk-barlist-val">${esc(d.value)}</span></div>`,
     )
     .join('');
   const used = [...new Set(data.map((d) => d.series || 0))].sort((a, b) => a - b);
   const legend = names.length
-    ? `<div class="lk-legend" aria-hidden="true">${used.map((s) => `<span class="lk-legend-item"><span class="lk-swatch ${cls(s)}"></span>${names[s] || ''}</span>`).join('')}</div>`
+    ? `<div class="lk-legend" aria-hidden="true">${used.map((s) => `<span class="lk-legend-item"><span class="lk-swatch ${cls(s)}"></span>${esc(names[s] || '')}</span>`).join('')}</div>`
     : '';
-  el.innerHTML = `<div class="lk-barlist">${bars}</div>${legend}`;
-  if (!el.getAttribute('role')) {
-    el.setAttribute('role', 'img');
-    el.setAttribute('aria-label', el.dataset.label || data.map((d) => `${d.label} ${d.value}`).join(', '));
-  }
+  // ... and a visually-hidden data table, the navigable equivalent for AT.
+  const hasSeries = names.length > 0;
+  const rows = data
+    .map((d) => `<tr><th scope="row">${esc(d.label)}</th>${hasSeries ? `<td>${esc(names[d.series || 0] || '')}</td>` : ''}<td>${esc(d.value)}</td></tr>`)
+    .join('');
+  const table = `<table class="lk-sr-only"><caption>${esc(el.dataset.label || 'Chart data')}</caption><thead><tr><th scope="col">Item</th>${hasSeries ? '<th scope="col">Series</th>' : ''}<th scope="col">Value</th></tr></thead><tbody>${rows}</tbody></table>`;
+  el.innerHTML = `<div class="lk-barlist" aria-hidden="true">${bars}</div>${legend}${table}`;
 }
 
 function initLoktaBehaviors() {

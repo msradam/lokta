@@ -36,7 +36,9 @@ for (const [role, [light, dark, cue]] of Object.entries(ROLES)) {
 }
 
 // Diff lines: the text sits on the wash composite (add-bg/del-bg over code-bg),
-// which is darker than bare bg, so check there. [textColour, washColour, alpha]
+// which is darker than bare bg, so check there. Each role is
+// [textColour, washColour, washAlpha]; the wash colour is the line background, not
+// the text (e.g. light add text #43603C reads on the #4F6B50 wash over the bg).
 const over = (fg, a, bg) => { const F = hx(fg), B = hx(bg); return '#' + [0, 1, 2].map((i) => Math.round(a * F[i] + (1 - a) * B[i]).toString(16).padStart(2, '0')).join(''); };
 const DIFF = {
   light: { bg: '#FAF8EA', add: ['#43603C', '#4F6B50', 0.16], del: ['#B23320', '#B23320', 0.13] },
