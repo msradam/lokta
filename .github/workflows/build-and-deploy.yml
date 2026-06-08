@@ -39,6 +39,9 @@ jobs:
       #     border-radius and target size). Serves site/ via the playwright config.
       - run: npx playwright install --with-deps chromium
       - run: npm run test:components
+      # 4b-ii. axe-core over the whole-page example templates (dashboard, landing)
+      #        across stocks, proving the components compose into real pages.
+      - run: npm run test:templates
       # 4c. Visual regression. Runs inside the pinned Playwright image (matching
       #     the committed Linux baselines), so font rendering is identical.
       - run: docker run --rm -v "$PWD":/work -w /work --network host mcr.microsoft.com/playwright:v1.60.0-jammy npx playwright test visual.spec.mjs
