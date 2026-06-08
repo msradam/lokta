@@ -1,6 +1,6 @@
 {
   "name": "@lokta/tokens",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Lokta design tokens, built to CSS, SCSS, and JS for four paper stocks.",
   "license": "MIT",
   "type": "module",

@@ -1,6 +1,6 @@
 {
   "name": "@lokta/css",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Lokta component CSS, built on the semantic token layer.",
   "license": "MIT",
   "files": [

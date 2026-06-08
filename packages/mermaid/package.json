@@ -1,6 +1,6 @@
 {
   "name": "@lokta/mermaid",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Lokta theme for Mermaid diagrams: square nodes, ink strokes, straight edges, mono edge labels.",
   "license": "MIT",
   "type": "module",

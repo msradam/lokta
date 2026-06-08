@@ -6,6 +6,8 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-06-08
+
 ### Added
 
 - A layout + display-type utility layer (`lokta-utilities.css`): `lk-wrap`,
@@ -149,4 +151,5 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - A GitHub Pages workflow that builds the tokens, renders the deck, builds the
   site, and deploys.
 
+[0.2.0]: https://github.com/msradam/lokta/releases/tag/v0.2.0
 [0.1.0]: https://github.com/msradam/lokta/releases/tag/v0.1.0

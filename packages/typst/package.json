@@ -1,6 +1,6 @@
 {
   "name": "@lokta/typst",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Lokta editorial document themes for Typst, with vendored static fonts.",
   "license": "MIT",
   "files": [
