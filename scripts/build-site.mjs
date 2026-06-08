@@ -29,6 +29,11 @@ const copies = [
   // The components, icons, and accessibility reference (self-contained page).
   ['components/components.html', 'components.html'],
   ['components/lokta-ref.js', 'lokta-ref.js'],
+  // Publishable example templates, built only from Lokta classes.
+  ['templates/dashboard.html', 'dashboard.html'],
+  ['templates/landing.html', 'landing.html'],
+  // External icon sprite the templates reference via <use href>.
+  ['packages/css/icons/lokta-icons.svg', 'lokta-icons.svg'],
   ['packages/css/lokta-behaviors.js', 'lokta-behaviors.js'],
   // Mermaid: theme config, web ESM, CSS, and the pre-rendered demo diagram.
   ['packages/mermaid/index.mjs', 'lokta.mermaid.mjs'],
@@ -323,6 +328,7 @@ ${iconSprite}
     <a href="#overview">Overview</a>
     <a href="#foundations">Foundations</a>
     <a href="#components">Components</a>
+    <a href="#templates">Templates</a>
     <a href="#diagrams">Diagrams</a>
     <a href="#documents">Documents</a>
     <a href="#deck">Deck</a>
@@ -604,6 +610,15 @@ ${iconSprite}
         <div class="lk-folio">012</div>
       </div>`,
     )}
+  </section>
+
+  <section id="templates">
+    <h2 class="sec-h">Templates</h2>
+    <p class="muted">Whole-page examples built only from Lokta classes (app shell, stat cards, marketing kit). Copy the markup as a starting point. Both are part of the axe-core suite.</p>
+    <p class="lk-row">
+      <a class="lk-btn lk-btn-primary" href="dashboard.html">Open the dashboard template</a>
+      <a class="lk-btn lk-btn-primary" href="landing.html">Open the landing template</a>
+    </p>
   </section>
 
   <section id="diagrams">

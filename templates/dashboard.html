@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard template · Lokta</title>
+<link rel="stylesheet" href="lokta.css">
+<style>
+  /* Page-specific composition only; every visual token comes from Lokta. */
+  body { margin: 0; }
+  .dash-grid { display: grid; gap: var(--space-5); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  /* Canvas sits on the raised (lighter) surface; cards drop to the page surface
+     as framed wells, so accent text (status, deltas) clears AA on every stock. */
+  .lk-content { background: var(--surface-raised); }
+  .dash-card { background: var(--surface-page); border: var(--rule-1) solid var(--border-default); padding: var(--space-4); }
+  @media (max-width: 760px) { .lk-shell { grid-template-columns: 1fr; } .lk-sidebar { display: none; } }
+</style>
+</head>
+<body class="lk">
+<a class="lk-sr-only" href="#main">Skip to content</a>
+
+<div class="lk-shell">
+  <aside class="lk-sidebar" aria-label="Primary">
+    <div class="lk-sidebar-brand">Lokta</div>
+    <nav class="lk-nav" aria-label="Sections">
+      <span class="lk-nav-section">Workspace</span>
+      <a class="lk-nav-item" href="#" aria-current="page">
+        <svg class="lk-icon" width="16" height="16" aria-hidden="true"><use href="lokta-icons.svg#lk-i-home"></use></svg>Overview</a>
+      <a class="lk-nav-item" href="#">
+        <svg class="lk-icon" width="16" height="16" aria-hidden="true"><use href="lokta-icons.svg#lk-i-user"></use></svg>Customers</a>
+      <a class="lk-nav-item" href="#">
+        <svg class="lk-icon" width="16" height="16" aria-hidden="true"><use href="lokta-icons.svg#lk-i-copy"></use></svg>Invoices</a>
+      <span class="lk-nav-section">Account</span>
+      <a class="lk-nav-item" href="#">
+        <svg class="lk-icon" width="16" height="16" aria-hidden="true"><use href="lokta-icons.svg#lk-i-settings"></use></svg>Settings</a>
+    </nav>
+  </aside>
+
+  <div class="lk-main">
+    <header class="lk-topbar">
+      <div class="lk-cluster">
+        <strong class="lk-h3">Overview</strong>
+      </div>
+      <div class="lk-cluster">
+        <div class="lk-segment" role="group" aria-label="Range">
+          <button type="button" aria-pressed="false">Week</button>
+          <button type="button" aria-pressed="true">Month</button>
+          <button type="button" aria-pressed="false">Year</button>
+        </div>
+        <button class="lk-btn lk-btn-primary" type="button">New report</button>
+        <span class="lk-avatar" aria-hidden="true">AR</span>
+      </div>
+    </header>
+
+    <main id="main" class="lk-content lk-stack lk-stack-5">
+      <section class="lk-stack lk-stack-3" aria-labelledby="kpi-h">
+        <h2 id="kpi-h" class="lk-eyebrow">Key metrics</h2>
+        <div class="dash-grid">
+          <div class="lk-stat">
+            <span class="lk-stat-label">Revenue</span>
+            <span class="lk-stat-value">$48.2k</span>
+            <span class="lk-stat-delta lk-stat-up">12.4% vs last month</span>
+          </div>
+          <div class="lk-stat">
+            <span class="lk-stat-label">Active users</span>
+            <span class="lk-stat-value">3,180</span>
+            <span class="lk-stat-delta lk-stat-up">4.1%</span>
+          </div>
+          <div class="lk-stat">
+            <span class="lk-stat-label">Churn</span>
+            <span class="lk-stat-value">2.3%</span>
+            <span class="lk-stat-delta lk-stat-down">0.6%</span>
+          </div>
+          <div class="lk-stat">
+            <span class="lk-stat-label">Open tickets</span>
+            <span class="lk-stat-value">17</span>
+            <span class="lk-stat-delta">unchanged</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="lk-grid lk-cols-2" aria-label="Detail">
+        <div class="dash-card lk-stack lk-stack-3">
+          <div class="lk-between">
+            <h2 class="lk-h3">Recent invoices</h2>
+            <span class="lk-badge">8 new</span>
+          </div>
+          <table class="lk-table">
+            <thead><tr><th>Invoice</th><th>Client</th><th class="lk-table-num">Amount</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>FA-2041</td><td>Harada Studio</td><td class="lk-table-num">$4,200</td><td><span class="lk-status lk-status-done">Paid</span></td></tr>
+              <tr><td>FA-2042</td><td>Prestel</td><td class="lk-table-num">$1,850</td><td><span class="lk-status lk-status-pending">Sent</span></td></tr>
+              <tr><td>FA-2043</td><td>Kabir Press</td><td class="lk-table-num">$960</td><td><span class="lk-status lk-status-alert">Overdue</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="dash-card lk-stack lk-stack-4">
+          <h2 class="lk-h3">Activity</h2>
+          <div class="lk-empty">
+            <svg class="lk-icon" width="28" height="28" aria-hidden="true"><use href="lokta-icons.svg#lk-i-search"></use></svg>
+            <div class="lk-empty-title">No activity yet</div>
+            <p>When your team acts on an invoice, it shows up here.</p>
+            <button class="lk-btn" type="button">Invite a teammate</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="lk-card lk-stack lk-stack-3" aria-label="Loading example">
+        <h2 class="lk-h3">Loading state</h2>
+        <span class="lk-skeleton lk-skeleton-title"></span>
+        <span class="lk-skeleton lk-skeleton-text"></span>
+        <span class="lk-skeleton lk-skeleton-text"></span>
+      </section>
+    </main>
+  </div>
+</div>
+
+<div class="lk-toast lk-toast-success" role="status" style="position:fixed; right:24px; bottom:24px;">
+  <svg class="lk-icon" width="18" height="18" aria-hidden="true"><use href="lokta-icons.svg#lk-i-check"></use></svg>
+  <div class="lk-stack lk-stack-1">
+    <span class="lk-toast-title">Report saved</span>
+    <span>Your monthly report is ready to share.</span>
+  </div>
+</div>
+</body>
+</html>

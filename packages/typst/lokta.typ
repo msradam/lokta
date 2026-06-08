@@ -76,6 +76,37 @@
   #if by != none { v(4pt); lk-label(by, color: lk-mut) }
 ]
 
+// Editorial table: mono uppercase header over an accent rule, hairline rows, zebra.
+// #lk-table(headers: ("Field", "Type"), rows: (("id", "int"), ("name", "str")))
+#let lk-table(headers: (), rows: (), columns: auto, align: left, accent: lk-primary) = {
+  let ncol = if headers.len() > 0 { headers.len() } else if rows.len() > 0 { rows.first().len() } else { 1 }
+  table(
+    columns: if columns == auto { ncol } else { columns },
+    align: align,
+    inset: (x: 10pt, y: 7pt),
+    stroke: (x, y) => (
+      bottom: if y == 0 { none } else { 0.5pt + lk-hair },
+      top: if y == 1 { 1.5pt + accent } else { none },
+    ),
+    fill: (x, y) => if y > 0 and calc.even(y) { lk-paper2 } else { none },
+    ..if headers.len() > 0 {
+      (table.header(..headers.map(h => text(font: lk-mono, size: 8pt, tracking: 1pt, fill: lk-mut)[#upper(h)])),)
+    } else { () },
+    ..rows.flatten().map(c => text(font: lk-sans, size: 9.5pt, fill: lk-body)[#c]),
+  )
+}
+
+// Callout variants over lk-note.
+#let lk-tip(body) = lk-note(title: "Tip", accent: lk-celadon-ink, body)
+#let lk-warning(body) = lk-note(title: "Warning", accent: lk-cinnabar, body)
+
+// Figure caption: mono accent label, then a serif italic line. Use in a show rule.
+#let lk-caption(accent: lk-mut) = it => block(width: 100%)[
+  #text(font: lk-mono, size: 8pt, tracking: 1pt, fill: accent)[#upper[#it.supplement #context it.counter.display(it.numbering)]]
+  #h(6pt)
+  #text(font: lk-serif, style: "italic", size: 9pt, fill: lk-mut)[#it.body]
+]
+
 // ── Technical report (white paper, hitec-style) ──────────────────────────────
 #let lokta-tech(
   title: "", subtitle: none, org: "", doc-id: "", meta: (:), accent: lk-indigo, body,
@@ -113,6 +144,7 @@
     width: 100%, fill: rgb("#F4F4F1"), stroke: 0.5pt + lk-hair, inset: 12pt,
     text(font: lk-mono, size: 9pt, fill: lk-primary, it),
   )
+  show figure.caption: lk-caption(accent: accent)
 
   // Title block
   lk-label(org, color: lk-mut); v(0.5em)
@@ -174,6 +206,7 @@
         size: if it.level == 1 { 15pt } else { 12.5pt }, fill: lk-primary)[#it.body])
     v(0.3em)
   }
+  show figure.caption: lk-caption(accent: accent)
   // Title block
   lk-label(org, color: lk-mut); v(0.6em)
   text(font: lk-sans, weight: 800, size: 28pt, fill: lk-primary)[#title]

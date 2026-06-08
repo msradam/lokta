@@ -14,6 +14,23 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Components from dogfooding: `lk-switch` (toggle), `lk-badge`, `lk-btn-icon`,
   `lk-btn-xl`, form states (`aria-invalid` styling, `lk-help`, `lk-error-text`,
   `lk-ok-text`, `lk-req`), and `lk-modal-body`.
+- App-shell and dashboard components: `lk-shell`/`lk-sidebar`/`lk-topbar`/
+  `lk-content`, sidebar `lk-nav`/`lk-nav-item`, `lk-stat` (KPI card with
+  `lk-stat-up`/`-down` deltas), `lk-avatar`, `lk-segment` (segmented control),
+  `lk-toast`, `lk-empty`, and `lk-skeleton`.
+- Form grouping: `lk-fieldset`/`legend`, `lk-field`, `lk-input-group` with
+  `lk-input-addon`, and `lk-char-count`.
+- Marketing kit: `lk-feature`, `lk-plan` (with `lk-plan-featured`), `lk-quote`,
+  `lk-cta`, `lk-logos`, the `lk-on-pigment`/`-dark` section mode that recolors
+  furniture and buttons for a pigment ground, and `lk-link`.
+- Two whole-page example templates built only from Lokta classes
+  (`templates/dashboard.html`, `templates/landing.html`), linked from the docs
+  site and audited by a new axe-core gate (`validate/templates.spec.mjs`) across
+  the paper, ink, and indigo stocks.
+- Typst helpers in `lokta.typ`: `lk-table(headers, rows)` (mono header over an
+  accent rule, hairline rows, zebra), `lk-tip`/`lk-warning` callouts, and
+  `lk-caption`, wired as the `figure.caption` style in `lokta-tech` and
+  `lokta-report`.
 
 ### Fixed
 
@@ -27,6 +44,12 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   content; the cover title justified and its footnote overprinted the rule; the
   fallback font arrays spewed warnings. All fixed. `lokta-tech`/`lokta-report`
   headings no longer crash on an unnumbered heading (e.g. a TOC title).
+- `lk-segment` and `lk-cta` paired `surface-inverse` with `text-on-fill`, which
+  collide on the dark stocks (both resolve light); they now use the
+  `text-primary` over `surface-raised` pairing, which holds in every stock.
+- `lk-stat` sits on the page surface, where accent deltas are AA-tuned; the
+  raised surface dipped below 4.5 on the dark stocks and the sunken surface on
+  the light ones.
 
 ## [0.1.0] - 2026-06-08
 

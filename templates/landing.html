@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Landing template · Lokta</title>
+<link rel="stylesheet" href="lokta.css">
+<style>
+  body { margin: 0; }
+  .hero { background: var(--pigment-marigold); }
+  .nav-bar { border-bottom: var(--rule-1) solid var(--border-default); }
+</style>
+</head>
+<body class="lk">
+<a class="lk-sr-only" href="#main">Skip to content</a>
+
+<header class="nav-bar">
+  <div class="lk-wrap lk-between" style="padding-block: var(--space-3);">
+    <span class="lk-sidebar-brand" style="padding:0;">Lokta</span>
+    <nav class="lk-cluster" aria-label="Primary">
+      <a class="lk-link" href="#features">Features</a>
+      <a class="lk-link" href="#pricing">Pricing</a>
+      <a class="lk-btn lk-btn-primary" href="#">Start free</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero lk-on-pigment lk-section">
+    <div class="lk-wrap lk-stack lk-stack-4" style="max-width: 56ch;">
+      <span class="lk-eyebrow">Editorial UI system</span>
+      <h1 class="lk-display">Ship interfaces that read like a printed page.</h1>
+      <p class="lk-lede">Lokta is a hard-edged, accessible design system drawn from the layout of a real cookbook. Every text role clears WCAG 2.2 AA on every stock.</p>
+      <div class="lk-cluster">
+        <a class="lk-btn lk-btn-primary lk-btn-xl" href="#">Get started</a>
+        <a class="lk-btn lk-btn-xl" href="#">Read the docs</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="lk-section-sm" aria-label="Trusted by">
+    <div class="lk-wrap lk-logos">
+      <span>Harada</span><span>Prestel</span><span>Kabir Press</span><span>Studio Ghibli</span><span>Folio</span>
+    </div>
+  </section>
+
+  <section id="features" class="lk-section">
+    <div class="lk-wrap lk-stack lk-stack-6">
+      <div class="lk-stack lk-stack-2" style="max-width: 48ch;">
+        <span class="lk-eyebrow">What you get</span>
+        <h2 class="lk-h1">Designed to be deterministic.</h2>
+      </div>
+      <div class="lk-grid lk-cols-3">
+        <article class="lk-feature">
+          <svg class="lk-icon" width="22" height="22" aria-hidden="true"><use href="lokta-icons.svg#lk-i-check"></use></svg>
+          <h3 class="lk-feature-title">AA by construction</h3>
+          <p>Contrast, parity, and grid are verified in CI, not by eye.</p>
+        </article>
+        <article class="lk-feature">
+          <svg class="lk-icon" width="22" height="22" aria-hidden="true"><use href="lokta-icons.svg#lk-i-edit"></use></svg>
+          <h3 class="lk-feature-title">Four stocks</h3>
+          <p>Paper, Bone, Ink, Indigo. One token layer, every surface.</p>
+        </article>
+        <article class="lk-feature">
+          <svg class="lk-icon" width="22" height="22" aria-hidden="true"><use href="lokta-icons.svg#lk-i-download"></use></svg>
+          <h3 class="lk-feature-title">Web, slides, docs</h3>
+          <p>The same system in CSS, Marp, Typst, and Mermaid.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="lk-section" style="background: var(--surface-sunken);">
+    <div class="lk-wrap lk-stack lk-stack-6">
+      <div class="lk-stack lk-stack-2" style="max-width: 48ch;">
+        <span class="lk-eyebrow">Pricing</span>
+        <h2 class="lk-h1">Plans that stay out of the way.</h2>
+      </div>
+      <div class="lk-grid lk-cols-3">
+        <div class="lk-plan">
+          <span class="lk-plan-name">Starter</span>
+          <span class="lk-plan-price">$0<small>/mo</small></span>
+          <ul class="lk-plan-list">
+            <li>Core components</li><li>Two stocks</li><li>Community support</li>
+          </ul>
+          <a class="lk-btn" href="#">Choose Starter</a>
+        </div>
+        <div class="lk-plan lk-plan-featured">
+          <span class="lk-plan-name">Team</span>
+          <span class="lk-plan-price">$24<small>/mo</small></span>
+          <ul class="lk-plan-list">
+            <li>Everything in Starter</li><li>All stocks and pigments</li><li>Figma library</li><li>Priority support</li>
+          </ul>
+          <a class="lk-btn lk-btn-primary" href="#">Choose Team</a>
+        </div>
+        <div class="lk-plan">
+          <span class="lk-plan-name">Enterprise</span>
+          <span class="lk-plan-price">Custom</span>
+          <ul class="lk-plan-list">
+            <li>Everything in Team</li><li>Custom stocks</li><li>SLA and onboarding</li>
+          </ul>
+          <a class="lk-btn" href="#">Contact sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lk-section" aria-label="Testimonial">
+    <div class="lk-wrap" style="max-width: 60ch;">
+      <blockquote class="lk-quote">
+        It reads like a book and audits like a spec. We stopped arguing about contrast and started shipping.
+        <span class="lk-quote-cite">
+          <span class="lk-avatar" aria-hidden="true">SH</span>
+          <span><cite>Sachiyo H.</cite><br><span>Design lead, Folio</span></span>
+        </span>
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="lk-cta">
+    <div class="lk-stack lk-stack-2">
+      <h2 class="lk-h1">Start with a clean page.</h2>
+      <p>Install the CSS, set a stock, ship.</p>
+    </div>
+    <a class="lk-btn lk-btn-xl" href="#">Get Lokta</a>
+  </section>
+</main>
+</body>
+</html>

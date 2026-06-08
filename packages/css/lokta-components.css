@@ -277,6 +277,8 @@ a.lk-btn { text-decoration: none; }
 .lk-menu-btn:focus-visible,
 .lk-menu-list [role="menuitem"]:focus-visible,
 .lk-switch input:focus-visible,
+.lk-nav-item:focus-visible,
+.lk-segment > button:focus-visible,
 .lk-focus:focus-visible,
 a:focus-visible {
   outline: var(--focus-ring-width) solid var(--focus-ring);
@@ -790,3 +792,237 @@ a:focus-visible {
 
 /* ── MODAL BODY ──────────────────────────────────────────────────────────── */
 .lk-modal-body { color: var(--text-body); }
+
+/* ── APP SHELL ───────────────────────────────────────────────────────────── */
+.lk-shell { display: grid; grid-template-columns: var(--lk-sidebar-w, 248px) minmax(0, 1fr); min-height: 100vh; }
+.lk-shell-collapsed { --lk-sidebar-w: 60px; }
+.lk-sidebar {
+  display: flex; flex-direction: column; gap: var(--space-4);
+  padding: var(--space-4) var(--space-3);
+  background: var(--surface-sunken);
+  border-right: var(--rule-1) solid var(--border-default);
+}
+.lk-sidebar-brand {
+  font-family: "Archivo", sans-serif; font-weight: var(--wt-black);
+  font-size: var(--type-lg); letter-spacing: var(--track-tight);
+  color: var(--text-primary); padding: 0 var(--space-2) var(--space-2);
+}
+.lk-main { display: flex; flex-direction: column; min-width: 0; background: var(--surface-page); }
+.lk-topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+  padding: var(--space-3) var(--space-5); min-height: 56px;
+  border-bottom: var(--rule-1) solid var(--border-default);
+  background: var(--surface-raised);
+}
+.lk-content { flex: 1; padding: var(--space-5); }
+
+/* ── SIDEBAR NAV ─────────────────────────────────────────────────────────── */
+.lk-nav { display: flex; flex-direction: column; gap: 1px; }
+.lk-nav-section {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-xs); text-transform: uppercase; letter-spacing: var(--track-label);
+  color: var(--text-muted); padding: var(--space-4) var(--space-2) var(--space-1);
+}
+.lk-nav-item {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-2) var(--space-3); min-height: var(--target-min);
+  color: var(--text-body); text-decoration: none; font-size: var(--type-sm);
+  border-left: var(--rule-2) solid transparent;
+}
+.lk-nav-item:hover { background: var(--surface-inset); color: var(--text-primary); }
+.lk-nav-item[aria-current], .lk-nav-item.is-active {
+  background: var(--surface-inset); color: var(--text-primary);
+  border-left-color: var(--text-primary); font-weight: var(--wt-medium);
+}
+.lk-nav-item .lk-icon { flex: none; }
+
+/* ── STAT / KPI CARD ─────────────────────────────────────────────────────── */
+/* Page surface, not raised: accent deltas (success/danger) are AA-tuned against
+   the page surface in every stock (it is what verify.mjs gates). The raised
+   surface dips below 4.5 on the dark stocks; the sunken surface dips on the light
+   ones. A border frames the well. */
+.lk-stat {
+  display: flex; flex-direction: column; gap: var(--space-2);
+  background: var(--surface-page); border: var(--rule-1) solid var(--border-default);
+  padding: var(--space-4);
+}
+.lk-stat-label {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-xs); text-transform: uppercase; letter-spacing: var(--track-label);
+  color: var(--text-secondary);
+}
+.lk-stat-value {
+  font-family: "Archivo", sans-serif; font-weight: var(--wt-black);
+  font-size: var(--type-2xl); line-height: var(--lh-tight); letter-spacing: var(--track-tight);
+  color: var(--text-primary); font-variant-numeric: tabular-nums;
+}
+.lk-stat-delta {
+  display: inline-flex; align-items: center; gap: var(--space-1);
+  font-size: var(--type-sm); font-variant-numeric: tabular-nums; color: var(--text-muted);
+}
+.lk-stat-up { color: var(--accent-success); }
+.lk-stat-up::before { content: "\2191"; }
+.lk-stat-down { color: var(--accent-danger); }
+.lk-stat-down::before { content: "\2193"; }
+
+/* ── AVATAR (square, hard-edged; mono initials) ──────────────────────────── */
+.lk-avatar {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; flex: none;
+  background: var(--surface-inset); border: var(--rule-1) solid var(--border-default);
+  color: var(--text-secondary); overflow: hidden;
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-xs); font-weight: var(--wt-medium); text-transform: uppercase;
+}
+.lk-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lk-avatar-sm { width: 24px; height: 24px; }
+.lk-avatar-lg { width: 56px; height: 56px; font-size: var(--type-md); }
+
+/* ── SEGMENTED CONTROL ───────────────────────────────────────────────────── */
+.lk-segment { display: inline-flex; border: var(--rule-1) solid var(--border-strong); }
+.lk-segment > button {
+  appearance: none; background: var(--surface-raised); border: 0;
+  border-right: var(--rule-1) solid var(--border-default);
+  padding: var(--space-2) var(--space-4); min-height: var(--target-min);
+  font: inherit; font-size: var(--type-sm); color: var(--text-body); cursor: pointer;
+}
+.lk-segment > button:last-child { border-right: 0; }
+.lk-segment > button:hover { background: var(--surface-inset); }
+/* Active fill mirrors lk-btn-primary (text-primary over surface-raised), which
+   pairs correctly in every stock; surface-inverse + text-on-fill collide on the
+   dark stocks (both resolve light). */
+.lk-segment > button[aria-pressed="true"], .lk-segment > button.is-active {
+  background: var(--text-primary); color: var(--surface-raised);
+}
+
+/* ── TOAST (hard offset, no blur) ────────────────────────────────────────── */
+.lk-toast {
+  display: flex; align-items: flex-start; gap: var(--space-3);
+  background: var(--surface-raised); border: var(--rule-1) solid var(--border-strong);
+  border-left: var(--rule-3) solid var(--text-primary);
+  box-shadow: 4px 4px 0 0 var(--border-strong);
+  padding: var(--space-3) var(--space-4); max-width: 380px; color: var(--text-body);
+}
+.lk-toast-success { border-left-color: var(--accent-success); }
+.lk-toast-danger { border-left-color: var(--accent-danger); }
+.lk-toast-info { border-left-color: var(--accent-feature); }
+.lk-toast-title { font-weight: var(--wt-semibold); color: var(--text-primary); }
+.lk-toast-close { margin-left: auto; }
+
+/* ── EMPTY STATE ─────────────────────────────────────────────────────────── */
+.lk-empty {
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-3);
+  text-align: center; padding: var(--space-8) var(--space-5);
+  border: var(--rule-1) dashed var(--border-default); color: var(--text-muted);
+}
+.lk-empty-title { font-family: "Archivo", sans-serif; font-weight: var(--wt-bold); font-size: var(--type-lg); color: var(--text-primary); }
+.lk-empty .lk-icon { color: var(--text-muted); }
+
+/* ── SKELETON (loading placeholder) ──────────────────────────────────────── */
+.lk-skeleton {
+  display: block; background: var(--surface-inset); height: 1em;
+  position: relative; overflow: hidden;
+}
+.lk-skeleton::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, var(--surface-sunken), transparent);
+  transform: translateX(-100%); animation: lk-shimmer 1.4s infinite;
+}
+.lk-skeleton-text { height: 0.7em; margin: var(--space-2) 0; }
+.lk-skeleton-title { height: 1.4em; width: 50%; }
+@keyframes lk-shimmer { to { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) { .lk-skeleton::after { animation: none; } }
+
+/* ── FIELDSET / FORM GROUPING ────────────────────────────────────────────── */
+.lk-fieldset { border: var(--rule-1) solid var(--border-default); padding: var(--space-4); margin: 0; }
+.lk-fieldset > legend {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: var(--type-xs); text-transform: uppercase; letter-spacing: var(--track-label);
+  color: var(--text-secondary); padding: 0 var(--space-2);
+}
+.lk-field { display: flex; flex-direction: column; gap: var(--space-1); }
+.lk-field > .lk-label { font-size: var(--type-sm); font-weight: var(--wt-medium); color: var(--text-primary); }
+
+/* ── INPUT GROUP (addons) ────────────────────────────────────────────────── */
+.lk-input-group { display: flex; align-items: stretch; }
+.lk-input-group > .lk-input { flex: 1; min-width: 0; }
+.lk-input-group > .lk-input:not(:first-child) { border-left: 0; }
+.lk-input-group > .lk-input:not(:last-child) { border-right: 0; }
+.lk-input-addon {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  padding: 0 var(--space-3); white-space: nowrap;
+  background: var(--surface-sunken); border: var(--rule-1) solid var(--field-border);
+  color: var(--text-secondary); font-size: var(--type-sm);
+}
+.lk-char-count { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: var(--type-xs); color: var(--text-muted); text-align: right; font-variant-numeric: tabular-nums; }
+.lk-char-count[data-over="true"] { color: var(--accent-danger); }
+
+/* ── MARKETING: HERO / FEATURE / PRICING / TESTIMONIAL / CTA / LOGOS ──────── */
+.lk-feature {
+  display: flex; flex-direction: column; gap: var(--space-2);
+  padding: var(--space-5); background: var(--surface-raised);
+  border: var(--rule-1) solid var(--border-default); border-top: var(--rule-3) solid var(--text-primary);
+}
+.lk-feature-title { font-family: "Archivo", sans-serif; font-weight: var(--wt-bold); font-size: var(--type-lg); color: var(--text-primary); }
+.lk-feature .lk-icon { color: var(--accent-feature); margin-bottom: var(--space-2); }
+
+.lk-plan {
+  display: flex; flex-direction: column; gap: var(--space-4);
+  padding: var(--space-5); background: var(--surface-raised);
+  border: var(--rule-1) solid var(--border-default);
+}
+.lk-plan-featured { border: var(--rule-2) solid var(--text-primary); box-shadow: 6px 6px 0 0 var(--border-strong); }
+.lk-plan-name { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: var(--type-xs); text-transform: uppercase; letter-spacing: var(--track-label); color: var(--text-secondary); }
+.lk-plan-price { font-family: "Archivo", sans-serif; font-weight: var(--wt-black); font-size: var(--type-2xl); letter-spacing: var(--track-tight); color: var(--text-primary); }
+.lk-plan-price small { font-size: var(--type-sm); font-weight: var(--wt-regular); color: var(--text-muted); }
+.lk-plan-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.lk-plan-list li { display: flex; gap: var(--space-2); align-items: flex-start; color: var(--text-body); font-size: var(--type-sm); }
+.lk-plan-list li::before { content: "\2014"; color: var(--accent-feature); }
+
+.lk-quote {
+  border-left: var(--rule-3) solid var(--accent-feature); padding: var(--space-2) 0 var(--space-2) var(--space-5);
+  font-family: "Source Serif 4", serif; font-size: var(--type-md); line-height: var(--lh-relaxed); color: var(--text-primary);
+}
+.lk-quote-cite { display: flex; align-items: center; gap: var(--space-3); margin-top: var(--space-4); font-family: "Archivo", sans-serif; }
+.lk-quote-cite cite { font-style: normal; font-weight: var(--wt-semibold); color: var(--text-primary); font-size: var(--type-sm); }
+.lk-quote-cite span { color: var(--text-muted); font-size: var(--type-xs); }
+
+.lk-cta {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-5);
+  padding: var(--space-7) var(--space-6);
+  background: var(--text-primary); color: var(--surface-raised);
+}
+.lk-cta .lk-h1, .lk-cta .lk-h2, .lk-cta h1, .lk-cta h2 { color: var(--surface-raised); }
+
+.lk-logos { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-6); }
+.lk-logos > * { color: var(--text-muted); font-family: "Archivo", sans-serif; font-weight: var(--wt-bold); font-size: var(--type-md); }
+
+/* ── ON-PIGMENT SECTION (recolors furniture for a pigment ground) ──────────
+ * Remaps the furniture tokens to ink-on-pigment (or paper-on-dark-pigment) so a
+ * section dropped on a marigold/aubergine ground reads in any stock. Buttons keep
+ * working: a primary fill becomes a dark key with a paper label, a default button
+ * an outline. Do not set surface-raised to transparent: the primary button uses
+ * it as its text color. */
+.lk-on-pigment {
+  --text-primary: var(--ink-90); --text-body: var(--ink-90); --text-secondary: var(--ink-80);
+  --text-muted: var(--ink-80);
+  --border-default: var(--ink-90); --border-strong: var(--ink-90); --border-hairline: var(--ink-80);
+  --surface-raised: var(--paper-00); --field-bg: transparent;
+  --accent-feature: var(--ink-90);
+  color: var(--ink-90);
+}
+.lk-on-pigment-dark {
+  --text-primary: var(--paper-00); --text-body: var(--paper-01); --text-secondary: var(--paper-02);
+  --text-muted: var(--paper-04);
+  --border-default: var(--paper-04); --border-strong: var(--paper-04); --border-hairline: var(--paper-04);
+  --surface-raised: var(--ink-90); --field-bg: transparent;
+  --accent-feature: var(--paper-00);
+  color: var(--paper-01);
+}
+
+/* ── TEXT LINK ───────────────────────────────────────────────────────────── */
+.lk-link {
+  color: var(--text-primary); text-decoration: underline; text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.lk-link:hover { color: var(--accent-feature); }
