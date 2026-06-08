@@ -327,7 +327,7 @@ ${iconSprite}
 <a class="lk-sr-only" href="#main">Skip to content</a>
 
 <header class="topbar">
-  <div class="brand"><span class="lk-label">Lokta</span> <span class="muted">An editorial UI system · v0.1</span></div>
+  <div class="brand"><span class="lk-label">Lokta</span> <span class="muted">An editorial UI system · v0.2</span></div>
   <nav class="topnav" aria-label="Sections">
     <a href="#overview">Overview</a>
     <a href="#install">Install</a>
@@ -711,7 +711,7 @@ npm install github:msradam/lokta-mermaid</pre>
 
 <footer class="colophon-foot">
   <div class="lk-measure"><span class="lk-measure-hatch"></span><span class="lk-measure-gap"></span><span class="lk-measure-line" style="width:120px"></span></div>
-  <p class="muted">Lokta · v0.1 · MIT. After the page layout of <em class="lk-serif">Cuisine on Screen</em> by Sachiyo Harada (Prestel, 2024), with a heritage thread from Professor Siddika Kabir's <em class="lk-serif">Ranna Khaddo Pushti</em>. An interpretation of their typography, with no text or imagery reproduced from either.</p>
+  <p class="muted">Lokta · v0.2 · MIT. Named after Nepali lokta paper, drawn from one trans-Asian paper-and-manuscript tradition: <em class="lk-serif">Cuisine on Screen</em> by Sachiyo Harada (Prestel, 2024), Himalayan lokta, and the Bengali Pala manuscripts behind Professor Siddika Kabir's <em class="lk-serif">Ranna Khaddo Pushti</em>. An interpretation of their typography, with no text or imagery reproduced from any.</p>
 </footer>
 
 <script>
@@ -741,7 +741,45 @@ await writeFile(join(site, 'index.html'), html);
 await writeFile(join(site, 'styles.css'), await siteStyles());
 await writeFile(join(site, '.nojekyll'), '');
 
-console.log('Built site/: index.html, styles.css, token CSS, fonts.');
+// ── Global site nav ─────────────────────────────────────────────────────────
+// A persistent bar injected into every page so the reference, the templates, and
+// the demos are reachable from each other, not islands. Fixed ink/paper colours
+// so it renders identically regardless of the page's stock or token availability.
+const NAV_LINKS = [
+  ['index.html', 'Docs', 'index'],
+  ['components.html', 'Components', 'components'],
+  ['patterns.html', 'Patterns', 'patterns'],
+  ['dashboard.html', 'Dashboard', 'dashboard'],
+  ['landing.html', 'Landing', 'landing'],
+  ['cookbook.html', 'Cookbook', 'cookbook'],
+  ['deck.html', 'Deck', 'deck'],
+  ['verification.html', 'Verify', 'verification'],
+];
+const SITE_NAV_STYLE = `<style>
+.lk-sitebar{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px;padding:9px 20px;background:#1F1C13;color:#FAF8EA;font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;position:relative;z-index:60;border-bottom:1px solid #5C564B}
+.lk-sitebar a{color:#FAF8EA;text-decoration:none}
+.lk-sitebar a:hover{color:#FBBC0E}
+.lk-sitebar a[aria-current="page"]{color:#FBBC0E}
+.lk-sitebar .b{font-weight:700;letter-spacing:.04em;margin-right:4px}
+.lk-sitebar .gh{margin-left:auto;opacity:.85}
+</style>`;
+const siteNav = (active) =>
+  `${SITE_NAV_STYLE}<nav class="lk-sitebar" aria-label="Lokta site"><a class="b" href="index.html">Lokta</a>${NAV_LINKS.map(
+    ([href, label, key]) => `<a href="${href}"${key === active ? ' aria-current="page"' : ''}>${label}</a>`,
+  ).join('')}<a class="gh" href="https://github.com/msradam/lokta">GitHub &#8599;</a></nav>`;
+
+for (const [, , key] of [['', '', 'index'], ...NAV_LINKS].filter(([, , k]) => k !== 'deck')) {
+  const file = join(site, `${key}.html`);
+  try {
+    const page = await readFile(file, 'utf8');
+    if (page.includes('lk-sitebar')) continue;
+    await writeFile(file, page.replace(/(<body[^>]*>)/i, `$1\n${siteNav(key)}`));
+  } catch {
+    /* page not built in this run (e.g. deck rendered later by CI) */
+  }
+}
+
+console.log('Built site/: index.html, styles.css, token CSS, fonts; global nav injected.');
 
 // ── site chrome (uses the tokens, hard-edged) ──────────────────────────────
 async function siteStyles() {
