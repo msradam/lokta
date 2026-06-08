@@ -331,6 +331,7 @@ ${iconSprite}
   <nav class="topnav" aria-label="Sections">
     <a href="#overview">Overview</a>
     <a href="#install">Install</a>
+    <a href="#customization">Customization</a>
     <a href="#foundations">Foundations</a>
     <a href="#components">Components</a>
     <a href="#templates">Templates</a>
@@ -390,6 +391,29 @@ npm install github:msradam/lokta-mermaid</pre>
       <a class="lk-btn" href="patterns.html">Patterns gallery</a>
       <a class="lk-btn" href="https://github.com/msradam/lokta">Source on GitHub</a>
     </p>
+  </section>
+
+  <section id="customization">
+    <h2 class="sec-h">Customization</h2>
+    <p class="muted">Opinion lives in what cannot be changed. Lokta exposes six brand dials, each range-limited so even at its extreme the output is recognizably Lokta. Everything else (the type scale, the 8px grid, the AA rules, the flat hard-edged character) is locked.</p>
+    <h3 class="sub-h">The six dials</h3>
+    <table class="lk-table"><thead><tr><th>Dial</th><th>Range (the guardrail)</th></tr></thead><tbody>
+      <tr><td>Stock</td><td>a curated set (paper, manuscript, bone, ink, indigo, highland, slate, steel, onyx, and light variants), not a freeform background</td></tr>
+      <tr><td>Accent</td><td>a curated pigment (marigold, madder, lac, cinnabar, indigo, …), not a colour picker</td></tr>
+      <tr><td>Voice</td><td>named typeface options per role (Archivo or Mukta for display, Source Serif or Martel for serif). Script is automatic by language, never a dial</td></tr>
+      <tr><td>Density</td><td>comfortable or compact. Two steps</td></tr>
+      <tr><td>Radius</td><td>clamped 0 to 3px. Square is the default and the ceiling is gentle</td></tr>
+      <tr><td>Grain</td><td>off, subtle, or fibrous. Texture, never depth</td></tr>
+    </tbody></table>
+    <h3 class="sub-h">Why six, and why range-limited</h3>
+    <p class="muted">Disciplined systems converge on three to eight consumer dials, clustering at five to six. The strength is in the constraints: every dial is range-limited rather than freeform, the font work is one Voice dial rather than several inputs, and script is an automatic context, not a preference.</p>
+    <table class="lk-table"><thead><tr><th>System</th><th>Consumer dials</th></tr></thead><tbody>
+      <tr><td>Radix Themes</td><td>accent, gray, appearance, radius, scaling, panel (about 6)</td></tr>
+      <tr><td>Material 3</td><td>a seed colour plus light/dark (about 1 to 2)</td></tr>
+      <tr><td>USWDS</td><td>colour families, spacing base, type scale, font families (a handful)</td></tr>
+      <tr><td>Lokta</td><td>Stock, Accent, Voice, Density, Radius, Grain (6)</td></tr>
+    </tbody></table>
+    <p class="muted">If a brand needs more, the answer is a new curated option inside an existing dial (a new stock, a new accent, a new Voice option), or a component token, never a new knob. Full philosophy in <a href="https://github.com/msradam/lokta/blob/main/CUSTOMIZATION.md">CUSTOMIZATION.md</a>.</p>
   </section>
 
   <section id="foundations">
