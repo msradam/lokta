@@ -16,8 +16,8 @@ theme, Typst document themes, and a Mermaid diagram theme.
 
 |                                                    |                                                        |
 | -------------------------------------------------- | ------------------------------------------------------ |
-| ![Lokta components.](docs/components.png)          | ![A Lokta-themed Mermaid flowchart.](docs/mermaid.png) |
-| ![A Typst recipe document.](docs/typst-recipe.png) | ![A Lokta slide with a diagram.](docs/deck.png)        |
+| ![Lokta stat card and data viz on the Manuscript stock.](docs/components.png)          | ![A Lokta-themed Mermaid flowchart.](docs/mermaid.png) |
+| ![A Typst recipe document.](docs/typst-recipe.png) | ![A Lokta marigold slide.](docs/deck.png)        |
 
 It is deliberately flat (layering from borders, not shadows) and hard-edged
 (square caps, no rounded controls by default). It ships the way IBM ships Carbon:
@@ -41,7 +41,7 @@ plug-and-play repo you can install on its own.
 
 | Repo                                                      | What it is                                                 | Install                                    |
 | --------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------ |
-| [lokta-css](https://github.com/msradam/lokta-css)         | Tokens (four stocks) and component CSS, self-hosted fonts. | `npm install github:msradam/lokta-css`     |
+| [lokta-css](https://github.com/msradam/lokta-css)         | Tokens, stocks, and component CSS, self-hosted fonts. | `npm install github:msradam/lokta-css`     |
 | [lokta-marp](https://github.com/msradam/lokta-marp)       | Marp slide theme with per-slide Mermaid theming.           | `npm install github:msradam/lokta-marp`    |
 | [lokta-typst](https://github.com/msradam/lokta-typst)     | Editorial document themes for Typst.                       | `git clone` + `node install.mjs`           |
 | [lokta-mermaid](https://github.com/msradam/lokta-mermaid) | Mermaid diagram theme, web and print.                      | `npm install github:msradam/lokta-mermaid` |
@@ -87,7 +87,7 @@ Load a token theme (it defines the semantic variables), then the components, the
 set the stock with `data-theme` on the root element. Paper is the default.
 
 ```css
-/* all four stocks in one file */
+/* all stocks in one file */
 @import '@lokta/tokens/css/lokta.css';
 @import '@lokta/css/lokta.css';
 ```

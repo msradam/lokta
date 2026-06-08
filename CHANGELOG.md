@@ -39,6 +39,11 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   gallery cataloguing the application-tier components.
 - An Install section on the docs site (npm, standalone repos, no-build drop-in),
   a mobile responsiveness pass, and a Figma publish guide (`docs/figma/PUBLISH.md`).
+- From dogfooding: `lk-panel`, a card framed on the page surface for a raised
+  content canvas (replaces the dashboard's page-local `.dash-card`); and
+  `lk-stat-flat`, a neutral KPI delta with its own glyph.
+- The Figma Variables manifest now carries all fourteen stocks as Semantic modes,
+  not just the four token-built themes (`build:figma` reads `lokta-stocks.css`).
 - Manuscript-fusion / namesake: two stocks, Manuscript (warm aged-lokta ivory)
   and Highland (stone-cool dark), each clearing the full role x surface AA matrix
   (verify is now 234 checks); the heritage pigment palette (Pala dye tones

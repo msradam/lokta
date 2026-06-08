@@ -12,7 +12,6 @@
   /* Canvas sits on the raised (lighter) surface; cards drop to the page surface
      as framed wells, so accent text (status, deltas) clears AA on every stock. */
   .lk-content { background: var(--surface-raised); }
-  .dash-card { background: var(--surface-page); border: var(--rule-1) solid var(--border-default); padding: var(--space-4); }
   @media (max-width: 760px) { .lk-shell { grid-template-columns: 1fr; } .lk-sidebar { display: none; } }
 </style>
 </head>
@@ -74,13 +73,13 @@
           <div class="lk-stat">
             <span class="lk-stat-label">Open tickets</span>
             <span class="lk-stat-value">17</span>
-            <span class="lk-stat-delta">unchanged</span>
+            <span class="lk-stat-delta lk-stat-flat">unchanged</span>
           </div>
         </div>
       </section>
 
       <section class="lk-grid lk-cols-2" aria-label="Detail">
-        <div class="dash-card lk-stack lk-stack-3">
+        <div class="lk-panel lk-stack lk-stack-3">
           <div class="lk-between">
             <h2 class="lk-h3">Recent invoices</h2>
             <span class="lk-badge">8 new</span>
@@ -95,7 +94,7 @@
           </table>
         </div>
 
-        <div class="dash-card lk-stack lk-stack-4">
+        <div class="lk-panel lk-stack lk-stack-4">
           <h2 class="lk-h3">Activity</h2>
           <div class="lk-empty">
             <svg class="lk-icon" width="28" height="28" aria-hidden="true"><use href="lokta-icons.svg#lk-i-search"></use></svg>
@@ -106,7 +105,7 @@
         </div>
       </section>
 
-      <section class="lk-card lk-stack lk-stack-3" aria-label="Loading example">
+      <section class="lk-panel lk-stack lk-stack-3" aria-label="Loading example">
         <h2 class="lk-h3">Loading state</h2>
         <span class="lk-skeleton lk-skeleton-title"></span>
         <span class="lk-skeleton lk-skeleton-text"></span>

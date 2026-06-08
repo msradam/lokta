@@ -585,6 +585,13 @@ a:focus-visible {
   border: var(--rule-1) solid var(--border-default);
   padding: 16px;
 }
+/* Panel: a card framed on the page surface, for a raised content canvas where a
+   raised card would not read. Accent text on the page surface holds AA. */
+.lk-panel {
+  background: var(--surface-page);
+  border: var(--rule-1) solid var(--border-default);
+  padding: var(--space-4);
+}
 
 /* ── DATA TABLE ─────────────────────────────────────────────────────────── */
 .lk-table {
@@ -865,6 +872,7 @@ a:focus-visible {
 .lk-stat-up::before { content: "\2191"; }
 .lk-stat-down { color: var(--accent-danger); }
 .lk-stat-down::before { content: "\2193"; }
+.lk-stat-flat::before { content: "\2013\00A0"; color: var(--text-muted); }
 
 /* ── AVATAR (square, hard-edged; mono initials) ──────────────────────────── */
 .lk-avatar {
