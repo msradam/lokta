@@ -95,6 +95,9 @@
   --code-number: #8A5A12; --code-function: #1F5C92; --code-type: #5F4080;
   --code-variable: #2A2620; --code-operator: #B23320; --code-punctuation: #5C564B;
   --code-keyword2: #2F6F6D;
+  /* diff lines, line gutter, and the active-line highlight */
+  --code-add-bg: rgba(79, 107, 80, 0.16); --code-del-bg: rgba(178, 51, 32, 0.13);
+  --code-gutter: #5C564B; --code-line-hl: rgba(31, 28, 19, 0.05);
 }
 [data-theme="ink"], [data-theme="indigo"], [data-theme="highland"],
 [data-theme="pine"], [data-theme="mulberry"], [data-theme="slate"],
@@ -104,6 +107,8 @@
   --code-number: #D9A642; --code-function: #6FA8D8; --code-type: #A98FC9;
   --code-variable: #E2E1D6; --code-operator: #E2654F; --code-punctuation: #ADB2AE;
   --code-keyword2: #5FB0AD;
+  --code-add-bg: rgba(143, 176, 136, 0.16); --code-del-bg: rgba(226, 101, 79, 0.15);
+  --code-gutter: #ADB2AE; --code-line-hl: rgba(250, 248, 234, 0.06);
 }
 
 /* Density. Compact tightens control heights and gutters by one step. */

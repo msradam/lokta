@@ -16,3 +16,7 @@
 .hljs-variable, .hljs-template-variable, .hljs-attribute { color: var(--code-variable); }
 .hljs-operator, .hljs-deletion, .hljs-symbol { color: var(--code-operator); }
 .hljs-punctuation { color: var(--code-punctuation); }
+
+/* Diff lines (highlight.js diff grammar). */
+.hljs-addition { background: var(--code-add-bg); display: inline-block; width: 100%; }
+.hljs-deletion { background: var(--code-del-bg); display: inline-block; width: 100%; }

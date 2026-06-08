@@ -22,6 +22,12 @@ theme re-points with the stock.
 
 The token values are gated on every commit by `validate/code-aa.mjs`.
 
+## Shiki and VS Code
+
+Shiki and VS Code both consume TextMate themes, so point them at `lokta-light.tmTheme`
+or `lokta-dark.tmTheme` directly (Shiki: `theme: parse(readFileSync(...))`). The
+token colours then match the web Prism and highlight.js output exactly.
+
 ## Off-the-shelf alternative
 
 When a team wants an existing editor theme rather than the native one, **Modus

@@ -66,7 +66,12 @@
   --viz-div-0: #AB3429; --viz-div-1: #BF5C4D; --viz-div-2: #D08272; --viz-div-3: #DEA699;
   --viz-div-4: #E9CBC2; --viz-div-5: #F0F1ED; --viz-div-6: #C9D3DB; --viz-div-7: #A1B6CA;
   --viz-div-8: #789AB8; --viz-div-9: #4C7EA7; --viz-div-10: #006495;
+  --lk-pat-ink: rgba(31, 20, 14, 0.55);
 }
+/* On dark stocks the pattern line auto-lifts; no need for .lk-pat-light. */
+[data-theme="ink"], [data-theme="indigo"], [data-theme="highland"],
+[data-theme="pine"], [data-theme="mulberry"], [data-theme="slate"],
+[data-theme="steel"], [data-theme="onyx"] { --lk-pat-ink: rgba(250, 248, 234, 0.6); }
 .lk-viz-1 { --viz: var(--viz-1); }
 .lk-viz-2 { --viz: var(--viz-2); }
 .lk-viz-3 { --viz: var(--viz-3); }
@@ -96,7 +101,7 @@
 /* Pattern fills: the colour-independent fallback (WCAG 1.4.1). Apply .lk-pat-N
    beside .lk-viz-N on a bar or swatch; colour is safe for three series, the
    pattern carries the rest. Add .lk-pat-light to lift the line on dark series. */
-.lk-bar-fill, .lk-swatch { --lk-pat-ink: rgba(31, 20, 14, 0.55); background-repeat: repeat; }
+.lk-bar-fill, .lk-swatch { background-repeat: repeat; }
 .lk-pat-light { --lk-pat-ink: rgba(250, 248, 234, 0.6); }
 .lk-pat-2 { background-image: repeating-linear-gradient(45deg, var(--lk-pat-ink) 0, var(--lk-pat-ink) 2px, transparent 2px, transparent 5px); }
 .lk-pat-3 { background-image: radial-gradient(var(--lk-pat-ink) 1.4px, transparent 1.5px); background-size: 6px 6px; }
@@ -105,6 +110,30 @@
 .lk-pat-6 { background-image: repeating-linear-gradient(0deg, var(--lk-pat-ink) 0, var(--lk-pat-ink) 2px, transparent 2px, transparent 5px); }
 .lk-pat-7 { background-image: repeating-linear-gradient(0deg, var(--lk-pat-ink) 0, var(--lk-pat-ink) 1.5px, transparent 1.5px, transparent 6px), repeating-linear-gradient(90deg, var(--lk-pat-ink) 0, var(--lk-pat-ink) 1.5px, transparent 1.5px, transparent 6px); }
 .lk-pat-8 { background-image: radial-gradient(circle, transparent 2px, var(--lk-pat-ink) 2.5px, var(--lk-pat-ink) 3.5px, transparent 4px); background-size: 7px 7px; }
+
+/* Heat cells: bind a sequential or diverging step to a cell, with the
+   max-contrast text colour baked in. Shading is decorative, so keep the value
+   itself readable (a scope="row" header or the number). */
+.lk-cell-seq-0 { background: var(--viz-seq-0); color: #1F1C13; }
+.lk-cell-seq-1 { background: var(--viz-seq-1); color: #1F1C13; }
+.lk-cell-seq-2 { background: var(--viz-seq-2); color: #1F1C13; }
+.lk-cell-seq-3 { background: var(--viz-seq-3); color: #1F1C13; }
+.lk-cell-seq-4 { background: var(--viz-seq-4); color: #1F1C13; }
+.lk-cell-seq-5 { background: var(--viz-seq-5); color: #1F1C13; }
+.lk-cell-seq-6 { background: var(--viz-seq-6); color: #FAF8EA; }
+.lk-cell-seq-7 { background: var(--viz-seq-7); color: #FAF8EA; }
+.lk-cell-seq-8 { background: var(--viz-seq-8); color: #FAF8EA; }
+.lk-cell-div-0 { background: var(--viz-div-0); color: #FAF8EA; }
+.lk-cell-div-1 { background: var(--viz-div-1); color: #FAF8EA; }
+.lk-cell-div-2 { background: var(--viz-div-2); color: #1F1C13; }
+.lk-cell-div-3 { background: var(--viz-div-3); color: #1F1C13; }
+.lk-cell-div-4 { background: var(--viz-div-4); color: #1F1C13; }
+.lk-cell-div-5 { background: var(--viz-div-5); color: #1F1C13; }
+.lk-cell-div-6 { background: var(--viz-div-6); color: #1F1C13; }
+.lk-cell-div-7 { background: var(--viz-div-7); color: #1F1C13; }
+.lk-cell-div-8 { background: var(--viz-div-8); color: #1F1C13; }
+.lk-cell-div-9 { background: var(--viz-div-9); color: #FAF8EA; }
+.lk-cell-div-10 { background: var(--viz-div-10); color: #FAF8EA; }
 
 /* ── MANUSCRIPT MATERIAL (opt-in motifs from the namesake) ─────────────────── */
 /* Deckle edge: clips a block's right or bottom edge into a torn lokta deckle. */
