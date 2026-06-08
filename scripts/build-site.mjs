@@ -105,6 +105,8 @@ const STOCKS = [
 ];
 // Extra stocks shipped via lokta-stocks.css (not token-built, but AA-validated).
 const EXTRA_STOCKS = [
+  { id: 'manuscript', name: 'Manuscript' },
+  { id: 'highland', name: 'Highland' },
   { id: 'pine', name: 'Pine' },
   { id: 'mulberry', name: 'Mulberry' },
   { id: 'slate', name: 'Slate' },

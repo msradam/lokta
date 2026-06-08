@@ -39,6 +39,21 @@ const PRIMITIVES = new Set([
   '#2e3e5c',
   '#070d0e',
   '#4f6b50',
+  // Heritage manuscript-fusion palette (Pala dye tones, conch, afsani gilt) and
+  // the two new stock accent specials.
+  '#8e3b30',
+  '#4e3b29',
+  '#7a5a12',
+  '#9b2d4d',
+  '#3f6b4e',
+  '#f7f4e9',
+  '#b08d3c',
+  '#de9684',
+  '#c9a982',
+  '#e0b452',
+  '#d98098',
+  '#7fb08c',
+  '#355a42',
 ]);
 // Interactive classes that must show a visible focus ring (present in the component CSS).
 const FOCUS_REQUIRED = [

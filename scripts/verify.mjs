@@ -71,6 +71,14 @@ Object.assign(STOCKS, {
     surfaces: { page: '#ECECEE', raised: '#F6F6F7', sunken: '#E1E1E4', inset: '#D6D6DA' },
     text: { primary: '#1A1A1D', body: '#28282B', secondary: '#515156', muted: '#5D5D63' },
   },
+  manuscript: {
+    surfaces: { page: '#EDE4D1', raised: '#F5EEDD', sunken: '#E2D8C0', inset: '#D5CAAF' },
+    text: { primary: '#1F1C13', body: '#2A2620', secondary: '#524D43', muted: '#564F42' },
+  },
+  highland: {
+    surfaces: { page: '#232A2E', raised: '#2C3438', sunken: '#181D20', inset: '#323B40' },
+    text: { primary: '#ECEAE0', body: '#DEDBCE', secondary: '#ADB2AE', muted: '#A2A7A3' },
+  },
 });
 const SPACE = [4, 8, 12, 16, 24, 32, 48, 64, 96];
 const TYPST = [

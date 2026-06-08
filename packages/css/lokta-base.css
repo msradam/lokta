@@ -48,6 +48,23 @@
   --lk-accent: var(--accent-feature-ground, var(--pigment-marigold));
   --lk-radius: 0px;
   --lk-density-step: 0px;
+
+  /* Heritage pigments, the manuscript-fusion palette (Pala dye tones, conch,
+     and the one afsani gilt). Available as Accent dial options; the -light
+     variants carry accent text on the dark stocks. Each is AA on light
+     surfaces (gilt is a flat fill only, not text). */
+  --pigment-madder: #8E3B30;
+  --pigment-walnut: #4E3B29;
+  --pigment-turmeric: #7A5A12;
+  --pigment-lac: #9B2D4D;
+  --pigment-malachite: #3F6B4E;
+  --pigment-conch: #F7F4E9;
+  --pigment-afsani-gilt: #B08D3C;
+  --pigment-madder-light: #DE9684;
+  --pigment-walnut-light: #C9A982;
+  --pigment-turmeric-light: #E0B452;
+  --pigment-lac-light: #D98098;
+  --pigment-malachite-light: #7FB08C;
 }
 
 /* Density. Compact tightens control heights and gutters by one step. */

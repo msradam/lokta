@@ -118,3 +118,67 @@
   --field-bg:#F6F6F7;--field-border:#1A1A1D;--field-placeholder:#5D5D63;
   --focus-ring:#1A1A1D;
 }
+
+/* ── MANUSCRIPT (warm aged-lokta ivory, the namesake stock) ───────────────── */
+[data-theme="manuscript"] {
+  --surface-page:    #EDE4D1;
+  --surface-raised:  #F5EEDD;
+  --surface-sunken:  #E2D8C0;
+  --surface-inset:   #D5CAAF;
+  --surface-inverse: #1F1C13;
+  --text-primary:    #1F1C13;
+  --text-body:       #2A2620;
+  --text-secondary:  #524D43;
+  --text-muted:      #564F42;
+  --text-disabled:   #8A8270;
+  --text-on-fill:    #FAF8EA;
+  --text-on-marigold:var(--ink-100);
+  --border-strong:   #2A2620;
+  --border-default:  #A89B7E;
+  --border-hairline: #CFC4A6;
+  --accent-success:      #355A42;
+  --accent-success-fill: var(--pigment-celadon);
+  --accent-danger:       #8E3B30;
+  --accent-danger-fill:  var(--pigment-cinnabar);
+  --accent-feature:      #2E3E5C;
+  --accent-feature-fill: var(--pigment-aubergine);
+  --accent-feature-ground: var(--pigment-marigold);
+  --accent-warning-fill: var(--pigment-marigold);
+  --accent-info-fill:    var(--pigment-indigo);
+  --field-bg:          #F5EEDD;
+  --field-border:      #2A2620;
+  --field-placeholder: #564F42;
+  --focus-ring:       #1F1C13;
+}
+
+/* ── HIGHLAND (stone-cool dark, the mountain register) ────────────────────── */
+[data-theme="highland"] {
+  --surface-page:    #232A2E;
+  --surface-raised:  #2C3438;
+  --surface-sunken:  #181D20;
+  --surface-inset:   #323B40;
+  --surface-inverse: #F2F0E8;
+  --text-primary:    #ECEAE0;
+  --text-body:       #DEDBCE;
+  --text-secondary:  #ADB2AE;
+  --text-muted:      #A2A7A3;
+  --text-disabled:   #6B7378;
+  --text-on-fill:    #ECEAE0;
+  --text-on-marigold:var(--ink-100);
+  --border-strong:   #ADB2AE;
+  --border-default:  #4A5358;
+  --border-hairline: #2E363B;
+  --accent-success:      #7FB08C;
+  --accent-success-fill: var(--pigment-celadon);
+  --accent-danger:       #DE9684;
+  --accent-danger-fill:  var(--pigment-cinnabar);
+  --accent-feature:      #D8B36A;
+  --accent-feature-fill: var(--pigment-aubergine);
+  --accent-feature-ground: var(--pigment-marigold);
+  --accent-warning-fill: var(--pigment-marigold);
+  --accent-info-fill:    var(--pigment-indigo);
+  --field-bg:          #181D20;
+  --field-border:      #4A5358;
+  --field-placeholder: #A2A7A3;
+  --focus-ring:       #ECEAE0;
+}

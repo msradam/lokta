@@ -23,7 +23,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 // ── A11Y · axe-core, every stock ─────────────────────────────────────────────
-for (const stock of ['paper', 'ink', 'indigo', 'slate', 'steel-light']) {
+for (const stock of ['paper', 'ink', 'indigo', 'slate', 'steel-light', 'manuscript', 'highland']) {
   test(`axe-core has no violations · ${stock}`, async ({ page }) => {
     await page.evaluate((s) => document.documentElement.setAttribute('data-theme', s), stock);
     const results = await new AxeBuilder({ page })
