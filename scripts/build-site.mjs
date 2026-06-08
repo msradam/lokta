@@ -44,6 +44,11 @@ for (const name of typstPdfs) {
   if (typstHere[name]) await cp(src, join(site, `${name}.pdf`));
 }
 
+// Figma Variables manifest, if built (build:figma).
+const figmaSrc = join(root, 'packages/tokens/dist/figma/lokta.variables.json');
+const figmaHere = await access(figmaSrc).then(() => true, () => false);
+if (figmaHere) await cp(figmaSrc, join(site, 'lokta.variables.json'));
+
 // ── helpers ─────────────────────────────────────────────────────────────────
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const swatch = (name, value, note) => `

@@ -23,8 +23,10 @@ jobs:
       # 1. Verifier gate: WCAG AA contrast (every role x surface x stock),
       #    cross-surface parity (Typst + Mermaid literals), and the 8px grid.
       - run: npm run verify
-      # 2. Build design tokens (Style Dictionary -> dist/css, scss, js) and verify.
+      # 2. Build design tokens (Style Dictionary -> dist/css, scss, js) and verify,
+      #    plus the Figma Variables manifest (collections, stock modes, aliases).
       - run: npm run build:tokens
+      - run: npm run build:figma
       # 3. Compile the Typst document examples to PDF (uses the vendored fonts).
       - run: npm run build:typst
       # 4. Build the static docs site (copies token CSS, components, fonts, the

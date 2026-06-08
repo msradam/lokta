@@ -1,0 +1,9 @@
+{
+  "codeConnect": {
+    "parser": "html",
+    "include": ["packages/css/**"],
+    "exclude": ["packages/css/fonts/**"],
+    "label": "Lokta CSS",
+    "documentUrlSubstitutions": {}
+  }
+}

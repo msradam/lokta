@@ -16,11 +16,12 @@
     "verify": "node scripts/verify.mjs",
     "test": "node scripts/verify.mjs",
     "build:tokens": "node tokens/style-dictionary.config.mjs && node scripts/verify-tokens.mjs",
+    "build:figma": "node scripts/build-figma.mjs",
     "build:css": "npm run build --workspace @lokta/css",
     "build:deck": "npm run build --workspace @lokta/marp-theme",
     "build:typst": "node scripts/build-typst.mjs",
     "build:site": "node scripts/build-site.mjs",
-    "build": "npm run build:tokens && npm run build:css && npm run build:typst && npm run build:site",
+    "build": "npm run build:tokens && npm run build:figma && npm run build:css && npm run build:typst && npm run build:site",
     "fonts": "node scripts/fetch-fonts.mjs",
     "fonts:typst": "node scripts/fetch-typst-fonts.mjs",
     "install:typst": "node scripts/install-typst-local.mjs"
