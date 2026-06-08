@@ -34,8 +34,17 @@ The same tokens drive code: CSS, SCSS, and JS, a Marp slide theme, Typst documen
 themes, and a Mermaid diagram theme. Everything is open source and verified on
 every commit (WCAG contrast, cross-surface parity, the 8px grid).
 
+The web layer is complete: buttons, tags, the full form set (fieldset, input
+groups, file upload, validation states), tabs, accordion, dialog, menu, an
+application shell with sidebar navigation, dashboard widgets (stat cards, a
+categorical data-viz palette, segmented control, toast, empty and loading
+states, avatars), and a marketing kit (features, pricing, testimonial, CTA,
+on-pigment sections). Three whole-page templates and an interactive demo are on
+the live docs site, each audited by axe-core across stocks.
+
 - Code and docs: https://github.com/msradam/lokta
 - Live docs and theme switcher: https://msradam.github.io/lokta
+- Patterns gallery: https://msradam.github.io/lokta/patterns.html
 
 Drawn from Cuisine on Screen (Sachiyo Harada, Prestel) and Professor Siddika
 Kabir's Ranna Khaddo Pushti, as design inspiration, not reproduction. No text,

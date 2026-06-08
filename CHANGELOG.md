@@ -23,14 +23,22 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Marketing kit: `lk-feature`, `lk-plan` (with `lk-plan-featured`), `lk-quote`,
   `lk-cta`, `lk-logos`, the `lk-on-pigment`/`-dark` section mode that recolors
   furniture and buttons for a pigment ground, and `lk-link`.
-- Two whole-page example templates built only from Lokta classes
-  (`templates/dashboard.html`, `templates/landing.html`), linked from the docs
-  site and audited by a new axe-core gate (`validate/templates.spec.mjs`) across
-  the paper, ink, and indigo stocks.
+- A categorical data-viz palette (`--viz-1..8`) drawn from the pigments, with a
+  legend, horizontal bar list, and sparkline styling; a `lk-file` upload control
+  and an `lk-field:focus-within` label affordance.
+- Marp deck layouts: `columns`, `divider`, and `stat` slide classes plus a
+  `source` line (image splits use Marp's native `bg` directive).
 - Typst helpers in `lokta.typ`: `lk-table(headers, rows)` (mono header over an
-  accent rule, hairline rows, zebra), `lk-tip`/`lk-warning` callouts, and
-  `lk-caption`, wired as the `figure.caption` style in `lokta-tech` and
-  `lokta-report`.
+  accent rule, hairline rows, zebra), `lk-tip`/`lk-warning` callouts, `lk-caption`
+  wired as the `figure.caption` style, outline/TOC and footnote styling, and
+  `lk-revisions`/`lk-references` helpers, in `lokta-tech` and `lokta-report`.
+- Example artifacts built only from Lokta classes, linked from the docs site and
+  audited by the axe-core gate (`validate/templates.spec.mjs`) across the paper,
+  ink, and indigo stocks: a dashboard and a landing template, an interactive
+  cookbook demo (search, filters, recipe dialog, save-to-list), and a patterns
+  gallery cataloguing the application-tier components.
+- An Install section on the docs site (npm, standalone repos, no-build drop-in),
+  a mobile responsiveness pass, and a Figma publish guide (`docs/figma/PUBLISH.md`).
 
 ### Fixed
 
