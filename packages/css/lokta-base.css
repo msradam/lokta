@@ -65,6 +65,29 @@
   --pigment-turmeric-light: #E0B452;
   --pigment-lac-light: #D98098;
   --pigment-malachite-light: #7FB08C;
+
+  /* VOICE dial. Named typeface options per role as multilingual stacks: the
+     Latin face first, then the script fallbacks (Mukta for Devanagari, Anek
+     Bangla for Bengali, Noto JP for CJK). Script is resolved by content
+     language via :lang() below, never a user dial. */
+  --font-family-display: "Archivo", "Mukta", "Anek Bangla", "Noto Sans JP", system-ui, sans-serif;
+  --font-family-mono: "Spline Sans Mono", ui-monospace, monospace;
+  --font-family-serif: "Source Serif 4", "Martel", "Noto Serif Bengali", Georgia, serif;
+  --font-family-cjk: "Noto Sans JP", sans-serif;
+  --font-family-bengali: "Anek Bangla", "Noto Sans Bengali", sans-serif;
+  --font-family-devanagari: "Mukta", "Noto Sans Devanagari", sans-serif;
+  --voice-weight-display: 800;
+  --voice-tracking-display: -0.04em;
+}
+
+/* Script selection is automatic by content language, not a dial. */
+:lang(ne), :lang(hi), :lang(sa), :lang(mr) {
+  --font-family-display: "Mukta", "Archivo", sans-serif;
+  --font-family-serif: "Martel", "Source Serif 4", serif;
+}
+:lang(bn) {
+  --font-family-display: "Anek Bangla", "Archivo", sans-serif;
+  --font-family-serif: "Noto Serif Bengali", "Source Serif 4", serif;
 }
 
 /* Density. Compact tightens control heights and gutters by one step. */

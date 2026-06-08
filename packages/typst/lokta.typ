@@ -37,6 +37,11 @@
 #let lk-mono  = "Spline Sans Mono"
 #let lk-serif = "Source Serif 4"
 #let lk-cjk   = "Noto Sans JP"
+#let lk-deva  = "Mukta"          // Devanagari (Nepali)
+#let lk-bengali = "Anek Bangla"  // Bengali
+// Multilingual fallback lists: Typst picks the face that covers each glyph.
+#let lk-sans-all = (lk-sans, lk-deva, lk-bengali, lk-cjk)
+#let lk-serif-all = (lk-serif, "Martel", lk-bengali)
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 #let lk-label(s, color: lk-faint) = text(font: lk-mono, size: 8pt, tracking: 1.2pt, fill: color)[#upper(s)]

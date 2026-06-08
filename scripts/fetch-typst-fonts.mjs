@@ -16,6 +16,8 @@ const FONTS = [
   ['spline-sans-mono', 'latin', 'regular,500,600'],
   ['source-serif-4', 'latin', 'regular,600,italic,500italic'],
   ['noto-sans-jp', 'japanese', 'regular,700'],
+  ['mukta', 'devanagari', 'regular,700,800'],
+  ['martel', 'devanagari', 'regular,700'],
 ];
 
 await mkdir(out, { recursive: true });

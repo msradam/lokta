@@ -31,3 +31,12 @@
 @font-face { font-family: "Anek Bangla"; font-style: normal; font-weight: 400; font-display: swap; src: url("./fonts/anek-bangla-bengali-400-normal.woff2") format("woff2"); unicode-range: U+0964-0965,U+0980-09FF,U+200C-200D,U+20B9,U+25CC; }
 @font-face { font-family: "Anek Bangla"; font-style: normal; font-weight: 500; font-display: swap; src: url("./fonts/anek-bangla-bengali-500-normal.woff2") format("woff2"); unicode-range: U+0964-0965,U+0980-09FF,U+200C-200D,U+20B9,U+25CC; }
 @font-face { font-family: "Anek Bangla"; font-style: normal; font-weight: 700; font-display: swap; src: url("./fonts/anek-bangla-bengali-700-normal.woff2") format("woff2"); unicode-range: U+0964-0965,U+0980-09FF,U+200C-200D,U+20B9,U+25CC; }
+
+/* Mukta (Devanagari display + body) and Martel (Devanagari serif). The Nepali
+   namesake script, self-hosted (SIL OFL), subset to the Devanagari range. */
+@font-face { font-family: "Mukta"; font-style: normal; font-weight: 400; font-display: swap; src: url("./fonts/mukta-devanagari-400-normal.woff2") format("woff2"); unicode-range: U+0900-097F,U+0964-0965,U+200C-200D,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF,U+11B00-11B09; }
+@font-face { font-family: "Mukta"; font-style: normal; font-weight: 600; font-display: swap; src: url("./fonts/mukta-devanagari-600-normal.woff2") format("woff2"); unicode-range: U+0900-097F,U+0964-0965,U+200C-200D,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF,U+11B00-11B09; }
+@font-face { font-family: "Mukta"; font-style: normal; font-weight: 700; font-display: swap; src: url("./fonts/mukta-devanagari-700-normal.woff2") format("woff2"); unicode-range: U+0900-097F,U+0964-0965,U+200C-200D,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF,U+11B00-11B09; }
+@font-face { font-family: "Mukta"; font-style: normal; font-weight: 800; font-display: swap; src: url("./fonts/mukta-devanagari-800-normal.woff2") format("woff2"); unicode-range: U+0900-097F,U+0964-0965,U+200C-200D,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF,U+11B00-11B09; }
+@font-face { font-family: "Martel"; font-style: normal; font-weight: 400; font-display: swap; src: url("./fonts/martel-devanagari-400-normal.woff2") format("woff2"); unicode-range: U+0900-097F,U+0964-0965,U+200C-200D,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF,U+11B00-11B09; }
+@font-face { font-family: "Martel"; font-style: normal; font-weight: 700; font-display: swap; src: url("./fonts/martel-devanagari-700-normal.woff2") format("woff2"); unicode-range: U+0900-097F,U+0964-0965,U+200C-200D,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF,U+11B00-11B09; }

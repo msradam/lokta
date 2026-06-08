@@ -1045,3 +1045,11 @@ a:focus-visible {
   text-decoration-thickness: 1px;
 }
 .lk-link:hover { color: var(--accent-feature); }
+
+/* ── WORDMARK (trilingual: Devanagari · Latin · Bengali) ──────────────────────
+ * The namesake lockup. Each part sets its own script face; lang attributes on
+ * the markup drive shaping. Scale with font-size on .lk-wordmark. */
+.lk-wordmark { display: inline-flex; align-items: baseline; gap: var(--space-4); flex-wrap: wrap; font-size: var(--type-2xl); }
+.lk-wm-deva { font-family: var(--font-family-devanagari); font-weight: 700; line-height: 1; color: var(--text-primary); }
+.lk-wm-latin { font-family: var(--font-family-display); font-weight: var(--voice-weight-display, 800); letter-spacing: var(--track-tight); line-height: 0.9; color: var(--text-primary); }
+.lk-wm-beng { font-family: var(--font-family-bengali); font-weight: 600; line-height: 1; color: var(--text-secondary); }

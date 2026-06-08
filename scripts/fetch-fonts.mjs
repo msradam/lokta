@@ -61,6 +61,26 @@ const FULL = [
       ['bengali', 700, 'normal'],
     ],
   ],
+  // Devanagari (Nepali), the namesake script. Mukta for display/body, Martel for
+  // serif. Subset to the Devanagari range; no Google Fonts CDN at runtime.
+  [
+    'mukta',
+    'mukta',
+    [
+      ['devanagari', 400, 'normal'],
+      ['devanagari', 600, 'normal'],
+      ['devanagari', 700, 'normal'],
+      ['devanagari', 800, 'normal'],
+    ],
+  ],
+  [
+    'martel',
+    'martel',
+    [
+      ['devanagari', 400, 'normal'],
+      ['devanagari', 700, 'normal'],
+    ],
+  ],
 ];
 
 // Lighter set for the slide deck: display, mono, serif, and a JP face for the header.
@@ -93,6 +113,7 @@ const DECK = [
     ],
   ],
   ['noto-sans-jp', 'noto-sans-jp', [['japanese', 400, 'normal']]],
+  ['mukta', 'mukta', [['devanagari', 400, 'normal'], ['devanagari', 700, 'normal'], ['devanagari', 800, 'normal']]],
 ];
 
 const file = (family, subset, weight, style) => `${family}-${subset}-${weight}-${style}.woff2`;

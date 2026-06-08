@@ -27,6 +27,9 @@
 @font-face { font-family: "Source Serif 4"; font-style: italic; font-weight: 400; font-display: swap; src: url("fonts/source-serif-4-latin-400-italic.woff2") format("woff2"); }
 @font-face { font-family: "Source Serif 4"; font-style: italic; font-weight: 500; font-display: swap; src: url("fonts/source-serif-4-latin-500-italic.woff2") format("woff2"); }
 @font-face { font-family: "Noto Sans JP"; font-weight: 400; font-display: swap; src: url("fonts/noto-sans-jp-japanese-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Mukta"; font-weight: 400; font-display: swap; src: url("fonts/mukta-devanagari-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Mukta"; font-weight: 700; font-display: swap; src: url("fonts/mukta-devanagari-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Mukta"; font-weight: 800; font-display: swap; src: url("fonts/mukta-devanagari-800-normal.woff2") format("woff2"); }
 
 :root {
   --paper-00: #FAF8EA; --paper-01: #F4F1DF; --paper-02: #EAE6D2; --paper-04: #C2B89C;
@@ -36,9 +39,12 @@
   --cinnabar: #C23A26; --celadon: #6E8B6F; --indigo: #2E3E5C; --night: #070D0E;
   --indigo-page: #1B2230; --indigo-text: #E2E1D6; --indigo-head: #EDECE3; --indigo-mut: #AEB4C2;
   --mono: "Spline Sans Mono", "Noto Sans JP", ui-monospace, monospace;
-  --display: "Archivo", "Helvetica Neue", "Noto Sans JP", sans-serif;
+  --display: "Archivo", "Mukta", "Helvetica Neue", "Noto Sans JP", sans-serif;
   --serif: "Source Serif 4", Georgia, serif;
+  --devanagari: "Mukta", "Archivo", sans-serif;
 }
+/* Devanagari (Nepali) slides set in Mukta, by content language. */
+section:lang(ne), section:lang(hi) { --display: var(--devanagari); }
 
 section {
   width: 1280px; height: 720px;
