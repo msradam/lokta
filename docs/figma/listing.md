@@ -21,11 +21,11 @@ Cuisine on Screen by Sachiyo Harada (Prestel). A warm cream stock, hard rules,
 hatched end-marks, tracked mono labels, and full-bleed pigment grounds, carried
 onto the screen and held to WCAG 2.2 AA on every text role in every stock.
 
-This kit is variable-driven. The Semantic collection has a mode per stock (Paper,
-Ink, Bone, Indigo, plus enterprise Slate, Steel, Onyx with light variants), so a
-single component re-themes by switching mode. Primitives are hidden from
-publishing, so you build against the semantic layer and theming and accessibility
-come for free.
+This kit is variable-driven. The Semantic collection has a mode per stock, all
+fourteen: Paper, Manuscript, Bone, Ink, Indigo, Highland, the enterprise set
+Slate, Steel, Onyx with light variants, plus Pine and Mulberry. A single
+component re-themes by switching mode. Primitives are hidden from publishing, so
+you build against the semantic layer and theming and accessibility come for free.
 
 Fonts are SIL OFL and available on Google Fonts (Archivo, Spline Sans Mono,
 Source Serif 4, Noto Sans JP, Anek Bangla), so nothing is missing on duplicate.

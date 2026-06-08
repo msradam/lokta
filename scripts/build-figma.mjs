@@ -50,6 +50,30 @@ const primitives = primLeaves.map((l) => ({
   values: { Value: l.type === 'dimension' ? dimToFloat(l.value) : l.value },
 }));
 
+// ── Extra stocks (CSS-only themes in lokta-stocks.css) become Semantic modes ──
+// --surface-page -> surface/page; raw hex stays, var(--pigment-x) becomes an alias.
+const stocksCss = await readFile(join(root, 'packages/css/lokta-stocks.css'), 'utf8');
+const varToRole = (v) => v.replace(/^--/, '').replace('-', '/');
+const resolveVal = (raw) => {
+  raw = raw.trim();
+  if (raw.startsWith('#')) return raw.toUpperCase();
+  const m = raw.match(/^var\(--([a-z0-9-]+)\)$/);
+  if (m) {
+    const path = m[1].replace('-', '/');
+    return primNames.has(path) ? { alias: path } : null;
+  }
+  return null;
+};
+const EXTRA = [];
+for (const block of stocksCss.matchAll(/\[data-theme="([^"]+)"\]\s*\{([^}]*)\}/g)) {
+  const roles = {};
+  for (const d of block[2].matchAll(/--([a-z-]+):\s*([^;]+);/g)) {
+    const v = resolveVal(d[2]);
+    if (v != null) roles[varToRole('--' + d[1])] = v;
+  }
+  EXTRA.push({ mode: block[1], roles });
+}
+
 // ── Semantic collection (colour roles only; modes = stocks) ──────────────────
 // Canonical role order from the paper set, then any extra roles other stocks add.
 const roleOrder = [];
@@ -83,8 +107,20 @@ const semantic = roleOrder.map((name) => {
     else values[mode] = v;
     if (fellBack) values[`${mode}$note`] = 'inherits paper';
   }
+  for (const e of EXTRA) {
+    let v = e.roles[name];
+    if (v == null) {
+      const pv = roleValue('paper', name);
+      if (pv == null) continue;
+      v = isRef(pv) && primNames.has(refToPath(pv)) ? { alias: refToPath(pv) } : pv;
+      values[`${e.mode}$note`] = 'inherits paper';
+    }
+    values[e.mode] = v;
+  }
   return { name, type: 'COLOR', values };
 });
+
+const ALL_MODES = [...STOCKS.map((s) => s.mode), ...EXTRA.map((e) => e.mode)];
 
 const manifest = {
   $generatedFrom: 'tokens/lokta.tokens.json',
@@ -92,7 +128,7 @@ const manifest = {
     'Deterministic Figma Variables manifest. References are variable aliases. Modes on the Semantic collection are the stocks.',
   collections: [
     { name: 'Lokta Primitives', modes: ['Value'], hideFromPublishing: true, variables: primitives },
-    { name: 'Lokta Semantic', modes: STOCKS.map((s) => s.mode), variables: semantic },
+    { name: 'Lokta Semantic', modes: ALL_MODES, variables: semantic },
   ],
 };
 
@@ -111,7 +147,7 @@ const SPOT = {
   'text/primary': { paper: '#1F1C13', ink: '#FAF8EA' },
 };
 for (const v of semantic) {
-  for (const { mode } of STOCKS) {
+  for (const mode of ALL_MODES) {
     const val = v.values[mode];
     if (val == null) {
       bad(`${v.name}: missing mode ${mode}`);
@@ -134,5 +170,5 @@ const outDir = join(root, 'packages/tokens/dist/figma');
 await mkdir(outDir, { recursive: true });
 await writeFile(join(outDir, 'lokta.variables.json'), JSON.stringify(manifest, null, 2) + '\n');
 console.log(
-  `Built + verified Figma variables: ${primitives.length} primitives, ${semantic.length} semantic roles x ${STOCKS.length} modes -> packages/tokens/dist/figma/lokta.variables.json`,
+  `Built + verified Figma variables: ${primitives.length} primitives, ${semantic.length} semantic roles x ${ALL_MODES.length} modes -> packages/tokens/dist/figma/lokta.variables.json`,
 );
