@@ -4,7 +4,7 @@ All notable changes to Lokta are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project
 follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.1.0] - 2026-06-08
 
 ### Added
 
@@ -38,9 +38,7 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Fixed a cross-surface drift: the Mermaid secondary and `muted` class are now
   `#EAE6D2` (paper-02), matching the parity gate.
 
-## [0.1.0] - 2026-06-07
-
-### Added
+### Added (foundations)
 
 - An editorial UI system after the page layout of _Cuisine on Screen_ by Sachiyo
   Harada (Prestel, 2024), with a heritage thread from Professor Siddika Kabir's
@@ -70,5 +68,4 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - A GitHub Pages workflow that builds the tokens, renders the deck, builds the
   site, and deploys.
 
-[Unreleased]: https://example.com/compare/v0.1.0...HEAD
-[0.1.0]: https://example.com/releases/tag/v0.1.0
+[0.1.0]: https://github.com/msradam/lokta/releases/tag/v0.1.0
