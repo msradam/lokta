@@ -38,6 +38,20 @@ eyebrow. On a pigment or dark ground use `<span class="label">LABEL</span>` so i
 recolors with the ground.
 `---` becomes the hatched end-mark divider. `>` blockquotes set in Source Serif.
 
+### Layout classes
+
+| Class      | Effect                                                              |
+| ---------- | ------------------------------------------------------------------- |
+| `lead`     | Cover slide. Centered, oversized headline.                          |
+| `columns`  | Flows dense content into two columns; headings span the full width. |
+| `divider`  | Section break: eyebrow, big title, a measured rule.                 |
+| `stat`     | One oversized figure. Write `# 92%`, then a caption paragraph.      |
+
+For an image-split slide, use Marp's native background directive rather than a
+class: `![bg right:40%](photo.jpg)` puts the image on one side and keeps text on
+the other (`bg left`, `bg right`, with an optional `:width`). Add a small
+citation with `<p class="source">Source: …</p>`.
+
 ## Build
 
 From the repo root:

@@ -107,6 +107,36 @@
   #text(font: lk-serif, style: "italic", size: 9pt, fill: lk-mut)[#it.body]
 ]
 
+// Outline / contents styling. Apply inside a template with `show: lk-contents`.
+#let lk-contents(body) = {
+  show outline.entry: it => {
+    set text(font: lk-sans, fill: lk-body)
+    if it.level == 1 { v(4pt); set text(weight: 600, fill: lk-primary) }
+    it
+  }
+  body
+}
+
+// Footnote styling: a short rule, then mono number and small sans text.
+#let lk-footnotes(body) = {
+  set footnote.entry(separator: line(length: 30%, stroke: 0.5pt + lk-hair))
+  show footnote.entry: it => { set text(font: lk-sans, size: 8.5pt, fill: lk-mut); it }
+  body
+}
+
+// Revision history: a labelled table. rows = ((rev, date, author, note), ...).
+#let lk-revisions(rows) = lk-table(
+  headers: ("Rev", "Date", "Author", "Note"),
+  rows: rows, columns: (auto, auto, auto, 1fr),
+)
+
+// References: a numbered list without a .bib file. items = (content, content, ...).
+#let lk-references(items) = {
+  set text(font: lk-sans, size: 9pt, fill: lk-body)
+  set par(hanging-indent: 18pt)
+  enum(numbering: "[1]", spacing: 0.9em, ..items)
+}
+
 // ── Technical report (white paper, hitec-style) ──────────────────────────────
 #let lokta-tech(
   title: "", subtitle: none, org: "", doc-id: "", meta: (:), accent: lk-indigo, body,
@@ -145,6 +175,9 @@
     text(font: lk-mono, size: 9pt, fill: lk-primary, it),
   )
   show figure.caption: lk-caption(accent: accent)
+  show outline.entry: it => { set text(font: lk-sans, fill: lk-body); if it.level == 1 { v(4pt) }; it }
+  set footnote.entry(separator: line(length: 30%, stroke: 0.5pt + lk-hair))
+  show footnote.entry: it => { set text(font: lk-sans, size: 8.5pt, fill: lk-mut); it }
 
   // Title block
   lk-label(org, color: lk-mut); v(0.5em)
@@ -207,6 +240,9 @@
     v(0.3em)
   }
   show figure.caption: lk-caption(accent: accent)
+  show outline.entry: it => { set text(font: lk-sans, fill: lk-body); if it.level == 1 { v(4pt) }; it }
+  set footnote.entry(separator: line(length: 30%, stroke: 0.5pt + lk-hair))
+  show footnote.entry: it => { set text(font: lk-sans, size: 8.5pt, fill: lk-mut); it }
   // Title block
   lk-label(org, color: lk-mut); v(0.6em)
   text(font: lk-sans, weight: 800, size: 28pt, fill: lk-primary)[#title]

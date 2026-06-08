@@ -43,3 +43,44 @@
   .lk-display { font-size: var(--type-2xl); }
   .lk-h1 { font-size: var(--type-xl); }
 }
+
+/* ── DATA VIZ ──────────────────────────────────────────────────────────────
+ * A categorical series palette drawn from the pigments, ordered for adjacent
+ * distinctness. Pigment values are constant across stocks, so a chart keeps its
+ * colours when the surface changes. Pair colour with a label; never encode by
+ * colour alone (use the legend, and patterns where you can). */
+:root {
+  --viz-1: var(--pigment-indigo);
+  --viz-2: var(--pigment-marigold);
+  --viz-3: var(--pigment-cinnabar);
+  --viz-4: var(--pigment-celadon);
+  --viz-5: var(--pigment-aubergine);
+  --viz-6: var(--pigment-peach);
+  --viz-7: var(--pigment-lavender);
+  --viz-8: var(--pigment-night);
+}
+.lk-viz-1 { --viz: var(--viz-1); }
+.lk-viz-2 { --viz: var(--viz-2); }
+.lk-viz-3 { --viz: var(--viz-3); }
+.lk-viz-4 { --viz: var(--viz-4); }
+.lk-viz-5 { --viz: var(--viz-5); }
+.lk-viz-6 { --viz: var(--viz-6); }
+.lk-viz-7 { --viz: var(--viz-7); }
+.lk-viz-8 { --viz: var(--viz-8); }
+
+/* Legend: a swatch and a label per series. */
+.lk-legend { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); }
+.lk-legend-item { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--type-sm); color: var(--text-body); }
+.lk-swatch { width: 12px; height: 12px; flex: none; background: var(--viz, var(--viz-1)); border: var(--rule-hairline) solid var(--border-strong); }
+
+/* Horizontal bar chart: a track per row, filled to --pct in a series colour. */
+.lk-barlist { display: grid; gap: var(--space-3); }
+.lk-barlist-row { display: grid; grid-template-columns: minmax(80px, 1fr) 3fr auto; align-items: center; gap: var(--space-3); }
+.lk-barlist-label { font-size: var(--type-sm); color: var(--text-body); }
+.lk-barlist-val { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: var(--type-xs); color: var(--text-secondary); font-variant-numeric: tabular-nums; text-align: right; }
+.lk-bar-track { height: 12px; background: var(--surface-sunken); border: var(--rule-hairline) solid var(--border-hairline); }
+.lk-bar-fill { height: 100%; width: var(--pct, 0%); background: var(--viz, var(--viz-1)); }
+
+/* Sparkline / inline chart: style a bare inline SVG with the series stroke. */
+.lk-spark { display: inline-block; vertical-align: middle; }
+.lk-spark path, .lk-spark polyline { fill: none; stroke: var(--viz, var(--viz-1)); stroke-width: 1.5; stroke-linejoin: miter; stroke-linecap: square; }

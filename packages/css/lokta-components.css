@@ -960,6 +960,21 @@ a:focus-visible {
 }
 .lk-char-count { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: var(--type-xs); color: var(--text-muted); text-align: right; font-variant-numeric: tabular-nums; }
 .lk-char-count[data-over="true"] { color: var(--accent-danger); }
+/* A focused field promotes its label, a quiet affordance. */
+.lk-field:focus-within > .lk-label { color: var(--text-primary); }
+
+/* ── FILE UPLOAD (label wraps a hidden-but-focusable native input) ────────── */
+.lk-file {
+  display: inline-flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4); min-height: var(--target-touch);
+  border: var(--rule-1) dashed var(--border-default); background: var(--surface-sunken);
+  color: var(--text-body); cursor: pointer; font-size: var(--type-sm);
+}
+.lk-file:hover { border-color: var(--border-strong); }
+.lk-file input[type="file"] { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); border: 0; }
+.lk-file:focus-within { outline: var(--focus-ring-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+.lk-file .lk-icon { color: var(--text-secondary); }
+.lk-file-name { color: var(--text-muted); }
 
 /* ── MARKETING: HERO / FEATURE / PRICING / TESTIMONIAL / CTA / LOGOS ──────── */
 .lk-feature {

@@ -87,6 +87,31 @@ section p > code:only-child { font-family: var(--mono); font-size: 13px; text-tr
 section.lead { display: flex; flex-direction: column; justify-content: center; }
 section.lead h1 { font-size: 104px; letter-spacing: -0.045em; }
 
+/* ════ LAYOUTS ═══════════════════════════════════════════════════════════════
+ * Per-slide classes for common deck shapes. Combine with stocks/grounds. */
+
+/* COLUMNS: flow dense content into two columns; headings span the full width. */
+section.columns { column-count: 2; column-gap: 56px; }
+section.columns h1, section.columns h2, section.columns hr, section.columns header { column-span: all; }
+section.columns p, section.columns ul, section.columns ol { break-inside: avoid; }
+
+/* DIVIDER: a section break. An eyebrow, a big title, a measured rule. */
+section.divider { display: flex; flex-direction: column; justify-content: center; }
+section.divider h1 { font-size: 92px; }
+section.divider hr { width: 280px; margin-top: 28px; }
+
+/* STAT: one oversized figure. Write `# 92%` then a caption paragraph. */
+section.stat { display: flex; flex-direction: column; justify-content: center; }
+section.stat h1 { font-size: 220px; line-height: 0.9; letter-spacing: -0.05em; margin: 0; }
+section.stat p { font-size: 30px; max-width: 24ch; color: var(--ink-60); }
+section.stat.invert p, section.stat.ink p, section.stat.indigo p,
+section.stat.aubergine p, section.stat.cinnabar p, section.stat.celadon p, section.stat.night p { color: var(--paper-04); }
+
+/* SOURCE line: a small mono citation, e.g. <p class="source">Source: …</p>. */
+.source { font-family: var(--mono); font-size: 13px; letter-spacing: 0.04em; color: var(--ink-60); margin-top: 8px; }
+section.invert .source, section.ink .source, section.indigo .source,
+section.aubergine .source, section.cinnabar .source, section.celadon .source, section.night .source { color: var(--paper-04); }
+
 /* ════ STOCKS ═══════════════════════════════════════════════════════════════
  * Four stocks re-point the whole slide. paper is the default. */
 
