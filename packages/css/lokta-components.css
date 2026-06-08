@@ -617,10 +617,12 @@ a:focus-visible {
 .lk-modal-backdrop {
   position: fixed;
   inset: 0;
+  z-index: 1000;
   background: rgba(7, 13, 14, 0.55);
   display: grid;
   place-items: center;
   padding: 24px;
+  overflow-y: auto;
 }
 /* The explicit display above would otherwise defeat the hidden attribute. */
 .lk-modal-backdrop[hidden] { display: none; }
@@ -631,6 +633,8 @@ a:focus-visible {
   padding: 24px;
   max-width: 520px;
   width: 100%;
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
 }
 .lk-modal-head {
   display: flex;
