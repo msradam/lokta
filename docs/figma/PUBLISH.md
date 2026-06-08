@@ -44,8 +44,8 @@ Semantic layer, where theming and AA come for free.
 - **Mode cap.** Figma caps variable modes per collection by plan: Professional
   **10**, Organization **20**, Enterprise 40. Lokta ships **14 stocks**.
   - On **Professional ($15)**, use `lokta.variables.pro.json` (Paper, Ink, Bone,
-    Indigo, Manuscript, Highland, Slate, Slate L, Steel, Onyx). It imports without
-    trimming.
+    Indigo, Manuscript, Highland, Pine, Mulberry, Slate, Slate L). It imports
+    without trimming.
   - For all 14 stocks, use `lokta.variables.json` on **Organization ($55)**.
 - **Publishing** a free Community file does not itself need a paid plan; the paid
   seat is for building the variable-driven library.

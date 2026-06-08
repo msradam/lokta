@@ -173,7 +173,7 @@ await writeFile(join(outDir, 'lokta.variables.json'), JSON.stringify(manifest, n
 // Professional-tier variant: Figma caps the Professional plan at 10 variable modes
 // per collection, so emit a 10-stock manifest that imports without trimming on a
 // $15 seat. The full 14-mode file needs Organization (20-mode cap).
-const PRO_MODES = ['paper', 'ink', 'bone', 'indigo', 'manuscript', 'highland', 'slate', 'slate-light', 'steel', 'onyx'];
+const PRO_MODES = ['paper', 'ink', 'bone', 'indigo', 'manuscript', 'highland', 'pine', 'mulberry', 'slate', 'slate-light'];
 const proSemantic = semantic.map((v) => {
   const values = {};
   for (const m of PRO_MODES) {
