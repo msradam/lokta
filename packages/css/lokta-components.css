@@ -107,13 +107,9 @@
 .lk-measure-hatch {
   flex: 1 1 auto;
   height: 6px;
-  background-image: repeating-linear-gradient(
-    -45deg,
-    var(--text-body) 0,
-    var(--text-body) 1px,
-    transparent 1px,
-    transparent 4px
-  );
+  background: var(--text-body);
+  -webkit-mask: var(--lk-hatch-img) 0 0 / 6px 6px repeat;
+  mask: var(--lk-hatch-img) 0 0 / 6px 6px repeat;
   opacity: 0.85;
 }
 .lk-measure-gap {
@@ -123,13 +119,9 @@
   display: inline-block;
   width: 56px;
   height: 6px;
-  background-image: repeating-linear-gradient(
-    -45deg,
-    var(--text-body) 0,
-    var(--text-body) 1px,
-    transparent 1px,
-    transparent 4px
-  );
+  background: var(--text-body);
+  -webkit-mask: var(--lk-hatch-img) 0 0 / 6px 6px repeat;
+  mask: var(--lk-hatch-img) 0 0 / 6px 6px repeat;
 }
 
 /* ── TAG ────────────────────────────────────────────────────────────────── */

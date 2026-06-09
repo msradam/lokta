@@ -24,6 +24,7 @@
    1 · PRIMITIVES
    ════════════════════════════════════════════════════════════════════════ */
 :root {
+  --lk-hatch-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Cpath d='M0 6L6 0M-1.5 1.5L1.5 -1.5M4.5 7.5L7.5 4.5' stroke='white' stroke-width='1.2'/%3E%3C/svg%3E");
   /* PAPER, warm greenish cream, matched to the source book stock. Never pure white. */
   --paper-00: #FAF8EA;   /* deckle, top sheet */
   --paper-01: #F4F1DF;   /* page, primary surface */
@@ -523,13 +524,9 @@
 .lk-measure-hatch {
   flex: 1 1 auto;
   height: 6px;
-  background-image: repeating-linear-gradient(
-    -45deg,
-    var(--text-body) 0,
-    var(--text-body) 1px,
-    transparent 1px,
-    transparent 4px
-  );
+  background: var(--text-body);
+  -webkit-mask: var(--lk-hatch-img) 0 0 / 6px 6px repeat;
+  mask: var(--lk-hatch-img) 0 0 / 6px 6px repeat;
   opacity: 0.85;
 }
 .lk-measure-gap {
@@ -539,13 +536,9 @@
   display: inline-block;
   width: 56px;
   height: 6px;
-  background-image: repeating-linear-gradient(
-    -45deg,
-    var(--text-body) 0,
-    var(--text-body) 1px,
-    transparent 1px,
-    transparent 4px
-  );
+  background: var(--text-body);
+  -webkit-mask: var(--lk-hatch-img) 0 0 / 6px 6px repeat;
+  mask: var(--lk-hatch-img) 0 0 / 6px 6px repeat;
 }
 
 /* TAG, hard-cornered metadata pill */
@@ -944,7 +937,7 @@ h3.comp{ font-weight:700; letter-spacing:-0.01em; font-size:23px; margin:0; colo
 .lead{ font-size:17px; line-height:1.55; color:var(--text-body); max-width:680px; margin:14px 0 0; }
 .meashead{ display:flex; align-items:center; gap:18px; margin:48px 0 22px; }
 .meashead .num{ font-family:"Spline Sans Mono",monospace; font-size:40px; font-weight:300; letter-spacing:-0.04em; color:var(--text-primary); }
-.dash-rule{ height:8px; background-image:repeating-linear-gradient(-45deg,var(--text-body) 0,var(--text-body) 1px,transparent 1px,transparent 4px); opacity:0.85; }
+.dash-rule{ height:8px; background:var(--text-body); -webkit-mask:var(--lk-hatch-img) 0 0/6px 6px repeat; mask:var(--lk-hatch-img) 0 0/6px 6px repeat; opacity:0.85; }
 
 /* component card */
 .card{ border:1px solid var(--text-primary); margin-top:22px; background:var(--surface-page); }

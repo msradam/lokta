@@ -51,7 +51,7 @@ const head = `<!doctype html><html lang="en" data-theme="paper"><head><meta char
   .fig .measure{display:flex;align-items:center;height:8px;margin:40px 0;gap:0}
   .fig .measure .ln{height:2px;width:260px;background:var(--text-primary)}
   .fig .measure .gap{flex:1}
-  .fig .measure .hatch{flex:1;height:7px;background-image:repeating-linear-gradient(-45deg,var(--text-body) 0,var(--text-body) 1px,transparent 1px,transparent 5px);opacity:0.85}
+  .fig .measure .hatch{flex:1;height:7px;background:var(--text-body);opacity:0.85;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Cpath d='M0 6L6 0M-1.5 1.5L1.5 -1.5M4.5 7.5L7.5 4.5' stroke='white' stroke-width='1.2'/%3E%3C/svg%3E") 0 0/6px 6px repeat}
   .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
   .stk{padding:24px;border:1px solid var(--border-default);background:var(--surface-page)}
   .stk .nm{font-family:"Spline Sans Mono",monospace;font-size:14px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-secondary)}

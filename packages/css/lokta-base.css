@@ -49,6 +49,11 @@
   --lk-radius: 0px;
   --lk-density-step: 0px;
 
+  /* The hatch end-mark as an SVG mask. Vector strokes anti-alias per zoom level,
+     so the stripes stay even where a repeating-linear-gradient goes ragged. The
+     stripe colour comes from the element's background; the mask is shape only. */
+  --lk-hatch-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Cpath d='M0 6L6 0M-1.5 1.5L1.5 -1.5M4.5 7.5L7.5 4.5' stroke='white' stroke-width='1.2'/%3E%3C/svg%3E");
+
   /* Heritage pigments (Accent dial options). -light variants carry accent text on
      the dark stocks; gilt is a flat fill only, not text. */
   --pigment-madder: #8E3B30;

@@ -38,6 +38,7 @@
   --marigold: #FBBC0E; --peach: #E7A079; --lavender: #A99CB3; --aubergine: #6B4E8E;
   --cinnabar: #C23A26; --celadon: #6E8B6F; --indigo: #2E3E5C; --night: #070D0E;
   --indigo-page: #1B2230; --indigo-text: #E2E1D6; --indigo-head: #EDECE3; --indigo-mut: #AEB4C2;
+  --hatch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Cpath d='M0 6L6 0M-1.5 1.5L1.5 -1.5M4.5 7.5L7.5 4.5' stroke='white' stroke-width='1.2'/%3E%3C/svg%3E");
   --mono: "Spline Sans Mono", "Noto Sans JP", ui-monospace, monospace;
   --display: "Archivo", "Mukta", "Helvetica Neue", "Noto Sans JP", sans-serif;
   --serif: "Source Serif 4", Georgia, serif;
@@ -82,7 +83,9 @@ footer { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; colo
 section::after { /* page number, bottom-right */ font-family: var(--mono); font-size: 13px; color: var(--ink-60); right: 80px; bottom: 28px; }
 
 /* Hatch end-mark, the system's signature divider */
-hr { border: 0; height: 8px; margin: 18px 0; background-image: repeating-linear-gradient(-45deg, var(--ink-80) 0, var(--ink-80) 1px, transparent 1px, transparent 4px); opacity: 0.85; }
+/* SVG-mask hatch: stays even at any zoom where a gradient goes ragged. */
+hr { border: 0; height: 8px; margin: 18px 0; background: var(--ink-80); opacity: 0.85;
+  -webkit-mask: var(--hatch) 0 0 / 6px 6px repeat; mask: var(--hatch) 0 0 / 6px 6px repeat; }
 
 /* Tracked eyebrow label: write `LABEL` on its own line, or use a span.label */
 .label, section > p:first-child em.label { font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-60); }
@@ -148,8 +151,7 @@ section.cinnabar code, section.celadon code, section.night code { background: rg
 section.invert a, section.ink a, section.indigo a, section.aubergine a,
 section.cinnabar a, section.celadon a, section.night a { color: #C9B8DC; }
 section.invert hr, section.ink hr, section.indigo hr, section.aubergine hr,
-section.cinnabar hr, section.celadon hr, section.night hr {
-  background-image: repeating-linear-gradient(-45deg, var(--paper-04) 0, var(--paper-04) 1px, transparent 1px, transparent 4px); }
+section.cinnabar hr, section.celadon hr, section.night hr { background: var(--paper-04); }
 
 /* INK (warm dark stock) */
 section.invert, section.ink { background: var(--ink-90); }
