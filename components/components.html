@@ -1041,7 +1041,7 @@ h3.comp{ font-weight:700; letter-spacing:-0.01em; font-size:23px; margin:0; colo
 
 /* footer */
 .colo{ display:flex; align-items:center; gap:14px; margin-top:64px; padding:14px 0; border-top:2px solid var(--text-primary); font-family:"Spline Sans Mono",monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-secondary); }
-@media(max-width:900px){ .shell{ grid-template-columns:1fr; } .sidenav{ display:none; } .main{ padding:0 24px 100px; } h1.disp{ font-size:52px; } }
+@media(max-width:900px){ .shell{ grid-template-columns:1fr; } .sidenav{ display:none; } .main{ padding:0 24px 100px; min-width:0; max-width:100%; overflow-x:hidden; } h1.disp{ font-size:52px; } .card, .demo, .markup{ min-width:0; max-width:100%; } .lk-code, .markup pre, pre, code{ max-width:100%; white-space:pre-wrap; word-break:break-word; overflow-wrap:anywhere; } }
 </style>
 </head>
 <body class="lk">

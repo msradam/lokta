@@ -216,7 +216,7 @@ async function renderIconUsage() {
     <div class="usage-row">
       <button class="lk-btn lk-btn-primary">${dl} Export</button>
       <button class="lk-btn">Docs ${ex}</button>
-      <span class="lk-tag">v0.1 ${ch}</span>
+      <span class="lk-tag">v0.2 ${ch}</span>
     </div>
     <div class="lk-note-box lk-note-success" style="margin-top:14px">
       <span class="lk-note-ico">${ck}</span>

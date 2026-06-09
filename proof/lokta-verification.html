@@ -4,9 +4,18 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lokta · Verification</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Self-hosted (SIL OFL), no Google Fonts CDN: the system forbids it (GDPR). The
+   woff2 are served beside this page from the build. */
+@font-face{font-family:"Archivo";font-weight:400;font-display:swap;src:url("fonts/archivo-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Archivo";font-weight:500;font-display:swap;src:url("fonts/archivo-latin-500-normal.woff2") format("woff2")}
+@font-face{font-family:"Archivo";font-weight:600;font-display:swap;src:url("fonts/archivo-latin-600-normal.woff2") format("woff2")}
+@font-face{font-family:"Archivo";font-weight:700;font-display:swap;src:url("fonts/archivo-latin-700-normal.woff2") format("woff2")}
+@font-face{font-family:"Archivo";font-weight:800;font-display:swap;src:url("fonts/archivo-latin-800-normal.woff2") format("woff2")}
+@font-face{font-family:"Spline Sans Mono";font-weight:400;font-display:swap;src:url("fonts/spline-sans-mono-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Spline Sans Mono";font-weight:500;font-display:swap;src:url("fonts/spline-sans-mono-latin-500-normal.woff2") format("woff2")}
+@font-face{font-family:"Spline Sans Mono";font-weight:600;font-display:swap;src:url("fonts/spline-sans-mono-latin-600-normal.woff2") format("woff2")}
+</style>
 <style>
   :root{ --paper:#F4F1DF; --paper0:#FAF8EA; --ink:#1F1C13; --body:#2A2620; --mut:#5C564B; --faint:#8E867A; --hair:#C2B89C; --marigold:#FBBC0E; --cinnabar:#C23A26; }
   *{ box-sizing:border-box; }
@@ -54,6 +63,14 @@
   .show-focus .lk-btn, .show-focus .lk-input{ outline:2px solid var(--marigold); outline-offset:2px; }
   .modal{ border:1px solid; box-shadow:6px 6px 0 rgba(7,13,14,0.18); }
   details{ margin-top:6px; } summary{ cursor:pointer; }
+  @media (max-width: 720px) {
+    .wrap{ padding:0 16px 80px; }
+    .rhead{ padding:12px 16px; }
+    h1{ font-size:40px; }
+    .stockgrid, .gal{ grid-template-columns:1fr 1fr; }
+    .matrix{ display:block; overflow-x:auto; }
+    .scrow{ overflow-x:auto; }
+  }
 </style>
 </head>
 <body>
@@ -172,7 +189,7 @@ function matrixPanel(){
     // disabled + accents on page only
     const pg = st.surfaces.page;
     const dr = contrast(st.text.disabled,pg);
-    rows += `<tr><td class="lbl">disabled</td><td>${pairSw(st.text.disabled,pg)} <span class="num">${dr.toFixed(2)}</span> <span class="badge pass">EXEMPT</span> <span class="small" style="color:var(--faint)">inactive only</span></td><td colspan="3" class="small" style="color:var(--faint)">evaluated on page</td></tr>`;
+    rows += `<tr><td class="lbl">disabled</td><td>${pairSw(st.text.disabled,pg)} <span class="num">${dr.toFixed(2)}</span> <span class="badge pass">EXEMPT</span> <span class="small" style="color:var(--mut)">inactive only</span></td><td colspan="3" class="small" style="color:var(--mut)">evaluated on page</td></tr>`;
     let acc='';
     for(const [an,av] of Object.entries(st.accents)){
       const r=contrast(av,pg); const [bl,cls,ok]=gradeBadge(r,aa,aaa);

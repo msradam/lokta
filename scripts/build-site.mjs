@@ -502,7 +502,7 @@ npm install github:msradam/lokta-mermaid</pre>
         <label class="lk-label" for="d-sel">Select</label>
         <select class="lk-select" id="d-sel"><option>Paper</option><option>Ink</option></select>
       </div>
-      <input class="lk-input" style="max-width:320px" value="Disabled" disabled>`,
+      <input class="lk-input" style="max-width:320px" value="Disabled" disabled aria-label="Disabled field example">`,
     )}
 
     ${component(
@@ -604,7 +604,7 @@ npm install github:msradam/lokta-mermaid</pre>
       'Progress',
       '',
       `
-      <div class="lk-progress" style="max-width:420px" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100"><div class="lk-progress-bar" style="width:64%"></div></div>`,
+      <div class="lk-progress" style="max-width:420px" role="progressbar" aria-label="Example progress" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100"><div class="lk-progress-bar" style="width:64%"></div></div>`,
     )}
 
     ${component('Slider', '', `<input class="lk-slider" type="range" min="0" max="100" value="40" style="max-width:420px" aria-label="Demo slider">`)}
@@ -772,6 +772,7 @@ const NAV_LINKS = [
   ['verification.html', 'Verify', 'verification'],
 ];
 const SITE_NAV_STYLE = `<style>
+html,body{overflow-x:clip;max-width:100%}
 .lk-sitebar{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px;padding:9px 20px;background:#1F1C13;color:#FAF8EA;font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;position:relative;z-index:60;border-bottom:1px solid #5C564B}
 .lk-sitebar a{color:#FAF8EA;text-decoration:none}
 .lk-sitebar a:hover{color:#FBBC0E}
@@ -784,18 +785,46 @@ const siteNav = (active) =>
     ([href, label, key]) => `<a href="${href}"${key === active ? ' aria-current="page"' : ''}>${label}</a>`,
   ).join('')}<a class="gh" href="https://github.com/msradam/lokta">GitHub &#8599;</a></nav>`;
 
+// Favicon + Open Graph card on every page, plus the global nav.
+for (const a of ['favicon.svg', 'og-cover.png']) await cp(join(root, 'docs', a), join(site, a));
+const OG = 'https://msradam.github.io/lokta/og-cover.png';
+const DESCS = {
+  index: 'Lokta, an editorial UI design system verified to WCAG 2.2 AA on every commit. Web, slides, documents, diagrams, and Figma from one set of tokens.',
+  components: 'Every Lokta component with its states, accessibility wiring, and the icon set, across stocks.',
+  patterns: 'The Lokta application tier: app shell, dashboard widgets, data viz, and the marketing kit on the drop-in.',
+  dashboard: 'A dashboard built only from Lokta classes: app shell, KPI stat cards, a data table, and an empty state.',
+  landing: 'A marketing landing built only from Lokta classes: an on-pigment hero, features, pricing, and a CTA band.',
+  cookbook: 'An interactive film-dish cookbook demo built from Lokta: live search, filters, and a recipe dialog.',
+  verification: 'The Lokta verification dashboard: WCAG AA contrast, cross-surface parity, and the 8px grid, computed live.',
+};
+const headMeta = (title, desc) =>
+  `<meta name="description" content="${esc(desc)}">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website"><meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(desc)}"><meta property="og:image" content="${OG}">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(desc)}"><meta name="twitter:image" content="${OG}">`;
+
 for (const [, , key] of [['', '', 'index'], ...NAV_LINKS].filter(([, , k]) => k !== 'deck')) {
   const file = join(site, `${key}.html`);
   try {
-    const page = await readFile(file, 'utf8');
-    if (page.includes('lk-sitebar')) continue;
-    await writeFile(file, page.replace(/(<body[^>]*>)/i, `$1\n${siteNav(key)}`));
+    let page = await readFile(file, 'utf8');
+    const title = (page.match(/<title>([^<]*)<\/title>/i) || [, 'Lokta'])[1];
+    if (!page.includes('og:image')) page = page.replace(/<\/head>/i, `${headMeta(title, DESCS[key] || DESCS.index)}\n</head>`);
+    if (!page.includes('lk-sitebar')) page = page.replace(/(<body[^>]*>)/i, `$1\n${siteNav(key)}`);
+    await writeFile(file, page);
   } catch {
     /* page not built in this run (e.g. deck rendered later by CI) */
   }
 }
 
-console.log('Built site/: index.html, styles.css, token CSS, fonts; global nav injected.');
+// Branded 404.
+await writeFile(
+  join(site, '404.html'),
+  `<!doctype html><html lang="en" data-theme="paper"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Not found · Lokta</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="lokta.css"><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--surface-page)}</style></head><body class="lk">${siteNav('')}<main class="lk-stack lk-stack-4" style="text-align:center;padding:var(--space-7)"><span class="lk-eyebrow">404</span><h1 class="lk-display">Off the page.</h1><p class="lk-lede">That URL is not part of the system.</p><p><a class="lk-btn lk-btn-primary" href="index.html">Back to the docs</a></p></main></body></html>`,
+);
+
+console.log('Built site/: index.html, styles.css, token CSS, fonts; nav + OG + favicon + 404 injected.');
 
 // ── site chrome (uses the tokens, hard-edged) ──────────────────────────────
 async function siteStyles() {
