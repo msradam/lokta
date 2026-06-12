@@ -24,9 +24,17 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   token in `tokens/sets/type.json`, and `lokta-chart.js` (emits the `{…}` source
   and the `aria-label` together so they cannot drift, with a no-font values
   fallback).
+- Kolam: deterministic woven line ornaments in `@lokta/css`. `lokta-kolam.js`
+  generates a sikku kolam (a continuous line woven around a grid of pulli, the
+  alpana tradition) as pure SVG, so it renders the same in web, Marp, and Typst
+  PDF and themes through `currentColor`. The `.dt`-style `.lk-kolam` utilities
+  bind stroke weight to the rule scale (a per-instance parameter, not a dial);
+  `[data-lk-draw]` lets the line write itself in via `draw()`. Tile rules:
+  weave, plain, rows, cols. `validate/kolam.mjs` pins the geometry to a golden
+  (same spec, same bytes) and the `role="img"` + label contract.
 - A Motion & Datatype section in the components reference and the docs site:
-  the five primitives, the streaming-response area, write-in, inline charts, and
-  stat-block sparklines.
+  the five primitives, the streaming-response area, write-in, inline charts,
+  stat-block sparklines, and the kolam ornaments.
 - `validate/motion.mjs`: a deterministic gate for the motion flatness contract
   (no opacity/blur/scale-bloom, no looping, the reduced-motion floor and kill
   switch present, durations bounded), the self-hosted Datatype `@font-face`, and

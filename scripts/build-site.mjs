@@ -27,6 +27,7 @@ const copies = [
   ['packages/css/lokta-motion.css', 'lokta-motion.css'],
   ['packages/css/lokta-motion.js', 'lokta-motion.js'],
   ['packages/css/lokta-chart.js', 'lokta-chart.js'],
+  ['packages/css/lokta-kolam.js', 'lokta-kolam.js'],
   // The deterministic verification dashboard (the proof).
   ['proof/lokta-verification.html', 'verification.html'],
   // The components, icons, and accessibility reference (self-contained page).
@@ -340,6 +341,7 @@ const html = `<!doctype html>
 <script src="lokta-behaviors.js" defer></script>
 <script src="lokta-motion.js" defer></script>
 <script src="lokta-chart.js" defer></script>
+<script src="lokta-kolam.js" defer></script>
 </head>
 <body class="lk lk-sheet">
 ${iconSprite}
@@ -490,7 +492,14 @@ npm install github:msradam/lokta-mermaid</pre>
 
     <h3 class="sub-h">Motion · five flat primitives</h3>
     <p class="muted">rule-in, set-in, leaf-turn, stamp, and write-in, each a manuscript or kitchen gesture, each flat by construction: no opacity fade, no blur, no scale-bloom. Tier 1 keeps a static equivalent under reduced motion; Tier 2 is removed entirely. The live primitives, the streaming-response pattern, and the persisted reduce-motion toggle are on the <a href="components.html#motion">components reference</a>.</p>
-    <p class="lk-row"><a class="lk-btn lk-btn-primary" href="components.html#motion">Open the motion &amp; Datatype reference</a></p>
+
+    <h3 class="sub-h">Kolam · woven line ornaments</h3>
+    <div class="lk-cluster" style="gap:20px;align-items:flex-start;margin:4px 0 12px">
+      <figure class="lk-kolam" data-lk-kolam="weave" data-grid="5x5" style="margin:0;width:160px"></figure>
+      <figure class="lk-kolam lk-kolam-accent" data-lk-kolam="plain" data-grid="5x5" style="margin:0;width:160px"></figure>
+      <figure class="lk-kolam lk-kolam-fine" data-lk-kolam="weave" data-grid="8x8" style="margin:0;width:160px"></figure>
+    </div>
+    <p class="muted">A sikku kolam, one continuous line woven around a grid of pulli, the alpana tradition behind the Bengali cookbook lineage. <code>lokta-kolam.js</code> generates it deterministically as pure SVG (so it prints in Typst too), themes it through <code>currentColor</code>, binds the stroke to the rule scale, and can let the line write itself in via <code>draw()</code>. Every kolam is <code>role="img"</code> with a label.</p>
   </section>
 
   <section id="components">

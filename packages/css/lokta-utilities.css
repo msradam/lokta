@@ -172,3 +172,16 @@
   width: 32px; height: 32px; border-radius: 50%;
   border: var(--rule-1) solid var(--border-default); background: var(--surface-inset);
 }
+
+/* Kolam: woven line ornaments from lokta-kolam.js (the alpana/kolam tradition).
+ * The SVG themes through currentColor; the stroke weight binds to the rule
+ * scale, so it is a per-instance parameter, not a new dial. Default is the 2px
+ * icon/rule-2 weight; fine for dense fields, bold for a hero motif. */
+.lk-kolam { display: inline-block; color: var(--text-primary); --lk-kolam-weight: var(--rule-2); }
+.lk-kolam svg { display: block; width: 100%; height: auto; }
+.lk-kolam svg path { stroke-width: var(--lk-kolam-weight); }
+.lk-kolam-fine { --lk-kolam-weight: var(--rule-1); }
+.lk-kolam-hairline { --lk-kolam-weight: var(--rule-hairline); }
+.lk-kolam-bold { --lk-kolam-weight: var(--rule-3); }
+/* On a pigment ground or dark stock, set the ink with the text colour. */
+.lk-kolam-accent { color: var(--accent-feature); }

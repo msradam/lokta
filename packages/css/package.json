@@ -13,6 +13,7 @@
     "lokta-behaviors.js",
     "lokta-motion.js",
     "lokta-chart.js",
+    "lokta-kolam.js",
     "fonts.css",
     "fonts",
     "lokta-icons.css",

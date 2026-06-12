@@ -13,6 +13,12 @@
 .dt-spark { font-size: 26px; font-variation-settings: "wdth" 90, "wght" 500; }
 .dt-pie { font-size: 30px; font-variation-settings: "wdth" 100, "wght" 600; }
 .lk-prose .dt { font-size: 1.3em; vertical-align: -0.18em; margin: 0 0.12em; }
+.lk-kolam { display: inline-block; color: var(--text-primary); --lk-kolam-weight: var(--rule-2); }
+.lk-kolam svg { display: block; width: 100%; height: auto; }
+.lk-kolam svg path { stroke-width: var(--lk-kolam-weight); }
+.lk-kolam-fine { --lk-kolam-weight: var(--rule-1); }
+.lk-kolam-bold { --lk-kolam-weight: var(--rule-3); }
+.lk-kolam-accent { color: var(--accent-feature); }
 </style>
 <!-- SYSTEM CSS (verbatim, inlined, do not edit; regenerate from lokta-tokens.css + lokta-controls.css) -->
 <style id="lokta-tokens">
@@ -1086,7 +1092,7 @@ h3.comp{ font-weight:700; letter-spacing:-0.01em; font-size:23px; margin:0; colo
     <div class="grp">Editorial</div>
     <a href="#rules">Measured rule</a><a href="#page-furniture">Running head &amp; folio</a>
     <div class="grp">Motion &amp; data</div>
-    <a href="#datatype-demo">Datatype</a><a href="#primitives-demo">Motion primitives</a><a href="#stream-demo">Streaming</a>
+    <a href="#datatype-demo">Datatype</a><a href="#primitives-demo">Motion primitives</a><a href="#stream-demo">Streaming</a><a href="#kolam-demo">Kolam</a>
   </nav>
 
   <main class="main">
@@ -1723,6 +1729,20 @@ lokta build  # AA-checked CSS variables per stock</div>
         </div>
         <div class="block"><h4>Streaming, done right for screen readers</h4><p class="muted">A chunked delivery pattern, not a typewriter: chunks append in stable blocks in the visible (aria-hidden) layer, and the complete message is announced once via a polite <code class="lk-code-inline">role="log"</code> region that exists on load and starts empty. A visible Stop control (WCAG 2.2.2). Write-in stays a Tier-2 flourish for short one-shot moments, the animating node aria-hidden, the full string on the parent's aria-label.</p></div>
       </div>
+
+      <div class="card" id="kolam-demo">
+        <header><h3 class="comp">lk-kolam</h3><span class="lk-tag">ornament · generated</span></header>
+        <div class="demo" style="display:flex;flex-direction:column;gap:24px">
+          <div class="lk-cluster" style="gap:20px;align-items:flex-start">
+            <figure class="lk-kolam lk-kolam-fine" data-lk-kolam="weave" data-grid="5x5" style="margin:0;width:150px"></figure>
+            <figure class="lk-kolam" data-lk-kolam="weave" data-grid="5x5" style="margin:0;width:150px"></figure>
+            <figure class="lk-kolam lk-kolam-bold" data-lk-kolam="weave" data-grid="5x5" style="margin:0;width:150px"></figure>
+            <figure class="lk-kolam lk-kolam-accent" data-lk-kolam="plain" data-grid="5x5" style="margin:0;width:150px"></figure>
+          </div>
+          <figure class="lk-kolam" data-lk-kolam="weave" data-grid="14x1" data-draw style="margin:0;width:100%"></figure>
+        </div>
+        <div class="block"><h4>What it is</h4><p class="muted">A sikku kolam: one continuous line woven around a grid of pulli (dots), the alpana tradition behind the Bengali cookbook lineage. Generated deterministically by <code class="lk-code-inline">lokta-kolam.js</code> as pure SVG, so it renders the same in a page, a slide, and a Typst PDF, and themes through <code class="lk-code-inline">currentColor</code>. The stroke weight binds to the rule scale (fine, default, bold above); it is a per-instance parameter, not a dial. The divider band carries <code class="lk-code-inline">data-draw</code>, so the line writes itself in via <code class="lk-code-inline">draw()</code> and honours reduced motion. Every kolam is <code class="lk-code-inline">role="img"</code> with an aria-label.</p></div>
+      </div>
     </section>
 
     <div class="colo"><span>Lokta · v0.2</span><span style="opacity:0.5">·</span><span>Components, Icons &amp; Accessibility</span><span style="margin-left:auto">WCAG 2.2 AA</span></div>
@@ -2110,5 +2130,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
 </script>
 <script src="lokta-motion.js" defer></script>
 <script src="lokta-chart.js" defer></script>
+<script src="lokta-kolam.js" defer></script>
 </body>
 </html>

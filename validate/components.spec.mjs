@@ -131,6 +131,19 @@ test('datatype: every .dt is role="img" with a non-empty aria-label', async ({ p
   }
 });
 
+// ── KOLAM · declarative ornaments upgrade to a labelled SVG ───────────────────
+test('kolam: every [data-lk-kolam] builds a role="img" SVG with a non-empty label', async ({ page }) => {
+  const hosts = page.locator('[data-lk-kolam]');
+  const n = await hosts.count();
+  expect(n).toBeGreaterThan(0);
+  for (let i = 0; i < n; i++) {
+    const svg = hosts.nth(i).locator('svg');
+    await expect(svg).toHaveAttribute('role', 'img');
+    const label = (await svg.getAttribute('aria-label')) || '';
+    expect(label.trim().length).toBeGreaterThan(0);
+  }
+});
+
 // ── STREAMING · aria-hidden body, polite role=log announces the complete text ─
 test('streaming: body is aria-hidden and the complete message lands in a polite log', async ({ page }) => {
   const region = page.locator('#stream-demo [role="log"]');

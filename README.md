@@ -47,10 +47,12 @@ plug-and-play repo you can install on its own.
 | [lokta-mermaid](https://github.com/msradam/lokta-mermaid)   | Mermaid diagram theme, web and print.                                                           | `npm install github:msradam/lokta-mermaid`  |
 
 The motion layer (five flat primitives, the streaming pattern, a persisted
-reduce-motion toggle) and Datatype (a variable data font that sets
-`{b:…}`/`{l:…}`/`{p:…}` as inline charts) are part of the web layer, so they
-ship inside `lokta-css`: `lokta-motion.css` + `lokta-motion.js`, the `.dt`
-utilities, the Datatype `@font-face`, and `lokta-chart.js`.
+reduce-motion toggle), Datatype (a variable data font that sets
+`{b:…}`/`{l:…}`/`{p:…}` as inline charts), and kolam (deterministic woven
+line ornaments from the alpana tradition, `lokta-kolam.js`) are part of the web
+layer, so they ship inside `lokta-css`: `lokta-motion.css` + `lokta-motion.js`,
+the `.dt` utilities, the Datatype `@font-face`, `lokta-chart.js`, and
+`lokta-kolam.js`.
 
 This repo also builds the same surfaces as workspace packages under `packages/`
 (`@lokta/tokens`, `@lokta/css`, `@lokta/marp-theme`, `@lokta/typst`,
