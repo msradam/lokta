@@ -71,11 +71,13 @@ s.done(fullText); // announces the complete message once
 
 ## Datatype
 
-Datatype (SIL OFL, Frank Tisellano) is a variable data font: ligature
-substitution renders `{b:…}` bars, `{l:…}` sparklines, and `{p:…}` pie as inline
-charts, no SVG and no script. A chart made of text is still text, so every `.dt`
-is `role="img"` with an `aria-label` that states the trend in words.
-`lokta-chart.js` emits the source and the label together so they cannot drift.
+Datatype, by [Frank Tisellano](https://github.com/franktisellano/datatype) (SIL
+OFL 1.1), is a variable data font: ligature substitution renders `{b:…}` bars,
+`{l:…}` sparklines, and `{p:…}` pie as inline charts, no SVG and no script. A
+chart made of text is still text, so every `.dt` is `role="img"` with an
+`aria-label` that states the trend in words. `lokta-chart.js` emits the source
+and the label together so they cannot drift. The licence and copyright notice
+ship in `fonts/Datatype.OFL.txt`; see `fonts/NOTICE.md` for all font credits.
 
 ```js
 const el = LoktaChart.spark([20, 45, 60, 55, 80, 95], { name: 'weekly actives' });

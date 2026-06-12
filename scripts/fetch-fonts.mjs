@@ -113,7 +113,15 @@ const DECK = [
     ],
   ],
   ['noto-sans-jp', 'noto-sans-jp', [['japanese', 400, 'normal']]],
-  ['mukta', 'mukta', [['devanagari', 400, 'normal'], ['devanagari', 700, 'normal'], ['devanagari', 800, 'normal']]],
+  [
+    'mukta',
+    'mukta',
+    [
+      ['devanagari', 400, 'normal'],
+      ['devanagari', 700, 'normal'],
+      ['devanagari', 800, 'normal'],
+    ],
+  ],
 ];
 
 const file = (family, subset, weight, style) => `${family}-${subset}-${weight}-${style}.woff2`;
@@ -127,6 +135,7 @@ async function fetchSet(set, outDir) {
   await mkdir(outDir, { recursive: true });
   let got = 0;
   let skipped = 0;
+  let licenses = 0;
   for (const [family, pkg, faces] of set) {
     for (const [subset, weight, style] of faces) {
       const name = file(family, subset, weight, style);
@@ -141,8 +150,18 @@ async function fetchSet(set, outDir) {
       await writeFile(dest, Buffer.from(await res.arrayBuffer()));
       got++;
     }
+    // SIL OFL requires the licence + copyright notice to ship with the font.
+    // Vendor each font's LICENSE beside its woff2, named <family>.OFL.txt.
+    const licDest = join(outDir, `${family}.OFL.txt`);
+    if (!(await exists(licDest))) {
+      const licRes = await fetch(`${CDN}/${pkg}/LICENSE`);
+      if (licRes.ok) {
+        await writeFile(licDest, await licRes.text());
+        licenses++;
+      }
+    }
   }
-  console.log(`${outDir}: ${got} downloaded, ${skipped} already present`);
+  console.log(`${outDir}: ${got} woff2 downloaded, ${skipped} present, ${licenses} licences vendored`);
 }
 
 await fetchSet(FULL, join(root, 'packages/css/fonts'));

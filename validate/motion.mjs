@@ -15,7 +15,7 @@
 //
 // Run: node validate/motion.mjs   (exits non-zero on any violation)
 
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 
 const root = process.argv[2] || '.';
 const read = (p) => readFileSync(`${root}/${p}`, 'utf8');
@@ -66,6 +66,17 @@ ok(
 ok(
   !/https?:\/\//.test(dtFace) && !/fonts\.googleapis|fonts\.gstatic|cdn\./.test(dtFace),
   'Datatype @font-face hot-links a CDN',
+);
+// SIL OFL requires the licence + copyright notice to travel with the font.
+const dtOfl = existsSync(`${root}/packages/css/fonts/Datatype.OFL.txt`)
+  ? readFileSync(`${root}/packages/css/fonts/Datatype.OFL.txt`, 'utf8')
+  : '';
+ok(dtOfl.length > 0, 'Datatype.OFL.txt does not ship beside the woff2 (OFL requires the licence)');
+ok(/Open Font License/i.test(dtOfl), 'Datatype.OFL.txt is missing the OFL licence text');
+ok(
+  /Datatype Project Authors/i.test(dtOfl) &&
+    /Tisellano|franktisellano/i.test(read('packages/css/fonts/NOTICE.md')),
+  'Datatype copyright/author attribution is missing (OFL.txt notice + NOTICE.md credit)',
 );
 
 // ── 3 · A CHART MADE OF TEXT IS STILL TEXT ──────────────────────────────────

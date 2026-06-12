@@ -39,19 +39,20 @@ themes, templates, and a docs site on GitHub Pages.
 This is the source and docs hub. Each surface also ships as its own standalone,
 plug-and-play repo you can install on its own.
 
-| Repo                                                        | What it is                                                                                      | Install                                     |
-| ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------- |
-| [lokta-css](https://github.com/msradam/lokta-css)           | Tokens, stocks, and component CSS, self-hosted fonts.                                           | `npm install github:msradam/lokta-css`      |
-| [lokta-marp](https://github.com/msradam/lokta-marp)         | Marp slide theme with per-slide Mermaid theming.                                                | `npm install github:msradam/lokta-marp`     |
-| [lokta-typst](https://github.com/msradam/lokta-typst)       | Editorial document themes for Typst.                                                            | `git clone` + `node install.mjs`            |
-| [lokta-mermaid](https://github.com/msradam/lokta-mermaid)   | Mermaid diagram theme, web and print.                                                           | `npm install github:msradam/lokta-mermaid`  |
+| Repo                                                      | What it is                                            | Install                                    |
+| --------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------ |
+| [lokta-css](https://github.com/msradam/lokta-css)         | Tokens, stocks, and component CSS, self-hosted fonts. | `npm install github:msradam/lokta-css`     |
+| [lokta-marp](https://github.com/msradam/lokta-marp)       | Marp slide theme with per-slide Mermaid theming.      | `npm install github:msradam/lokta-marp`    |
+| [lokta-typst](https://github.com/msradam/lokta-typst)     | Editorial document themes for Typst.                  | `git clone` + `node install.mjs`           |
+| [lokta-mermaid](https://github.com/msradam/lokta-mermaid) | Mermaid diagram theme, web and print.                 | `npm install github:msradam/lokta-mermaid` |
 
 The expressive extras are part of the web layer, so they ship inside `lokta-css`:
 
 - **Motion** (`lokta-motion.css` + `lokta-motion.js`): five flat primitives, the
   streaming pattern, a persisted reduce-motion toggle.
 - **Datatype** (the `.dt` utilities, the `@font-face`, `lokta-chart.js`): a
-  variable data font that sets `{b:…}`/`{l:…}`/`{p:…}` as inline charts.
+  variable data font by [Frank Tisellano](https://github.com/franktisellano/datatype)
+  that sets `{b:…}`/`{l:…}`/`{p:…}` as inline charts.
 - **Kolam** (`lokta-kolam.js`): deterministic woven line ornaments from the
   alpana tradition, themed through `currentColor`.
 - **Line-art tracing** (`scripts/build-trace.mjs` + the `.lk-trace` class): a
@@ -169,6 +170,11 @@ npm run fonts          # vendor the SIL OFL woff2 files
 The woff2 files are vendored under each package's `fonts/` directory. The system
 does not hot-link the Google Fonts CDN in production: that sends visitor IPs to
 Google, a GDPR exposure in the EU. Run `npm run fonts` to re-fetch them.
+
+Every font is SIL Open Font License 1.1. As the OFL requires, each one's licence
+and copyright notice ship beside its woff2 as `<family>.OFL.txt`, with a credits
+index in `packages/css/fonts/NOTICE.md`. Datatype is by
+[Frank Tisellano](https://github.com/franktisellano/datatype).
 
 ## Documentation site
 
