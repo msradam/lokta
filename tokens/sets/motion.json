@@ -1,0 +1,26 @@
+{
+  "motion": {
+    "duration": {
+      "$type": "duration",
+      "rule": { "$value": "420ms", "$description": "rule-in: a rule drawing across" },
+      "set": { "$value": "200ms", "$description": "set-in: a frame ruling in" },
+      "turn": { "$value": "340ms", "$description": "leaf-turn: a leaf turning" }
+    },
+    "easing": {
+      "$type": "cubicBezier",
+      "pen": { "$value": "linear", "$description": "constant pen speed (rule-in, write-in)" },
+      "set": { "$value": "cubic-bezier(0.2, 0, 0.1, 1)", "$description": "paper settle (set-in, leaf-turn)" }
+    },
+    "_contract": {
+      "floor": "reduced motion is the canonical design; primitives layer on top and are never required to understand a screen",
+      "tiers": {
+        "0": "static, the floor",
+        "1": "functional, keeps a static equivalent under reduced motion",
+        "2": "expressive, removed entirely under reduced motion"
+      },
+      "primitives": ["rule-in", "set-in", "leaf-turn", "stamp", "write-in"],
+      "flatness": "no opacity fade, no blur, no scale-bloom, no shadow growth",
+      "bounds": "every primitive < 5s and non-looping; no flash > 3/sec (WCAG 2.2.2, 2.3.1, 2.3.3)"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "@lokta/datatype",
+  "version": "0.2.0",
+  "description": "Datatype: a variable OpenType data font (SIL OFL, Frank Tisellano). Ligature substitution turns {b:…}/{l:…}/{p:…} into inline bar, line, and pie charts. Self-hosted, no CDN.",
+  "license": "OFL-1.1",
+  "exports": {
+    "./css": "./datatype.css",
+    "./font": "./Datatype.woff2",
+    "./chart": "./lokta-chart.js"
+  },
+  "files": [
+    "Datatype.woff2",
+    "datatype.css",
+    "lokta-chart.js"
+  ],
+  "keywords": [
+    "font",
+    "datatype",
+    "chart",
+    "sparkline",
+    "data-visualization",
+    "opentype",
+    "lokta",
+    "design-system"
+  ]
+}

@@ -117,11 +117,59 @@ test('table: data table has a caption and scoped column headers', async ({ page 
   for (let i = 0; i < n; i++) await expect(ths.nth(i)).toHaveAttribute('scope', 'col');
 });
 
+// ── DATATYPE · a chart made of text is still text ─────────────────────────────
+test('datatype: every .dt is role="img" with a non-empty aria-label', async ({ page }) => {
+  const dts = page.locator('.dt');
+  const n = await dts.count();
+  expect(n).toBeGreaterThan(0);
+  for (let i = 0; i < n; i++) {
+    await expect(dts.nth(i)).toHaveAttribute('role', 'img');
+    const label = (await dts.nth(i).getAttribute('aria-label')) || '';
+    expect(label.trim().length).toBeGreaterThan(0);
+    // The {…} ligature source must not leak into the accessible name.
+    expect(label).not.toMatch(/[{}]/);
+  }
+});
+
+// ── STREAMING · aria-hidden body, polite role=log announces the complete text ─
+test('streaming: body is aria-hidden and the complete message lands in a polite log', async ({ page }) => {
+  const region = page.locator('#stream-demo [role="log"]');
+  await expect(region).toHaveAttribute('aria-live', 'polite');
+  await expect(page.locator('#stream-demo [data-stream-body]')).toHaveAttribute('aria-hidden', 'true');
+  await expect(region).toHaveText(''); // exists on load, starts empty
+  await page.locator('#stream-demo [data-stream-go]').click();
+  await expect(region).not.toHaveText('', { timeout: 5000 }); // announced once, when complete
+});
+
+// ── MOTION FLOOR · under reduced motion a primitive holds its final state ─────
+test('motion: reduced motion forces the final state with no running animation', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.reload({ waitUntil: 'networkidle' });
+  const state = await page.evaluate(() => {
+    const el = document.querySelector('#primitives-demo .lk-rule-in');
+    el.classList.add('lk-run'); // try to start it; the floor must override
+    const cs = getComputedStyle(el);
+    return { anim: cs.animationName, transform: cs.transform };
+  });
+  expect(state.anim).toBe('none');
+  expect(state.transform === 'none' || state.transform === 'matrix(1, 0, 0, 1, 0, 0)').toBe(true);
+});
+
+// ── MOTION TOGGLE · persists across reload (localStorage) ──────────────────────
+test('motion: the reduce-motion toggle persists across reload', async ({ page }) => {
+  await page.locator('[data-lk-motion-toggle]').first().click();
+  await expect(page.locator('html')).toHaveAttribute('data-lk-motion', 'off');
+  await page.reload({ waitUntil: 'networkidle' });
+  await expect(page.locator('html')).toHaveAttribute('data-lk-motion', 'off');
+});
+
 // ── GRID · ARIA grid keyboard navigation (roving tabindex + arrows) ───────────
 test('grid: arrow keys move the focused cell, one cell in the tab order', async ({ page }) => {
   const cells = page.locator('#grid-demo [role="gridcell"]');
   // exactly one cell is tabbable at rest (roving tabindex); the first is a header
-  const tabbable = await page.locator('#grid-demo [role="gridcell"][tabindex="0"], #grid-demo [role="columnheader"][tabindex="0"]').count();
+  const tabbable = await page
+    .locator('#grid-demo [role="gridcell"][tabindex="0"], #grid-demo [role="columnheader"][tabindex="0"]')
+    .count();
   expect(tabbable).toBe(1);
   await cells.first().focus();
   await page.keyboard.press('ArrowRight');

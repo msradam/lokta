@@ -1,0 +1,138 @@
+/* Lokta motion. An accessibility-first, flat motion vocabulary. The reduced
+   state is the canonical design (the static floor); these primitives layer on
+   top and are never required to read a screen. Five primitives, each a
+   manuscript or kitchen gesture, each flat by construction: ink and graphite
+   laid across a mark, never materialising out of transparency, never depth.
+
+   Flatness contract (enforced by validate/motion.mjs): no opacity fade, no
+   blur, no scale-bloom, no shadow growth. The only transforms are scaleX/scaleY
+   on 1px rules (a line being drawn) and clip-path wipes (ink crossing the page).
+
+   Governance: Tier 1 (functional) keeps a static equivalent under reduced
+   motion; Tier 2 (expressive) is removed entirely. The floor at the foot of
+   this file and [data-lk-motion="off"] hold every primitive at its final
+   geometry with no animation. Load after the components. Tokens only. */
+
+:root {
+  --dur-rule: 420ms; /* a rule drawing across */
+  --dur-set: 200ms; /* a frame ruling in */
+  --dur-turn: 340ms; /* a leaf turning */
+  --ease-pen: linear; /* constant pen speed */
+  --ease-set: cubic-bezier(0.2, 0, 0.1, 1); /* paper settle */
+}
+
+/* The run state is added by lokta-motion.js when an element scrolls into a
+   motion-safe viewport, and only then. Authoring the rest as the rest state
+   keeps the static design intact with no JS. */
+
+/* ── RULE-IN · Tier 1 ─────────────────────────────────────────────────────
+   Lines, dividers, underlines, the end-mark, drawn from the origin with
+   scaleX/scaleY. A 1px rule is drawn, never bloomed. */
+.lk-rule-in { transform: scaleX(0); transform-origin: left; }
+.lk-rule-in.lk-run,
+.lk-run .lk-rule-in { animation: lk-rule-x var(--dur-rule) var(--ease-pen) forwards; }
+.lk-rule-in-y { transform: scaleY(0); transform-origin: top; }
+.lk-rule-in-y.lk-run,
+.lk-run .lk-rule-in-y { animation: lk-rule-y var(--dur-rule) var(--ease-pen) forwards; }
+/* The hatched end-mark draws last, after the rule it closes. */
+.lk-run .lk-rule-in-mark { animation: lk-rule-x var(--dur-rule) var(--ease-pen) calc(var(--dur-rule) * 0.4) backwards forwards; transform: scaleX(0); transform-origin: left; }
+@keyframes lk-rule-x { to { transform: scaleX(1); } }
+@keyframes lk-rule-y { to { transform: scaleY(1); } }
+
+/* ── SET-IN · Tier 1 ──────────────────────────────────────────────────────
+   A component's keyline frame rules in (top and bottom, then the sides), then
+   the content is present at once with no fade. Structure forms; nothing
+   materialises. Wrap content in .lk-set-body; place four .lk-set-edge spans. */
+.lk-set-in { position: relative; }
+.lk-set-edge { position: absolute; background: var(--border-strong); }
+.lk-set-edge-top { top: 0; left: 0; height: var(--rule-1); width: 100%; transform: scaleX(0); transform-origin: left; }
+.lk-set-edge-bot { bottom: 0; left: 0; height: var(--rule-1); width: 100%; transform: scaleX(0); transform-origin: right; }
+.lk-set-edge-lft { top: 0; left: 0; width: var(--rule-1); height: 100%; transform: scaleY(0); transform-origin: top; }
+.lk-set-edge-rgt { top: 0; right: 0; width: var(--rule-1); height: 100%; transform: scaleY(0); transform-origin: bottom; }
+.lk-set-body { visibility: hidden; }
+.lk-run.lk-set-in .lk-set-edge-top,
+.lk-run.lk-set-in .lk-set-edge-bot { animation: lk-rule-x var(--dur-set) var(--ease-set) forwards; }
+.lk-run.lk-set-in .lk-set-edge-lft,
+.lk-run.lk-set-in .lk-set-edge-rgt { animation: lk-rule-y var(--dur-set) var(--ease-set) var(--dur-set) forwards; }
+.lk-run.lk-set-in .lk-set-body { animation: lk-set-show 0s linear calc(var(--dur-set) * 2) forwards; }
+@keyframes lk-set-show { to { visibility: visible; } }
+
+/* ── LEAF-TURN · Tier 2 ───────────────────────────────────────────────────
+   A flat horizontal clip wipe with a hatched leading edge, a leaf turning. No
+   3D curl, no fade, no depth: the hatch is the torn deckle edge passing across.
+   Two stacked faces (.lk-leaf-a underneath, .lk-leaf-b on top). */
+.lk-leaf { position: relative; overflow: hidden; }
+.lk-leaf-face { position: absolute; inset: 0; }
+.lk-leaf-b { clip-path: inset(0 0 0 100%); }
+.lk-turning .lk-leaf-b { animation: lk-leaf-in var(--dur-turn) var(--ease-set) forwards; }
+.lk-turning .lk-leaf-a { animation: lk-leaf-out var(--dur-turn) var(--ease-set) forwards; }
+@keyframes lk-leaf-in { to { clip-path: inset(0 0 0 0); } }
+@keyframes lk-leaf-out { to { clip-path: inset(0 100% 0 0); } }
+.lk-leaf-edge { position: absolute; top: 0; bottom: 0; width: 10px; left: -12px; background: var(--text-body); -webkit-mask: var(--lk-hatch-img) 0 0 / 6px 6px repeat; mask: var(--lk-hatch-img) 0 0 / 6px 6px repeat; }
+.lk-turning .lk-leaf-edge { animation: lk-leaf-edge var(--dur-turn) var(--ease-set) forwards; }
+@keyframes lk-leaf-edge { to { left: 100%; } }
+
+/* ── STAMP · Tier 1 ───────────────────────────────────────────────────────
+   Confirmation fills in stepped, a stamp pressed onto the page, never a
+   spinning blur. Reduced motion shows the finished mark + glyph + text, so the
+   meaning is colour + glyph + word, never the motion. */
+.lk-stamp { display: inline-flex; align-items: center; gap: var(--space-2); }
+.lk-stamp-mark { position: relative; width: 18px; height: 18px; border: var(--rule-2) solid var(--accent-success); overflow: hidden; flex: none; }
+.lk-stamp-mark::after { content: ""; position: absolute; inset: 0; background: var(--accent-success); clip-path: inset(100% 0 0 0); }
+.lk-run .lk-stamp-mark::after { animation: lk-stamp-fill 240ms steps(4) forwards; }
+@keyframes lk-stamp-fill { to { clip-path: inset(0 0 0 0); } }
+.lk-stamp-mark svg { position: absolute; inset: 2px; color: var(--surface-page); }
+
+/* ── RULE-IN A CHART · Tier 1 ─────────────────────────────────────────────
+   A Datatype glyph (or any inline chart) ruled in with a left-to-right clip
+   wipe, the pen laying the trend across the line. The value is already spoken
+   by aria-label, so the reveal is decoration over announced data. */
+.lk-chart-wipe { clip-path: inset(0 100% 0 0); }
+.lk-run .lk-chart-wipe { animation: lk-chart-wipe var(--dur-rule) var(--ease-pen) forwards; }
+@keyframes lk-chart-wipe { to { clip-path: inset(0 0 0 0); } }
+
+/* ── WRITE-IN · Tier 2 ────────────────────────────────────────────────────
+   Text drawn unit by unit (lokta-motion.js write()): each unit is a span,
+   aria-hidden, with the complete string on the parent's aria-label. The mark
+   is revealed by a per-unit clip wipe, never an opacity fade, so it stays flat
+   and assistive tech only ever sees the stable, complete string. */
+.lk-ink-unit { clip-path: inset(0 100% 0 0); }
+.lk-ink-unit.on { clip-path: inset(0 0 0 0); transition: clip-path 90ms var(--ease-pen); }
+/* A static pen-tip, present only while writing (the JS removes lk-ink-caret on
+   done). No blink: a looping animation is banned by the bounds contract. */
+.lk-ink-caret::after { content: ""; display: inline-block; width: var(--rule-2); height: 1em; margin-left: 1px; background: var(--accent-feature); vertical-align: -0.12em; }
+
+/* ── STREAMING · the live-response area ───────────────────────────────────
+   A chunked delivery pattern, not a typewriter. Chunks append in stable blocks
+   in .lk-stream-body; the visible nib layer (if any) is aria-hidden. The status
+   announces "Generating", then the complete message is announced once via a
+   role="log" aria-live="polite" region that exists on load and starts empty. */
+.lk-stream { display: flex; flex-direction: column; gap: var(--space-3); }
+.lk-stream-body > * + * { margin-top: var(--space-3); }
+.lk-stream-status { font-family: var(--font-family-mono); font-size: var(--type-label); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--text-secondary); }
+
+/* ── THE FLOOR ────────────────────────────────────────────────────────────
+   Reduced motion (and the explicit kill switch) hold every primitive at its
+   final geometry, with no animation. The caret stops blinking. This is the
+   canonical state: the system is complete here. */
+@media (prefers-reduced-motion: reduce) {
+  .lk-rule-in, .lk-rule-in-y, .lk-rule-in-mark, .lk-set-edge { transform: none !important; animation: none !important; }
+  .lk-set-body { visibility: visible !important; animation: none !important; }
+  .lk-leaf-b, .lk-chart-wipe, .lk-ink-unit { clip-path: inset(0 0 0 0) !important; animation: none !important; transition: none !important; }
+  .lk-leaf-a { clip-path: inset(0 100% 0 0) !important; }
+  .lk-leaf-edge { animation: none !important; left: 100% !important; }
+  .lk-stamp-mark::after { clip-path: inset(0 0 0 0) !important; animation: none !important; }
+  .lk-ink-caret::after { display: none !important; }
+}
+[data-lk-motion="off"] .lk-rule-in,
+[data-lk-motion="off"] .lk-rule-in-y,
+[data-lk-motion="off"] .lk-rule-in-mark,
+[data-lk-motion="off"] .lk-set-edge { transform: none !important; animation: none !important; }
+[data-lk-motion="off"] .lk-set-body { visibility: visible !important; animation: none !important; }
+[data-lk-motion="off"] .lk-leaf-b,
+[data-lk-motion="off"] .lk-chart-wipe,
+[data-lk-motion="off"] .lk-ink-unit { clip-path: inset(0 0 0 0) !important; animation: none !important; transition: none !important; }
+[data-lk-motion="off"] .lk-leaf-a { clip-path: inset(0 100% 0 0) !important; }
+[data-lk-motion="off"] .lk-leaf-edge { animation: none !important; left: 100% !important; }
+[data-lk-motion="off"] .lk-stamp-mark::after { clip-path: inset(0 0 0 0) !important; animation: none !important; }
+[data-lk-motion="off"] .lk-ink-caret::after { display: none !important; }

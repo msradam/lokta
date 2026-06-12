@@ -1,0 +1,11 @@
+{
+  "type": {
+    "family": {
+      "$type": "fontFamily",
+      "datatype": {
+        "$value": ["Datatype"],
+        "$description": "Variable OpenType data font, SIL OFL, by Frank Tisellano. Ligature substitution turns text into inline charts: {b:…} bars, {l:…} sparkline, {p:…} pie. Values 0-100, up to 20 per series. Axes: wdth 50-150 (spacing), wght 100-900 (line thickness), mapped to the Lokta type weights. Inherits currentColor."
+      }
+    }
+  }
+}

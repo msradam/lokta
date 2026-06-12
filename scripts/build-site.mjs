@@ -24,6 +24,9 @@ const copies = [
   ['packages/css/lokta-icons.css', 'lokta-icons.css'],
   ['packages/css/lokta-stocks.css', 'lokta-stocks.css'],
   ['packages/css/lokta-utilities.css', 'lokta-utilities.css'],
+  ['packages/css/lokta-motion.css', 'lokta-motion.css'],
+  ['packages/motion/lokta-motion.js', 'lokta-motion.js'],
+  ['packages/css/lokta-chart.js', 'lokta-chart.js'],
   // The deterministic verification dashboard (the proof).
   ['proof/lokta-verification.html', 'verification.html'],
   // The components, icons, and accessibility reference (self-contained page).
@@ -78,7 +81,13 @@ const figmaHere = await access(figmaSrc).then(
 );
 if (figmaHere) await cp(figmaSrc, join(site, 'lokta.variables.json'));
 const figmaProSrc = join(root, 'packages/tokens/dist/figma/lokta.variables.pro.json');
-if (await access(figmaProSrc).then(() => true, () => false)) await cp(figmaProSrc, join(site, 'lokta.variables.pro.json'));
+if (
+  await access(figmaProSrc).then(
+    () => true,
+    () => false,
+  )
+)
+  await cp(figmaProSrc, join(site, 'lokta.variables.pro.json'));
 
 // ── helpers ─────────────────────────────────────────────────────────────────
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -325,9 +334,12 @@ const html = `<!doctype html>
 <link rel="stylesheet" href="lokta-components.css">
 <link rel="stylesheet" href="lokta-icons.css">
 <link rel="stylesheet" href="lokta-utilities.css">
+<link rel="stylesheet" href="lokta-motion.css">
 <link rel="stylesheet" href="lokta-stocks.css">
 <link rel="stylesheet" href="styles.css">
 <script src="lokta-behaviors.js" defer></script>
+<script src="lokta-motion.js" defer></script>
+<script src="lokta-chart.js" defer></script>
 </head>
 <body class="lk lk-sheet">
 ${iconSprite}
@@ -340,6 +352,7 @@ ${iconSprite}
     <a href="#install">Install</a>
     <a href="#customization">Customization</a>
     <a href="#foundations">Foundations</a>
+    <a href="#motion">Motion &amp; data</a>
     <a href="#components">Components</a>
     <a href="#templates">Templates</a>
     <a href="#diagrams">Diagrams</a>
@@ -463,6 +476,21 @@ npm install github:msradam/lokta-mermaid</pre>
     <h3 class="sub-h">Icons</h3>
     <p class="muted">Tabler as the base, sharpened: square line caps, miter joins, 2px stroke, currentColor. Self-hosted as a vendored sprite (<code>npm run build:icons</code>); Myna UI is the alternative set. The live searchable browser is on the <a href="components.html">components reference</a>.</p>
     <div class="icon-row">${iconRow}</div>
+  </section>
+
+  <section id="motion">
+    <h2 class="sec-h">Motion &amp; data</h2>
+    <p class="muted">Two additive packages. <code>@lokta/motion</code> is a flat, accessibility-first reveal vocabulary where reduced motion is the floor, not an afterthought. <code>@lokta/datatype</code> sets charts as type, inline in a sentence.</p>
+
+    <h3 class="sub-h">Datatype · charts in the sentence</h3>
+    <p class="lk-prose" style="font-family:'Source Serif 4',Georgia,serif;font-size:17px;line-height:1.9;max-width:68ch">
+      Weekly actives climbed <span class="dt" role="img" aria-label="sparkline, rising from 20 to 95: 20, 45, 60, 55, 80, 95">{l:20,45,60,55,80,95}</span> through the quarter, error rate held flat <span class="dt" role="img" aria-label="sparkline, steady low: 8, 6, 7, 5, 6, 4">{l:8,6,7,5,6,4}</span>, and the region split <span class="dt" role="img" aria-label="bar chart: 62, 24, 14 percent">{b:62,24,14}</span> stayed steady. Conversion sits at <span class="dt" role="img" aria-label="pie chart, 62 percent of target">{p:62}</span> of target.
+    </p>
+    <p class="muted">A variable OpenType font (SIL OFL). Ligature substitution renders <code>{b:…}</code> bars, <code>{l:…}</code> sparklines, and <code>{p:…}</code> pie, no SVG and no script, so the same text renders identically in a page, a slide, and a Typst PDF. Every chart is <code>role="img"</code> with an aria-label that states the trend in words; <code>lokta-chart.js</code> emits the source and the label together so they cannot drift.</p>
+
+    <h3 class="sub-h">Motion · five flat primitives</h3>
+    <p class="muted">rule-in, set-in, leaf-turn, stamp, and write-in, each a manuscript or kitchen gesture, each flat by construction: no opacity fade, no blur, no scale-bloom. Tier 1 keeps a static equivalent under reduced motion; Tier 2 is removed entirely. The live primitives, the streaming-response pattern, and the persisted reduce-motion toggle are on the <a href="components.html#motion">components reference</a>.</p>
+    <p class="lk-row"><a class="lk-btn lk-btn-primary" href="components.html#motion">Open the motion &amp; Datatype reference</a></p>
   </section>
 
   <section id="components">
@@ -685,10 +713,30 @@ npm install github:msradam/lokta-mermaid</pre>
     <p class="muted">Whole pages built only from Lokta classes, each part of the axe-core suite. Open one, or copy its markup as a starting point.</p>
     <div class="ex-grid">
       ${[
-        ['cookbook.html', 'ex-cookbook.png', 'Cookbook demo', 'A film-dish browser: live search, tag filters, a recipe dialog, save-to-list, and a stock switcher.'],
-        ['dashboard.html', 'ex-dashboard.png', 'Dashboard', 'App shell, KPI stat cards, a data table, segmented control, toast, and an empty state.'],
-        ['landing.html', 'ex-landing.png', 'Landing page', 'The marketing kit: an on-pigment hero, features, pricing, a testimonial, and a CTA band.'],
-        ['patterns.html', 'ex-patterns.png', 'Patterns gallery', 'Every application-tier component on the drop-in, with a live stock switcher.'],
+        [
+          'cookbook.html',
+          'ex-cookbook.png',
+          'Cookbook demo',
+          'A film-dish browser: live search, tag filters, a recipe dialog, save-to-list, and a stock switcher.',
+        ],
+        [
+          'dashboard.html',
+          'ex-dashboard.png',
+          'Dashboard',
+          'App shell, KPI stat cards, a data table, segmented control, toast, and an empty state.',
+        ],
+        [
+          'landing.html',
+          'ex-landing.png',
+          'Landing page',
+          'The marketing kit: an on-pigment hero, features, pricing, a testimonial, and a CTA band.',
+        ],
+        [
+          'patterns.html',
+          'ex-patterns.png',
+          'Patterns gallery',
+          'Every application-tier component on the drop-in, with a live stock switcher.',
+        ],
       ]
         .map(
           ([href, img, title, desc]) => `
@@ -789,13 +837,19 @@ const siteNav = (active) =>
 for (const a of ['favicon.svg', 'og-cover.png']) await cp(join(root, 'docs', a), join(site, a));
 const OG = 'https://msradam.github.io/lokta/og-cover.png';
 const DESCS = {
-  index: 'Lokta, an editorial UI design system verified to WCAG 2.2 AA on every commit. Web, slides, documents, diagrams, and Figma from one set of tokens.',
+  index:
+    'Lokta, an editorial UI design system verified to WCAG 2.2 AA on every commit. Web, slides, documents, diagrams, and Figma from one set of tokens.',
   components: 'Every Lokta component with its states, accessibility wiring, and the icon set, across stocks.',
-  patterns: 'The Lokta application tier: app shell, dashboard widgets, data viz, and the marketing kit on the drop-in.',
-  dashboard: 'A dashboard built only from Lokta classes: app shell, KPI stat cards, a data table, and an empty state.',
-  landing: 'A marketing landing built only from Lokta classes: an on-pigment hero, features, pricing, and a CTA band.',
-  cookbook: 'An interactive film-dish cookbook demo built from Lokta: live search, filters, and a recipe dialog.',
-  verification: 'The Lokta verification dashboard: WCAG AA contrast, cross-surface parity, and the 8px grid, computed live.',
+  patterns:
+    'The Lokta application tier: app shell, dashboard widgets, data viz, and the marketing kit on the drop-in.',
+  dashboard:
+    'A dashboard built only from Lokta classes: app shell, KPI stat cards, a data table, and an empty state.',
+  landing:
+    'A marketing landing built only from Lokta classes: an on-pigment hero, features, pricing, and a CTA band.',
+  cookbook:
+    'An interactive film-dish cookbook demo built from Lokta: live search, filters, and a recipe dialog.',
+  verification:
+    'The Lokta verification dashboard: WCAG AA contrast, cross-surface parity, and the 8px grid, computed live.',
 };
 const headMeta = (title, desc) =>
   `<meta name="description" content="${esc(desc)}">
@@ -810,7 +864,8 @@ for (const [, , key] of [['', '', 'index'], ...NAV_LINKS].filter(([, , k]) => k 
   try {
     let page = await readFile(file, 'utf8');
     const title = (page.match(/<title>([^<]*)<\/title>/i) || [, 'Lokta'])[1];
-    if (!page.includes('og:image')) page = page.replace(/<\/head>/i, `${headMeta(title, DESCS[key] || DESCS.index)}\n</head>`);
+    if (!page.includes('og:image'))
+      page = page.replace(/<\/head>/i, `${headMeta(title, DESCS[key] || DESCS.index)}\n</head>`);
     if (!page.includes('lk-sitebar')) page = page.replace(/(<body[^>]*>)/i, `$1\n${siteNav(key)}`);
     await writeFile(file, page);
   } catch {

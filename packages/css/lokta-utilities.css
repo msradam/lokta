@@ -98,6 +98,21 @@
 .lk-spark { display: inline-block; vertical-align: middle; }
 .lk-spark path, .lk-spark polyline { fill: none; stroke: var(--viz, var(--viz-1)); stroke-width: 1.5; stroke-linejoin: miter; stroke-linecap: square; }
 
+/* ── DATATYPE · charts in the sentence ─────────────────────────────────────
+ * The Datatype font (fonts.css) renders {b:…} bars, {l:…} sparklines, and
+ * {p:…} pie as inline charts via ligature substitution, no SVG, no JS. Values
+ * 0-100, up to 20 per series; the mark inherits currentColor, flat by nature.
+ * A chart made of text is still text: every .dt must be role="img" with an
+ * aria-label that states the trend in words (gated by validate/motion.mjs and
+ * the axe suite). lokta-chart.js emits the source and the label together so
+ * they cannot drift. The SVG --viz path stays for large or labelled figures. */
+.dt { font-family: "Datatype"; font-feature-settings: "liga" 1, "calt" 1; font-variation-settings: "wdth" 100, "wght" 400; color: var(--text-primary); }
+.dt-bars { font-size: 30px; font-variation-settings: "wdth" 100, "wght" 500; }
+.dt-spark { font-size: 26px; font-variation-settings: "wdth" 90, "wght" 500; }
+.dt-pie { font-size: 30px; font-variation-settings: "wdth" 100, "wght" 600; }
+/* Inside running prose, scale to the line and nudge onto the baseline. */
+.lk-prose .dt, .dt-inline { font-size: 1.3em; vertical-align: -0.18em; margin: 0 0.12em; }
+
 /* Pattern fills: the colour-independent fallback (WCAG 1.4.1). Apply .lk-pat-N
    beside .lk-viz-N on a bar or swatch; colour is safe for three series, the
    pattern carries the rest. Add .lk-pat-light to lift the line on dark series. */

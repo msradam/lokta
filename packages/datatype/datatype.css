@@ -1,0 +1,20 @@
+/* @lokta/datatype. Self-hosted Datatype (SIL OFL, Frank Tisellano) plus the
+   inline-chart utilities. A variable data font: ligature substitution renders
+   {b:…} bars, {l:…} sparklines, and {p:…} pie as inline charts, no SVG, no JS.
+   The marks inherit currentColor and are flat by nature.
+
+   A chart made of text is still text: every .dt must be role="img" with an
+   aria-label that states the trend in words. Pair with lokta-chart.js so the
+   source and the label cannot drift. */
+@font-face {
+  font-family: "Datatype";
+  font-weight: 100 900;
+  font-stretch: 50% 150%;
+  font-display: swap;
+  src: url("./Datatype.woff2") format("woff2");
+}
+.dt { font-family: "Datatype"; font-feature-settings: "liga" 1, "calt" 1; font-variation-settings: "wdth" 100, "wght" 400; color: currentColor; }
+.dt-bars { font-size: 30px; font-variation-settings: "wdth" 100, "wght" 500; }
+.dt-spark { font-size: 26px; font-variation-settings: "wdth" 90, "wght" 500; }
+.dt-pie { font-size: 30px; font-variation-settings: "wdth" 100, "wght" 600; }
+.dt-inline { font-size: 1.3em; vertical-align: -0.18em; margin: 0 0.12em; }

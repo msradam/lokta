@@ -29,6 +29,7 @@ jobs:
       #     code theme (per-token AA per stock + greyscale cue).
       - run: npm run validate:viz
       - run: npm run validate:code
+      - run: npm run validate:motion
       # 2. Build design tokens (Style Dictionary -> dist/css, scss, js) and verify,
       #    plus the Figma Variables manifest (collections, stock modes, aliases).
       - run: npm run build:tokens

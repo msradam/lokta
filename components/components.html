@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lokta, Components, Icons & Accessibility</title>
 <link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="lokta-motion.css">
+<!-- Datatype utilities (the @font-face is in fonts.css; the full set is in lokta-utilities.css). -->
+<style id="lokta-datatype">
+.dt { font-family: "Datatype"; font-feature-settings: "liga" 1, "calt" 1; font-variation-settings: "wdth" 100, "wght" 400; color: var(--text-primary); }
+.dt-bars { font-size: 30px; font-variation-settings: "wdth" 100, "wght" 500; }
+.dt-spark { font-size: 26px; font-variation-settings: "wdth" 90, "wght" 500; }
+.dt-pie { font-size: 30px; font-variation-settings: "wdth" 100, "wght" 600; }
+.lk-prose .dt { font-size: 1.3em; vertical-align: -0.18em; margin: 0 0.12em; }
+</style>
 <!-- SYSTEM CSS (verbatim, inlined, do not edit; regenerate from lokta-tokens.css + lokta-controls.css) -->
 <style id="lokta-tokens">
 /* Lokta, Paper on Screen
@@ -1076,6 +1085,8 @@ h3.comp{ font-weight:700; letter-spacing:-0.01em; font-size:23px; margin:0; colo
     <a href="#table">Data table</a><a href="#code">Code</a>
     <div class="grp">Editorial</div>
     <a href="#rules">Measured rule</a><a href="#page-furniture">Running head &amp; folio</a>
+    <div class="grp">Motion &amp; data</div>
+    <a href="#datatype-demo">Datatype</a><a href="#primitives-demo">Motion primitives</a><a href="#stream-demo">Streaming</a>
   </nav>
 
   <main class="main">
@@ -1637,6 +1648,83 @@ lokta build  # AA-checked CSS variables per stock</div>
       </div>
     </section>
 
+    <!-- ════ MOTION & DATATYPE ════ -->
+    <section id="motion">
+      <div class="meashead"><span class="num">04</span><div><div class="eyebrow">§ Motion &amp; data</div><h2 class="sec">Motion and Datatype</h2></div></div>
+
+      <div class="card" id="datatype-demo">
+        <header><h3 class="comp">dt · dt-bars · dt-spark · dt-pie</h3><span class="lk-tag">Datatype · liga</span></header>
+        <div class="demo" style="display:flex;flex-direction:column;gap:18px">
+          <p class="lk-prose" style="margin:0;font-family:'Source Serif 4',Georgia,serif;font-size:17px;line-height:1.9;color:var(--text-body)">
+            Weekly actives climbed <span class="dt" role="img" aria-label="sparkline, rising from 20 to 95: 20, 45, 60, 55, 80, 95">{l:20,45,60,55,80,95}</span> through the quarter, error rate held flat <span class="dt" role="img" aria-label="sparkline, steady low: 8, 6, 7, 5, 6, 4">{l:8,6,7,5,6,4}</span>, and the region split <span class="dt" role="img" aria-label="bar chart: 62, 24, 14 percent">{b:62,24,14}</span> stayed steady. Conversion sits at <span class="dt" role="img" aria-label="pie chart, 62 percent of target">{p:62}</span> of target.
+          </p>
+          <div class="lk-cluster" style="gap:26px">
+            <span class="dt dt-bars" role="img" aria-label="bar chart: 15, 45, 80, 30, 60, 90, 20">{b:15,45,80,30,60,90,20}</span>
+            <span class="dt dt-spark" role="img" aria-label="line chart: 10, 40, 25, 70, 50, 90, 35, 60">{l:10,40,25,70,50,90,35,60}</span>
+            <span class="dt dt-pie" role="img" aria-label="pie chart, 62 percent">{p:62}</span>
+          </div>
+          <div class="lk-cluster" style="gap:12px;align-items:stretch">
+            <div class="lk-stat" style="flex:1">
+              <span class="lk-stat-label">Weekly actives</span>
+              <span class="lk-stat-value">48,210</span>
+              <span class="dt dt-spark" role="img" aria-label="trend, twelve weeks, rising from 40 to 68">{l:40,44,42,51,48,55,60,58,64,62,70,68}</span>
+            </div>
+            <div class="lk-stat" style="flex:1">
+              <span class="lk-stat-label">Error rate</span>
+              <span class="lk-stat-value">0.21%</span>
+              <span class="dt dt-spark" style="color:var(--accent-success)" role="img" aria-label="trend, twelve weeks, falling from 30 to 21">{l:30,28,33,29,26,31,24,27,22,25,23,21}</span>
+            </div>
+            <div class="lk-stat" style="flex:1">
+              <span class="lk-stat-label">Quota</span>
+              <span class="lk-stat-value">62%</span>
+              <span class="dt dt-pie" style="color:var(--accent-feature)" role="img" aria-label="pie chart, 62 percent of quota">{p:62}</span>
+            </div>
+          </div>
+        </div>
+        <div class="block"><h4>What it is</h4><p class="muted">A variable OpenType data font (SIL OFL). Ligature substitution turns <code class="lk-code-inline">{b:…}</code> bars, <code class="lk-code-inline">{l:…}</code> sparklines, and <code class="lk-code-inline">{p:…}</code> pie into inline charts, no SVG, no script. A chart made of text is still text: each is <code class="lk-code-inline">role="img"</code> with an aria-label that states the trend in words. <code class="lk-code-inline">lokta-chart.js</code> emits the source and the label together so they cannot drift.</p></div>
+      </div>
+
+      <div class="card" id="primitives-demo">
+        <header><h3 class="comp">lk-rule-in · lk-set-in · lk-stamp · lk-leaf</h3><span class="lk-tag">motion · flat</span></header>
+        <div class="demo" style="display:flex;flex-direction:column;gap:26px">
+          <div style="display:flex;align-items:center;gap:0;width:100%">
+            <span class="lk-rule-in" data-lk-anim style="flex:1;height:1px;background:var(--border-strong)"></span>
+            <span class="lk-rule-in-mark" data-lk-anim style="width:56px;height:6px;margin-left:10px;background:var(--text-body);-webkit-mask:var(--lk-hatch-img) 0 0/6px 6px repeat;mask:var(--lk-hatch-img) 0 0/6px 6px repeat"></span>
+          </div>
+          <div class="lk-set-in" data-lk-anim style="width:280px;padding:16px 18px;background:var(--surface-raised)">
+            <span class="lk-set-edge lk-set-edge-top"></span><span class="lk-set-edge lk-set-edge-rgt"></span><span class="lk-set-edge lk-set-edge-bot"></span><span class="lk-set-edge lk-set-edge-lft"></span>
+            <div class="lk-set-body"><span class="lk-stat-label">Serves 4 · 25 min</span><div style="font-weight:700;color:var(--text-primary)">Eggplant, chilled dashi</div></div>
+          </div>
+          <div class="lk-stamp" data-lk-anim>
+            <span class="lk-stamp-mark"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 7l3 3l5 -6"/></svg></span>
+            <span style="font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--accent-success)">Saved · billing details</span>
+          </div>
+          <div class="lk-cluster">
+            <button type="button" class="lk-btn" data-replay="#primitives-demo">Replay</button>
+            <button type="button" class="lk-btn" data-lk-motion-toggle aria-pressed="false">Reduce motion</button>
+          </div>
+        </div>
+        <div class="block"><h4>Five flat primitives</h4><p class="muted">rule-in (a line drawn via <code class="lk-code-inline">scaleX</code>, the end-mark drawn last), set-in (a keyline frame rules in, content set at once), stamp (a stepped confirmation fill), leaf-turn (a clip wipe with a hatched edge), and write-in. No opacity fade, no blur, no scale-bloom. Reduced motion is the floor: each shows its final state at once, and the toggle persists.</p></div>
+      </div>
+
+      <div class="card" id="stream-demo">
+        <header><h3 class="comp">lk-stream · write-in</h3><span class="lk-tag">streaming · a11y</span></header>
+        <div class="demo" style="display:flex;flex-direction:column;gap:18px">
+          <h3 data-lk-write data-mode="word" style="margin:0;font-weight:800;letter-spacing:-0.02em;font-size:24px;color:var(--text-primary)">Written in, not faded in.</h3>
+          <div class="lk-stream">
+            <p class="lk-stream-status" data-stream-status></p>
+            <div class="lk-stream-body" data-stream-body aria-hidden="true" style="min-height:48px;font-family:'Source Serif 4',Georgia,serif;line-height:1.6;color:var(--text-body)"></div>
+            <div role="log" aria-live="polite" aria-atomic="false" class="lk-sr-only" data-stream-log></div>
+            <div class="lk-cluster">
+              <button type="button" class="lk-btn lk-btn-primary" data-stream-go>Generate</button>
+              <button type="button" class="lk-btn" data-stream-stop>Stop generating</button>
+            </div>
+          </div>
+        </div>
+        <div class="block"><h4>Streaming, done right for screen readers</h4><p class="muted">A chunked delivery pattern, not a typewriter: chunks append in stable blocks in the visible (aria-hidden) layer, and the complete message is announced once via a polite <code class="lk-code-inline">role="log"</code> region that exists on load and starts empty. A visible Stop control (WCAG 2.2.2). Write-in stays a Tier-2 flourish for short one-shot moments, the animating node aria-hidden, the full string on the parent's aria-label.</p></div>
+      </div>
+    </section>
+
     <div class="colo"><span>Lokta · v0.2</span><span style="opacity:0.5">·</span><span>Components, Icons &amp; Accessibility</span><span style="margin-left:auto">WCAG 2.2 AA</span></div>
   </main>
 </div>
@@ -1985,8 +2073,42 @@ document.addEventListener("DOMContentLoaded", ()=>{
       else h=false; if(h)e.preventDefault();
     });
   });
+
+  /* ───────── MOTION · replay + streaming demo (drives @lokta/motion) ───────── */
+  document.querySelectorAll("[data-replay]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const scope=document.querySelector(btn.dataset.replay);
+      if(!scope || !window.LoktaMotion) return;
+      scope.querySelectorAll("[data-lk-anim]").forEach(el=>window.LoktaMotion.runPrimitive(el));
+      const w=scope.querySelector("[data-lk-write]"); if(w) window.LoktaMotion.write(w);
+    });
+  });
+  const sd=document.getElementById("stream-demo");
+  if(sd && window.LoktaMotion){
+    const CHUNKS=["Lokta paper is milled from the inner bark ","of a Himalayan shrub. Its long fibres ","resist insects and damp, so a manuscript ","written on it can outlast a thousand years."];
+    const go=sd.querySelector("[data-stream-go]"), stopBtn=sd.querySelector("[data-stream-stop]");
+    let session=null, timer=null;
+    go.addEventListener("click", ()=>{
+      clearTimeout(timer);
+      sd.querySelector("[data-stream-body]").textContent="";
+      sd.querySelector("[data-stream-log]").textContent="";
+      session=window.LoktaMotion.stream({
+        body: sd.querySelector("[data-stream-body]"),
+        log: sd.querySelector("[data-stream-log]"),
+        status: sd.querySelector("[data-stream-status]"),
+      });
+      let i=0;
+      (function tick(){
+        if(i>=CHUNKS.length){ session.done(CHUNKS.join("")); return; }
+        session.push(CHUNKS[i++]); timer=setTimeout(tick, 480);
+      })();
+    });
+    stopBtn.addEventListener("click", ()=>{ clearTimeout(timer); if(session) session.stop(); });
+  }
 });
 
 </script>
+<script src="lokta-motion.js" defer></script>
+<script src="lokta-chart.js" defer></script>
 </body>
 </html>

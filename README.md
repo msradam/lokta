@@ -14,10 +14,10 @@ margin, tracked mono labels, and full-bleed pigment grounds.
 It runs across surfaces from one set of tokens: web components, a Marp slide
 theme, Typst document themes, and a Mermaid diagram theme.
 
-|                                                    |                                                        |
-| -------------------------------------------------- | ------------------------------------------------------ |
-| ![Lokta stat card and data viz on the Manuscript stock.](docs/components.png)          | ![A Lokta-themed Mermaid flowchart.](docs/mermaid.png) |
-| ![A Typst recipe document.](docs/typst-recipe.png) | ![A Lokta marigold slide.](docs/deck.png)        |
+|                                                                               |                                                        |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------ |
+| ![Lokta stat card and data viz on the Manuscript stock.](docs/components.png) | ![A Lokta-themed Mermaid flowchart.](docs/mermaid.png) |
+| ![A Typst recipe document.](docs/typst-recipe.png)                            | ![A Lokta marigold slide.](docs/deck.png)              |
 
 It is deliberately flat (layering from borders, not shadows) and hard-edged
 (square caps, no rounded controls by default). It ships the way IBM ships Carbon:
@@ -39,16 +39,19 @@ themes, templates, and a docs site on GitHub Pages.
 This is the source and docs hub. Each surface also ships as its own standalone,
 plug-and-play repo you can install on its own.
 
-| Repo                                                      | What it is                                                 | Install                                    |
-| --------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------ |
-| [lokta-css](https://github.com/msradam/lokta-css)         | Tokens, stocks, and component CSS, self-hosted fonts. | `npm install github:msradam/lokta-css`     |
-| [lokta-marp](https://github.com/msradam/lokta-marp)       | Marp slide theme with per-slide Mermaid theming.           | `npm install github:msradam/lokta-marp`    |
-| [lokta-typst](https://github.com/msradam/lokta-typst)     | Editorial document themes for Typst.                       | `git clone` + `node install.mjs`           |
-| [lokta-mermaid](https://github.com/msradam/lokta-mermaid) | Mermaid diagram theme, web and print.                      | `npm install github:msradam/lokta-mermaid` |
+| Repo                                                        | What it is                                                                                      | Install                                     |
+| ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| [lokta-css](https://github.com/msradam/lokta-css)           | Tokens, stocks, and component CSS, self-hosted fonts.                                           | `npm install github:msradam/lokta-css`      |
+| [lokta-marp](https://github.com/msradam/lokta-marp)         | Marp slide theme with per-slide Mermaid theming.                                                | `npm install github:msradam/lokta-marp`     |
+| [lokta-typst](https://github.com/msradam/lokta-typst)       | Editorial document themes for Typst.                                                            | `git clone` + `node install.mjs`            |
+| [lokta-mermaid](https://github.com/msradam/lokta-mermaid)   | Mermaid diagram theme, web and print.                                                           | `npm install github:msradam/lokta-mermaid`  |
+| [lokta-motion](https://github.com/msradam/lokta-motion)     | Flat, accessibility-first motion: five primitives, streaming, a persisted reduce-motion toggle. | `npm install github:msradam/lokta-motion`   |
+| [lokta-datatype](https://github.com/msradam/lokta-datatype) | Datatype: a variable data font that sets `{b:…}`/`{l:…}`/`{p:…}` as inline charts.              | `npm install github:msradam/lokta-datatype` |
 
 This repo also builds the same surfaces as workspace packages under `packages/`
 (`@lokta/tokens`, `@lokta/css`, `@lokta/marp-theme`, `@lokta/typst`,
-`@lokta/mermaid`) and deploys the docs site to GitHub Pages.
+`@lokta/mermaid`, `@lokta/motion`, `@lokta/datatype`) and deploys the docs site
+to GitHub Pages.
 
 ## Install
 
@@ -118,14 +121,14 @@ Six range-limited dials. Everything else (type scale, 8px grid, AA rules,
 component structure, hard-edged character) is locked. See
 [CUSTOMIZATION.md](CUSTOMIZATION.md).
 
-| Dial    | How                                    | Default     |
-| ------- | -------------------------------------- | ----------- |
-| Stock   | `data-theme`                           | paper       |
-| Accent  | `--lk-accent` (curated pigments)       | marigold    |
-| Voice   | `--font-family-*` (named faces)        | Archivo set |
-| Density | `data-density="compact"`               | comfortable |
-| Radius  | `--lk-radius` (0 to 3px)               | `0px`       |
-| Grain   | `data-grain` (off / subtle / fibrous)  | subtle      |
+| Dial    | How                                   | Default     |
+| ------- | ------------------------------------- | ----------- |
+| Stock   | `data-theme`                          | paper       |
+| Accent  | `--lk-accent` (curated pigments)      | marigold    |
+| Voice   | `--font-family-*` (named faces)       | Archivo set |
+| Density | `data-density="compact"`              | comfortable |
+| Radius  | `--lk-radius` (0 to 3px)              | `0px`       |
+| Grain   | `data-grain` (off / subtle / fibrous) | subtle      |
 
 Script (Latin, Devanagari, Bengali, CJK) is chosen by content language via
 `:lang()`, not a dial.
