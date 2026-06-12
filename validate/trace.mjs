@@ -12,7 +12,7 @@
 
 import { readFileSync, existsSync } from 'node:fs';
 
-const SVG = 'docs/trace/still-life.svg';
+const SVG = 'docs/trace/trace-sample.svg';
 const CREDIT = 'docs/trace/CREDIT.md';
 
 let checks = 0,

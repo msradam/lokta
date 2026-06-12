@@ -25,6 +25,12 @@ const alt = altParts.join(' ') || 'line-art tracing';
 const TW = +process.env.TRACE_W || 460;
 const PATHOMIT = +process.env.TRACE_PATHOMIT || 8;
 const BLUR = +process.env.TRACE_BLUR || 2;
+// Higher curve thresholds smooth the contours (fewer, calmer nodes); a
+// line-and-flat-region source (a woodblock print) traces far cleaner than a
+// painterly one. TRACE_CROP="sx,sy,sw,sh" (fractions 0-1) crops to a focal area.
+const LTRES = +process.env.TRACE_LTRES || 1.5;
+const QTRES = +process.env.TRACE_QTRES || 1.5;
+const CROP = (process.env.TRACE_CROP || '0,0,1,1').split(',').map(Number);
 
 const imgBuf = await readFile(input);
 const mime = input.toLowerCase().endsWith('.png') ? 'image/png' : 'image/jpeg';
@@ -36,21 +42,25 @@ const page = await browser.newPage();
 await page.setContent('<!doctype html><body></body>');
 await page.addScriptTag({ content: tracer });
 const raw = await page.evaluate(
-  async ({ dataUrl, regions, TW, PATHOMIT, BLUR }) => {
+  async ({ dataUrl, regions, TW, PATHOMIT, BLUR, LTRES, QTRES, CROP }) => {
     const img = new Image();
     img.src = dataUrl;
     await img.decode();
-    const TH = Math.round((TW * img.naturalHeight) / img.naturalWidth);
+    const sx = CROP[0] * img.naturalWidth,
+      sy = CROP[1] * img.naturalHeight,
+      sw = CROP[2] * img.naturalWidth,
+      sh = CROP[3] * img.naturalHeight;
+    const TH = Math.round((TW * sh) / sw);
     const cv = document.createElement('canvas');
     cv.width = TW;
     cv.height = TH;
-    cv.getContext('2d').drawImage(img, 0, 0, TW, TH);
+    cv.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, TW, TH);
     const id = cv.getContext('2d').getImageData(0, 0, TW, TH);
     // eslint-disable-next-line no-undef
     const svg = ImageTracer.imagedataToSVG(id, {
       numberofcolors: regions,
-      ltres: 1.5,
-      qtres: 1.5,
+      ltres: LTRES,
+      qtres: QTRES,
       pathomit: PATHOMIT,
       blurradius: BLUR,
       blurdelta: 20,
@@ -59,7 +69,7 @@ const raw = await page.evaluate(
     });
     return { svg, w: TW, h: TH };
   },
-  { dataUrl, regions, TW, PATHOMIT, BLUR },
+  { dataUrl, regions, TW, PATHOMIT, BLUR, LTRES, QTRES, CROP },
 );
 await browser.close();
 

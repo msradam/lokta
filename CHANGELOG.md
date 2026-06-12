@@ -38,8 +38,9 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   the stock and prints in Typst, the cookbook's outline idiom rather than tone.
   A deliberate treatment, not a mandate. `validate/trace.mjs` checks the
   committed asset's `role="img"` + label, currentColor strokes, viewBox, and a
-  recorded source licence. The example source is CC0 (Gauguin, *Still Life with
-  Teapot and Fruit*, the Met Open Access).
+  recorded source licence. A line-and-flat-region source (a woodblock print)
+  traces far cleaner than a painterly one; the example is CC0 (Hiroshige, *Blue
+  Bird and Hibiscus*, the Met Open Access).
 - Recipe notation (`lokta-recipe.js` + `.lk-frac`/`.lk-figures`/`.lk-qty`):
   quantities set the way a cookbook does. The wrapper scopes the OpenType `frac`
   feature to each bare `N/M` so true fractions render without superscripting the

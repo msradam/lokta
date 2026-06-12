@@ -14,7 +14,7 @@ const tokens = JSON.parse(await readFile(join(root, 'tokens/lokta.tokens.json'),
 
 // Line-art tracing asset: inline the committed SVG once as a <symbol>, reuse it
 // per stock via <use> so the path data is not duplicated.
-const traceSvg = await readFile(join(root, 'docs/trace/still-life.svg'), 'utf8');
+const traceSvg = await readFile(join(root, 'docs/trace/trace-sample.svg'), 'utf8');
 const traceVB = (traceSvg.match(/viewBox="([^"]+)"/) || [])[1] || '0 0 300 220';
 const traceInner = traceSvg.replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
 const traceLabel = (traceSvg.match(/aria-label="([^"]+)"/) || [])[1] || 'line-art tracing';
@@ -516,7 +516,7 @@ npm install github:msradam/lokta-mermaid</pre>
       <figure class="lk-trace" style="width:330px"><svg class="lk-trace-svg" viewBox="${traceVB}" role="img" aria-label="${esc(traceLabel)}"><use href="#lk-trace-sl"/></svg><figcaption>Ink on paper</figcaption></figure>
       <figure class="lk-trace" style="width:330px;background:#16140E;color:#FBBC0E"><svg class="lk-trace-svg" viewBox="${traceVB}" role="img" aria-label="${esc(traceLabel)}, in marigold on the ink stock"><use href="#lk-trace-sl"/></svg><figcaption style="color:#AEB4C2;border-color:#2A2620">Marigold on ink</figcaption></figure>
     </div>
-    <p class="muted">The image arm, in the cookbook's outline idiom: <code>scripts/build-trace.mjs</code> traces a photo into vector contours that stroke in <code>currentColor</code>, so the same line drawing themes with the stock and prints in Typst. It is a deliberate treatment, not a mandate; full-colour photographs stay welcome. Source: Paul Gauguin, <em>Still Life with Teapot and Fruit</em> (1896), The Metropolitan Museum of Art, CC0.</p>
+    <p class="muted">The image arm, in the cookbook's outline idiom: <code>scripts/build-trace.mjs</code> traces an image into vector contours that stroke in <code>currentColor</code>, so the same line drawing themes with the stock and prints in Typst. It is a deliberate treatment, not a mandate; full-colour images stay welcome. A line-and-flat-region source like a woodblock print traces cleanest. Source: Utagawa Hiroshige, <em>Blue Bird and Hibiscus</em>, The Metropolitan Museum of Art, CC0.</p>
 
     <h3 class="sub-h">Recipe notation</h3>
     <div class="lk-row" style="gap:32px;align-items:flex-start;flex-wrap:wrap">
