@@ -45,13 +45,16 @@ plug-and-play repo you can install on its own.
 | [lokta-marp](https://github.com/msradam/lokta-marp)         | Marp slide theme with per-slide Mermaid theming.                                                | `npm install github:msradam/lokta-marp`     |
 | [lokta-typst](https://github.com/msradam/lokta-typst)       | Editorial document themes for Typst.                                                            | `git clone` + `node install.mjs`            |
 | [lokta-mermaid](https://github.com/msradam/lokta-mermaid)   | Mermaid diagram theme, web and print.                                                           | `npm install github:msradam/lokta-mermaid`  |
-| [lokta-motion](https://github.com/msradam/lokta-motion)     | Flat, accessibility-first motion: five primitives, streaming, a persisted reduce-motion toggle. | `npm install github:msradam/lokta-motion`   |
-| [lokta-datatype](https://github.com/msradam/lokta-datatype) | Datatype: a variable data font that sets `{b:…}`/`{l:…}`/`{p:…}` as inline charts.              | `npm install github:msradam/lokta-datatype` |
+
+The motion layer (five flat primitives, the streaming pattern, a persisted
+reduce-motion toggle) and Datatype (a variable data font that sets
+`{b:…}`/`{l:…}`/`{p:…}` as inline charts) are part of the web layer, so they
+ship inside `lokta-css`: `lokta-motion.css` + `lokta-motion.js`, the `.dt`
+utilities, the Datatype `@font-face`, and `lokta-chart.js`.
 
 This repo also builds the same surfaces as workspace packages under `packages/`
 (`@lokta/tokens`, `@lokta/css`, `@lokta/marp-theme`, `@lokta/typst`,
-`@lokta/mermaid`, `@lokta/motion`, `@lokta/datatype`) and deploys the docs site
-to GitHub Pages.
+`@lokta/mermaid`) and deploys the docs site to GitHub Pages.
 
 ## Install
 

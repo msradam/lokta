@@ -9,9 +9,7 @@
     "packages/css",
     "packages/marp-theme",
     "packages/typst",
-    "packages/mermaid",
-    "packages/motion",
-    "packages/datatype"
+    "packages/mermaid"
   ],
   "scripts": {
     "split:tokens": "node tokens/split.mjs",

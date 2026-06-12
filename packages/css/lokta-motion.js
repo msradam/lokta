@@ -1,5 +1,6 @@
-/* @lokta/motion — the flat, accessibility-first reveal system in the manuscript
-   idiom. Five primitives drive the CSS in @lokta/css/lokta-motion.css:
+/* Lokta motion runtime (part of @lokta/css, beside lokta-behaviors.js). The
+   flat, accessibility-first reveal system in the manuscript idiom. Five
+   primitives drive the CSS in lokta-motion.css:
 
      rule-in   lines/dividers/the end-mark drawn via scaleX     (CSS, .lk-rule-in)
      set-in    a keyline frame rules in, content set at once    (CSS, .lk-set-in)

@@ -25,7 +25,7 @@ const copies = [
   ['packages/css/lokta-stocks.css', 'lokta-stocks.css'],
   ['packages/css/lokta-utilities.css', 'lokta-utilities.css'],
   ['packages/css/lokta-motion.css', 'lokta-motion.css'],
-  ['packages/motion/lokta-motion.js', 'lokta-motion.js'],
+  ['packages/css/lokta-motion.js', 'lokta-motion.js'],
   ['packages/css/lokta-chart.js', 'lokta-chart.js'],
   // The deterministic verification dashboard (the proof).
   ['proof/lokta-verification.html', 'verification.html'],
@@ -480,7 +480,7 @@ npm install github:msradam/lokta-mermaid</pre>
 
   <section id="motion">
     <h2 class="sec-h">Motion &amp; data</h2>
-    <p class="muted">Two additive packages. <code>@lokta/motion</code> is a flat, accessibility-first reveal vocabulary where reduced motion is the floor, not an afterthought. <code>@lokta/datatype</code> sets charts as type, inline in a sentence.</p>
+    <p class="muted">Two additive layers that ship inside <code>lokta-css</code>. The motion layer is a flat, accessibility-first reveal vocabulary where reduced motion is the floor, not an afterthought. Datatype sets charts as type, inline in a sentence.</p>
 
     <h3 class="sub-h">Datatype · charts in the sentence</h3>
     <p class="lk-prose" style="font-family:'Source Serif 4',Georgia,serif;font-size:17px;line-height:1.9;max-width:68ch">

@@ -8,20 +8,22 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-- `@lokta/motion`: a flat, accessibility-first motion vocabulary where reduced
-  motion is the floor. Five primitives in `lokta-motion.css` (rule-in, set-in,
+- A flat, accessibility-first motion layer in `@lokta/css` where reduced motion
+  is the floor. Five primitives in `lokta-motion.css` (rule-in, set-in,
   leaf-turn, stamp, write-in), each flat by construction (no opacity fade, no
-  blur, no scale-bloom). The runtime (`packages/motion/lokta-motion.js`) carries
-  `write()`/`draw()`, a scroll-in auto-runner, a persisted reduce-motion toggle
-  (localStorage), and `stream()`, the chunked live-response pattern (a polite
-  `role="log"` announces the complete message once; the visual layer is
-  `aria-hidden`), not a per-character typewriter. Tokens in `tokens/sets/motion.json`.
-- `@lokta/datatype`: Datatype, a variable OpenType data font (SIL OFL, Frank
-  Tisellano), self-hosted. Ligature substitution renders `{b:…}` bars, `{l:…}`
-  sparklines, and `{p:…}` pie as inline charts. The `.dt`/`.dt-bars`/`.dt-spark`/
-  `.dt-pie` utilities, the `@font-face` in `fonts.css`, the family token in
-  `tokens/sets/type.json`, and `lokta-chart.js` (emits the `{…}` source and the
-  `aria-label` together so they cannot drift, with a no-font values fallback).
+  blur, no scale-bloom). The runtime (`lokta-motion.js`, beside
+  `lokta-behaviors.js`) carries `write()`/`draw()`, a scroll-in auto-runner, a
+  persisted reduce-motion toggle (localStorage), and `stream()`, the chunked
+  live-response pattern (a polite `role="log"` announces the complete message
+  once; the visual layer is `aria-hidden`), not a per-character typewriter.
+  Tokens in `tokens/sets/motion.json`.
+- Datatype, a variable OpenType data font (SIL OFL, Frank Tisellano),
+  self-hosted in `@lokta/css`. Ligature substitution renders `{b:…}` bars,
+  `{l:…}` sparklines, and `{p:…}` pie as inline charts. The `.dt`/`.dt-bars`/
+  `.dt-spark`/`.dt-pie` utilities, the `@font-face` in `fonts.css`, the family
+  token in `tokens/sets/type.json`, and `lokta-chart.js` (emits the `{…}` source
+  and the `aria-label` together so they cannot drift, with a no-font values
+  fallback).
 - A Motion & Datatype section in the components reference and the docs site:
   the five primitives, the streaming-response area, write-in, inline charts, and
   stat-block sparklines.
