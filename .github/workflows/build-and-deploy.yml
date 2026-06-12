@@ -31,6 +31,8 @@ jobs:
       - run: npm run validate:code
       - run: npm run validate:motion
       - run: npm run validate:kolam
+      - run: npm run validate:trace
+      - run: npm run validate:recipe
       # 2. Build design tokens (Style Dictionary -> dist/css, scss, js) and verify,
       #    plus the Figma Variables manifest (collections, stock modes, aliases).
       - run: npm run build:tokens

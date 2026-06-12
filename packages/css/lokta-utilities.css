@@ -185,3 +185,21 @@
 .lk-kolam-bold { --lk-kolam-weight: var(--rule-3); }
 /* On a pigment ground or dark stock, set the ink with the text colour. */
 .lk-kolam-accent { color: var(--accent-feature); }
+
+/* Line-art tracing: a photo traced to vector contours by scripts/build-trace.mjs
+ * (the cookbook's outline idiom, not tone). The SVG strokes in currentColor, so
+ * the line art themes with the stock; the figure frames it editorially. */
+.lk-trace { display: block; margin: 0; color: var(--text-primary); border: var(--rule-1) solid var(--border-strong); background: var(--surface-page); }
+.lk-trace svg, .lk-trace-svg { display: block; width: 100%; height: auto; }
+.lk-trace path { stroke-width: var(--lk-trace-weight, 0.6px); }
+.lk-trace-accent { color: var(--accent-feature); }
+.lk-trace figcaption { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: var(--type-xs); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--text-secondary); padding: var(--space-2) var(--space-3); border-top: var(--rule-1) solid var(--border-default); }
+
+/* Recipe notation. Quantities set the way a cookbook does: real fractions and
+ * tabular figures. The OpenType `frac` feature must be scoped to the fraction
+ * substring only (lokta-recipe.js wraps bare N/M in .lk-frac); applied to a
+ * whole line it superscripts whole numbers and mangles parentheticals. */
+.lk-frac { font-feature-settings: "frac" 1; }
+.lk-figures { font-variant-numeric: tabular-nums lining-nums; }
+.lk-recipe { font-variant-numeric: lining-nums; }
+.lk-recipe .lk-qty { font-variant-numeric: tabular-nums lining-nums; }

@@ -12,6 +12,13 @@ const site = join(root, 'site');
 
 const tokens = JSON.parse(await readFile(join(root, 'tokens/lokta.tokens.json'), 'utf8'));
 
+// Line-art tracing asset: inline the committed SVG once as a <symbol>, reuse it
+// per stock via <use> so the path data is not duplicated.
+const traceSvg = await readFile(join(root, 'docs/trace/still-life.svg'), 'utf8');
+const traceVB = (traceSvg.match(/viewBox="([^"]+)"/) || [])[1] || '0 0 300 220';
+const traceInner = traceSvg.replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
+const traceLabel = (traceSvg.match(/aria-label="([^"]+)"/) || [])[1] || 'line-art tracing';
+
 // ── copy assets ───────────────────────────────────────────────────────────
 await rm(site, { recursive: true, force: true });
 await mkdir(site, { recursive: true });
@@ -28,6 +35,7 @@ const copies = [
   ['packages/css/lokta-motion.js', 'lokta-motion.js'],
   ['packages/css/lokta-chart.js', 'lokta-chart.js'],
   ['packages/css/lokta-kolam.js', 'lokta-kolam.js'],
+  ['packages/css/lokta-recipe.js', 'lokta-recipe.js'],
   // The deterministic verification dashboard (the proof).
   ['proof/lokta-verification.html', 'verification.html'],
   // The components, icons, and accessibility reference (self-contained page).
@@ -342,6 +350,7 @@ const html = `<!doctype html>
 <script src="lokta-motion.js" defer></script>
 <script src="lokta-chart.js" defer></script>
 <script src="lokta-kolam.js" defer></script>
+<script src="lokta-recipe.js" defer></script>
 </head>
 <body class="lk lk-sheet">
 ${iconSprite}
@@ -500,6 +509,28 @@ npm install github:msradam/lokta-mermaid</pre>
       <figure class="lk-kolam lk-kolam-fine" data-lk-kolam="weave" data-grid="8x8" style="margin:0;width:160px"></figure>
     </div>
     <p class="muted">A sikku kolam, one continuous line woven around a grid of pulli, the alpana tradition behind the Bengali cookbook lineage. <code>lokta-kolam.js</code> generates it deterministically as pure SVG (so it prints in Typst too), themes it through <code>currentColor</code>, binds the stroke to the rule scale, and can let the line write itself in via <code>draw()</code>. Every kolam is <code>role="img"</code> with a label.</p>
+
+    <h3 class="sub-h">Line-art tracing</h3>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="lk-trace-sl" viewBox="${traceVB}">${traceInner}</symbol></svg>
+    <div class="lk-cluster" style="gap:20px;align-items:flex-start;margin:4px 0 12px">
+      <figure class="lk-trace" style="width:330px"><svg class="lk-trace-svg" viewBox="${traceVB}" role="img" aria-label="${esc(traceLabel)}"><use href="#lk-trace-sl"/></svg><figcaption>Ink on paper</figcaption></figure>
+      <figure class="lk-trace" style="width:330px;background:#16140E;color:#FBBC0E"><svg class="lk-trace-svg" viewBox="${traceVB}" role="img" aria-label="${esc(traceLabel)}, in marigold on the ink stock"><use href="#lk-trace-sl"/></svg><figcaption style="color:#AEB4C2;border-color:#2A2620">Marigold on ink</figcaption></figure>
+    </div>
+    <p class="muted">The image arm, in the cookbook's outline idiom: <code>scripts/build-trace.mjs</code> traces a photo into vector contours that stroke in <code>currentColor</code>, so the same line drawing themes with the stock and prints in Typst. It is a deliberate treatment, not a mandate; full-colour photographs stay welcome. Source: Paul Gauguin, <em>Still Life with Teapot and Fruit</em> (1896), The Metropolitan Museum of Art, CC0.</p>
+
+    <h3 class="sub-h">Recipe notation</h3>
+    <div class="lk-row" style="gap:32px;align-items:flex-start;flex-wrap:wrap">
+      <table class="lk-recipe lk-table" style="max-width:340px">
+        <tbody>
+          <tr><td class="lk-qty" style="text-align:right">2 1/2</td><td>cups (600 ml) water</td></tr>
+          <tr><td class="lk-qty" style="text-align:right">3/4</td><td>tsp fine salt</td></tr>
+          <tr><td class="lk-qty" style="text-align:right">1 1/3</td><td>cups bread flour</td></tr>
+          <tr><td class="lk-qty" style="text-align:right">45</td><td>g caster sugar</td></tr>
+        </tbody>
+      </table>
+      <p class="lk-recipe lk-serif" style="max-width:36ch;font-size:17px;line-height:1.8;margin:0">Add 1/2 cup dashi, simmer 2 1/2 hours, then reduce by 1/3 before plating.</p>
+    </div>
+    <p class="muted">Quantities set the way a cookbook does. <code>lokta-recipe.js</code> wraps each bare <code>N/M</code> in a scoped <code>.lk-frac</code> so the OpenType <code>frac</code> feature renders a true fraction without superscripting the whole number or mangling the parenthetical, and <code>.lk-qty</code> aligns the column in tabular figures. No new font; it uses features already in the type.</p>
   </section>
 
   <section id="components">

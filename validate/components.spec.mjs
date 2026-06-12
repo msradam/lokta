@@ -16,8 +16,10 @@ import AxeBuilder from '@axe-core/playwright';
 
 const URL = process.env.PAGE_URL || 'http://localhost:8080/components.html';
 test.beforeEach(async ({ page }) => {
-  // Wait for the icons (fetched from Iconify) and fonts to settle so axe sees
-  // the final, deterministic page rather than a mid-load state.
+  // Evaluate the settled, static design: reduced motion is the canonical floor,
+  // so no reveal (kolam draw, motion primitives) is ever mid-flight when axe
+  // samples contrast. Then wait for icons (Iconify) and fonts to settle too.
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto(URL, { waitUntil: 'networkidle' });
   await page.evaluate(() => (document.fonts ? document.fonts.ready : null));
 });

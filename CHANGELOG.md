@@ -32,9 +32,23 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `[data-lk-draw]` lets the line write itself in via `draw()`. Tile rules:
   weave, plain, rows, cols. `validate/kolam.mjs` pins the geometry to a golden
   (same spec, same bytes) and the `role="img"` + label contract.
-- A Motion & Datatype section in the components reference and the docs site:
-  the five primitives, the streaming-response area, write-in, inline charts,
-  stat-block sparklines, and the kolam ornaments.
+- Line-art tracing (`lk-trace`): `scripts/build-trace.mjs` (a headless
+  Playwright trace through the vendored imagetracerjs, MIT) bakes a photo into a
+  vector line drawing whose contours stroke in `currentColor`, so it themes with
+  the stock and prints in Typst, the cookbook's outline idiom rather than tone.
+  A deliberate treatment, not a mandate. `validate/trace.mjs` checks the
+  committed asset's `role="img"` + label, currentColor strokes, viewBox, and a
+  recorded source licence. The example source is CC0 (Gauguin, *Still Life with
+  Teapot and Fruit*, the Met Open Access).
+- Recipe notation (`lokta-recipe.js` + `.lk-frac`/`.lk-figures`/`.lk-qty`):
+  quantities set the way a cookbook does. The wrapper scopes the OpenType `frac`
+  feature to each bare `N/M` so true fractions render without superscripting the
+  whole number or mangling parentheticals, and quantity columns align in tabular
+  figures. No new font. `validate/recipe.mjs` pins the scoping contract.
+- A Motion & data section in the components reference and the docs site: the
+  five primitives, the streaming-response area, write-in, inline charts,
+  stat-block sparklines, the kolam ornaments, the traced line art, and the
+  recipe notation.
 - `validate/motion.mjs`: a deterministic gate for the motion flatness contract
   (no opacity/blur/scale-bloom, no looping, the reduced-motion floor and kill
   switch present, durations bounded), the self-hosted Datatype `@font-face`, and

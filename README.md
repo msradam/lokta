@@ -46,13 +46,19 @@ plug-and-play repo you can install on its own.
 | [lokta-typst](https://github.com/msradam/lokta-typst)       | Editorial document themes for Typst.                                                            | `git clone` + `node install.mjs`            |
 | [lokta-mermaid](https://github.com/msradam/lokta-mermaid)   | Mermaid diagram theme, web and print.                                                           | `npm install github:msradam/lokta-mermaid`  |
 
-The motion layer (five flat primitives, the streaming pattern, a persisted
-reduce-motion toggle), Datatype (a variable data font that sets
-`{b:…}`/`{l:…}`/`{p:…}` as inline charts), and kolam (deterministic woven
-line ornaments from the alpana tradition, `lokta-kolam.js`) are part of the web
-layer, so they ship inside `lokta-css`: `lokta-motion.css` + `lokta-motion.js`,
-the `.dt` utilities, the Datatype `@font-face`, `lokta-chart.js`, and
-`lokta-kolam.js`.
+The expressive extras are part of the web layer, so they ship inside `lokta-css`:
+
+- **Motion** (`lokta-motion.css` + `lokta-motion.js`): five flat primitives, the
+  streaming pattern, a persisted reduce-motion toggle.
+- **Datatype** (the `.dt` utilities, the `@font-face`, `lokta-chart.js`): a
+  variable data font that sets `{b:…}`/`{l:…}`/`{p:…}` as inline charts.
+- **Kolam** (`lokta-kolam.js`): deterministic woven line ornaments from the
+  alpana tradition, themed through `currentColor`.
+- **Line-art tracing** (`scripts/build-trace.mjs` + the `.lk-trace` class): a
+  build-time tracer that turns a photo into vector contours in the cookbook's
+  outline idiom.
+- **Recipe notation** (`lokta-recipe.js` + the `.lk-frac`/`.lk-figures`
+  utilities): scoped OpenType fractions and tabular figures for quantities.
 
 This repo also builds the same surfaces as workspace packages under `packages/`
 (`@lokta/tokens`, `@lokta/css`, `@lokta/marp-theme`, `@lokta/typst`,
