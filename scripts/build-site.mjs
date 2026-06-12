@@ -385,7 +385,7 @@ ${iconSprite}
     <p class="cover-lede lk-serif">The screen as a printed page. Named after Nepali lokta paper, drawn from one trans-Asian paper tradition: Japanese washi, Himalayan lokta, and the Bengali Pala manuscripts. A warm cream stock, hatched breath rules, grotesk titles run hard to the margin, pigment grounds. Every text role clears WCAG 2.2 AA.</p>
     <div class="lk-measure"><span class="lk-measure-line" style="width:120px"></span><span class="lk-measure-gap"></span><span class="lk-measure-hatch"></span></div>
     <div class="cover-grid">
-      <div><span class="lk-label">Type</span><p>Archivo, Spline Sans Mono, Source Serif 4, Noto Sans JP, Anek Bangla. All SIL OFL, self-hosted.</p></div>
+      <div><span class="lk-label">Type</span><p>Archivo, Spline Sans Mono, Source Serif 4, Noto Sans JP, Anek Bangla, Mukta, Martel, and Datatype. All SIL OFL, self-hosted, with each font's licence in <a href="fonts/NOTICE.md">fonts/NOTICE.md</a>.</p></div>
       <div><span class="lk-label">Color</span><p>Warm paper surfaces, warm-tinted ink text, saturated pigment grounds. Marigold is the hero.</p></div>
       <div><span class="lk-label">Stocks</span><p>Paper, Ink, Bone, Indigo. Every text role clears AA on each.</p></div>
       <div><span class="lk-label">Tokens</span><p>Three tiers (primitives, semantic, stocks) built with Style Dictionary to CSS, SCSS, and JS.</p></div>
@@ -497,7 +497,7 @@ npm install github:msradam/lokta-mermaid</pre>
     <p class="lk-prose" style="font-family:'Source Serif 4',Georgia,serif;font-size:17px;line-height:1.9;max-width:68ch">
       Weekly actives climbed <span class="dt" role="img" aria-label="sparkline, rising from 20 to 95: 20, 45, 60, 55, 80, 95">{l:20,45,60,55,80,95}</span> through the quarter, error rate held flat <span class="dt" role="img" aria-label="sparkline, steady low: 8, 6, 7, 5, 6, 4">{l:8,6,7,5,6,4}</span>, and the region split <span class="dt" role="img" aria-label="bar chart: 62, 24, 14 percent">{b:62,24,14}</span> stayed steady. Conversion sits at <span class="dt" role="img" aria-label="pie chart, 62 percent of target">{p:62}</span> of target.
     </p>
-    <p class="muted">A variable OpenType font (SIL OFL). Ligature substitution renders <code>{b:…}</code> bars, <code>{l:…}</code> sparklines, and <code>{p:…}</code> pie, no SVG and no script, so the same text renders identically in a page, a slide, and a Typst PDF. Every chart is <code>role="img"</code> with an aria-label that states the trend in words; <code>lokta-chart.js</code> emits the source and the label together so they cannot drift.</p>
+    <p class="muted">Datatype is a variable OpenType font by <a href="https://github.com/franktisellano/datatype">Frank Tisellano</a> (SIL OFL 1.1; it embeds IBM Plex Mono glyphs, Reserved Font Name "Plex"). Ligature substitution renders <code>{b:…}</code> bars, <code>{l:…}</code> sparklines, and <code>{p:…}</code> pie, no SVG and no script, so the same text renders identically in a page, a slide, and a Typst PDF. Every chart is <code>role="img"</code> with an aria-label that states the trend in words; <code>lokta-chart.js</code> emits the source and the label together so they cannot drift.</p>
 
     <h3 class="sub-h">Motion · five flat primitives</h3>
     <p class="muted">rule-in, set-in, leaf-turn, stamp, and write-in, each a manuscript or kitchen gesture, each flat by construction: no opacity fade, no blur, no scale-bloom. Tier 1 keeps a static equivalent under reduced motion; Tier 2 is removed entirely. The live primitives, the streaming-response pattern, and the persisted reduce-motion toggle are on the <a href="components.html#motion">components reference</a>.</p>
@@ -816,6 +816,7 @@ npm install github:msradam/lokta-mermaid</pre>
 <footer class="colophon-foot">
   <div class="lk-measure"><span class="lk-measure-hatch"></span><span class="lk-measure-gap"></span><span class="lk-measure-line" style="width:120px"></span></div>
   <p class="muted">Lokta · v0.2 · MIT. Named after Nepali lokta paper, drawn from one trans-Asian paper-and-manuscript tradition: <em class="lk-serif">Cuisine on Screen</em> by Sachiyo Harada (Prestel, 2024), Himalayan lokta, and the Bengali Pala manuscripts behind Professor Siddika Kabir's <em class="lk-serif">Ranna Khaddo Pushti</em>. An interpretation of their typography, with no text or imagery reproduced from any.</p>
+  <p class="muted"><span class="lk-label">Credits</span> Fonts are SIL Open Font License 1.1, self-hosted, each with its licence and copyright notice in <a href="fonts/NOTICE.md">fonts/NOTICE.md</a>. Datatype is by <a href="https://github.com/franktisellano/datatype">Frank Tisellano</a> (and embeds IBM Plex Mono, Reserved Font Name "Plex"). The line-art tracing example is Utagawa Hiroshige, <em class="lk-serif">Blue Bird and Hibiscus</em>, <a href="https://www.metmuseum.org/art/collection/search/56698">The Metropolitan Museum of Art</a>, CC0. Tracing uses <a href="https://github.com/jankovicsandras/imagetracerjs">imagetracerjs</a> (MIT).</p>
 </footer>
 
 <script>
