@@ -204,7 +204,7 @@
 }
 
 // ── Editorial base (cream paper), foundation for article/letter/recipe ───────
-#let lokta-doc(title: "", running: "", footer-mark: "映画の料理", body) = {
+#let lokta-doc(title: "", running: "", footer-mark: "光の写本", body) = {
   set page(paper: "a4", fill: lk-paper, margin: (x: 2.2cm, y: 2.4cm),
     header: context {
       if running != "" and counter(page).get().first() > 1 {
@@ -235,7 +235,7 @@
     footer: context {
       lk-rule(stroke: 0.5pt + lk-paper4); v(3pt)
       grid(columns: (1fr, auto),
-        text(font: lk-cjk, size: 9pt, fill: lk-primary, weight: 700)[映画の料理],
+        text(font: lk-cjk, size: 9pt, fill: lk-primary, weight: 700)[光の写本],
         align(right, lk-label(counter(page).display("01 / 1", both: true))))
     })
   set text(font: lk-sans, size: 10.5pt, fill: lk-body)
@@ -335,7 +335,7 @@
 // ── Cover (pigment ground, vertical spine) ───────────────────────────────────
 #let lokta-cover(
   title: "", subtitle: none, label: "Specimen", ground: lk-lavender, ink: lk-primary,
-  spine: "映画の料理", body,
+  spine: "光の写本", body,
 ) = {
   set page(paper: "a4", fill: ground, margin: 0pt,
     background: place(left + horizon, dx: 0.7cm,

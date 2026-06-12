@@ -13,7 +13,7 @@ right-aligned grotesk titles, as page templates.
 | `lokta-article`  | Long-form editorial. Kicker, deck, byline, serif body.                          |
 | `lokta-bulletin` | Single-sheet notice. Mono-forward, marigold header.                             |
 | `lokta-letter`   | Correspondence. Sender block, subject, signature.                               |
-| `lokta-cover`    | Pigment ground with the vertical 映画の料理 spine.                              |
+| `lokta-cover`    | Pigment ground with the vertical 光の写本 spine.                              |
 | `lokta-recipe`   | After the cookbook page: film note, vertical Ingredients label, numbered steps. |
 | `lokta-doc`      | The cream editorial base the others build on.                                   |
 

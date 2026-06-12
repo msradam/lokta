@@ -380,7 +380,7 @@ ${iconSprite}
 <main id="main" class="wrap">
 
   <section id="overview" class="cover">
-    <div class="lk-running-head"><span>映画の料理 · LOKTA</span><span>WCAG 2.2 AA</span></div>
+    <div class="lk-running-head"><span>光の写本 · LOKTA</span><span>WCAG 2.2 AA</span></div>
     <p class="lk-label" style="margin-top:24px">After the Asian manuscript page</p>
     <h1 class="cover-title">Lokta</h1>
     <p class="cover-lede lk-serif">The screen as a printed page. Named after Nepali lokta paper, drawn from one trans-Asian paper tradition: Japanese washi, Himalayan lokta, and the Bengali Pala manuscripts. A warm cream stock, hatched breath rules, grotesk titles run hard to the margin, pigment grounds. Every text role clears WCAG 2.2 AA.</p>
@@ -469,7 +469,7 @@ npm install github:msradam/lokta-mermaid</pre>
       <div class="lk-card"><span class="lk-label">Display / Body</span><p style="font-size:var(--type-lg)">Archivo. A neutral editorial grotesk.</p></div>
       <div class="lk-card"><span class="lk-label">Mono</span><p class="lk-mono" style="font-size:var(--type-lg)">Spline Sans Mono 0123</p></div>
       <div class="lk-card"><span class="lk-label">Serif</span><p class="lk-serif" style="font-size:var(--type-lg);font-style:italic">Source Serif 4 pull quote</p></div>
-      <div class="lk-card"><span class="lk-label">CJK</span><p class="lk-cjk-jp" style="font-size:var(--type-lg)">映画の料理</p></div>
+      <div class="lk-card"><span class="lk-label">CJK</span><p class="lk-cjk-jp" style="font-size:var(--type-lg)">光の写本</p></div>
       <div class="lk-card"><span class="lk-label">Bengali</span><p class="lk-bn" style="font-size:var(--type-lg)">রান্না খাদ্য পুষ্টি</p></div>
     </div>
 

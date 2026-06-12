@@ -96,7 +96,7 @@ const pigSw = Object.entries(pig)
 
 const cards = {
   '1-cover': `<div class="fig lk-sheet">
-    <div class="rh"><span>映画の料理 · LOKTA</span><span>WCAG 2.2 AA</span></div>
+    <div class="rh"><span>光の写本 · LOKTA</span><span>WCAG 2.2 AA</span></div>
     <p class="kick">An editorial UI kit</p>
     <h1>Lokta</h1>
     <p class="lede">One cookbook's page system, ported to the screen. Cream stock, hatched rules, pigment grounds, held to AA on every role.</p>
@@ -105,7 +105,7 @@ const cards = {
   </div>`,
 
   '2-stocks': `<div class="fig lk-sheet">
-    <div class="rh"><span>映画の料理 · LOKTA</span><span>Stocks</span></div>
+    <div class="rh"><span>光の写本 · LOKTA</span><span>Stocks</span></div>
     <h2>Four stocks, AA on every role</h2>
     <div class="grid4">${STOCKS.map(stockCard).join('')}</div>
     <p class="lede" style="margin-top:40px;max-width:60ch;font-size:26px">Each stock is a Figma variable mode. One component re-themes by switching mode. Slate, Steel, and Onyx ship too.</p>
@@ -113,7 +113,7 @@ const cards = {
   </div>`,
 
   '3-components': `<div class="fig lk-sheet">
-    <div class="rh"><span>映画の料理 · LOKTA</span><span>Components</span></div>
+    <div class="rh"><span>光の写本 · LOKTA</span><span>Components</span></div>
     <h2>Components, on the semantic layer</h2>
     <div class="row" style="gap:16px;margin-bottom:28px">
       <button class="lk-btn">Default</button><button class="lk-btn lk-btn-primary">Primary</button><button class="lk-btn lk-btn-lg">Large</button>
@@ -129,7 +129,7 @@ const cards = {
   </div>`,
 
   '4-colour': `<div class="fig lk-sheet">
-    <div class="rh"><span>映画の料理 · LOKTA</span><span>Colour</span></div>
+    <div class="rh"><span>光の写本 · LOKTA</span><span>Colour</span></div>
     <h2>Pigment is a ground, not a tint</h2>
     <div class="swrow">${pigSw}</div>
     <p class="lede" style="max-width:60ch;font-size:26px">Warm paper surfaces, warm-tinted ink text, saturated pigment grounds. Marigold is the hero. Every value is AA-tuned and checked on every commit.</p>
@@ -137,21 +137,21 @@ const cards = {
   </div>`,
 
   '5-diagram': `<div class="fig lk-sheet">
-    <div class="rh"><span>映画の料理 · LOKTA</span><span>Diagrams</span></div>
+    <div class="rh"><span>光の写本 · LOKTA</span><span>Diagrams</span></div>
     <h2>Diagrams have a house style</h2>
     <div class="center"><img src="diagram-demo.svg" alt="flowchart"></div>
     <div class="folio">005</div>
   </div>`,
 
   '6-document': `<div class="fig lk-sheet" style="background:var(--surface-sunken)">
-    <div class="rh"><span>映画の料理 · LOKTA</span><span>Documents</span></div>
+    <div class="rh"><span>光の写本 · LOKTA</span><span>Documents</span></div>
     <h2>The same system, in print</h2>
     <div class="center"><div class="pageframe"><img src="example-recipe.png" alt="Typst recipe"></div></div>
     <div class="folio">006</div>
   </div>`,
 
   '7-verify': `<div class="fig" data-theme="ink">
-    <div class="rh"><span>映画の料理 · LOKTA</span><span>Verification</span></div>
+    <div class="rh"><span>光の写本 · LOKTA</span><span>Verification</span></div>
     <p class="kick">Deterministic by default</p>
     <h2 style="font-size:88px;margin-top:24px">202 checks, every commit</h2>
     <p class="lede" style="max-width:46ch;font-size:32px">WCAG AA contrast for every text role on every surface in every stock. Cross-surface parity. The 8px grid. The build fails if a value drifts.</p>

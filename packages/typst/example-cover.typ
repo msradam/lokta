@@ -6,7 +6,7 @@
   subtitle: "One cookbook's page system, in print.",
   label: "Specimen · Cover",
   ground: lk-lavender,
-  spine: "映画の料理",
+  spine: "光の写本",
 )
 
 #text(font: "Spline Sans Mono", size: 9pt, fill: lk-primary, tracking: 1pt)[LOKTA · v0.1 · MMXXVI]

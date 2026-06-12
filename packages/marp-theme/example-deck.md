@@ -2,7 +2,7 @@
 marp: true
 theme: lokta
 paginate: true
-header: '映画の料理 · LOKTA'
+header: '光の写本 · LOKTA'
 footer: 'After Cuisine on Screen · Prestel'
 ---
 
@@ -21,7 +21,7 @@ One cookbook's page system, ported to the screen.
 Lokta adapts the page layout of _Cuisine on Screen_ by Sachiyo Harada (Prestel), a collection of dishes from Japanese cult cinema.
 
 - a warm cream stock, never pure white
-- a vertical **映画の料理** spine
+- a vertical **光の写本** spine
 - hatched rules that let a section breathe
 - grotesk titles run hard to the right margin
 

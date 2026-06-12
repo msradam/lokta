@@ -6,8 +6,8 @@ Himalayas, and draws on one trans-Asian paper-and-manuscript tradition through
 three references: the Japanese cookbook _Cuisine on Screen_ (Sachiyo Harada,
 Prestel), Nepali lokta, and the Bengali Pala manuscripts behind Professor Siddika
 Kabir's _Ranna Khaddo Pushti_. The grammar: a warm cream stock, a vertical
-映画の料理 spine, hatched breath rules, heavy grotesk titles run hard to the
-margin, tracked mono labels, and full-bleed pigment grounds.
+光の写本 spine ("manuscript of light"), hatched breath rules, heavy grotesk
+titles run hard to the margin, tracked mono labels, and full-bleed pigment grounds.
 
 ![The Lokta overview: a cream page with a tracked label, the wordmark Lokta, an italic lede, and a measured rule.](docs/overview.png)
 
@@ -202,9 +202,14 @@ reproduction of any source. It ships no text, photography, or artwork from them.
   used for a thousand years to carry Buddhist sacred texts. The Manuscript and
   Highland stocks, the fibre grain, and the deckle and palm-leaf motifs.
 - _Cuisine on Screen_, Sachiyo Harada (Prestel, 2024), designed by Nicolas
-  Beaujouan. The structural language: the cream stock, the 映画の料理 spine, the
+  Beaujouan. The structural language: the cream stock, the vertical spine, the
   hatched breath rules, the right-aligned grotesk display, marigold as the
   full-bleed ground, and the editorial voice (see the docs site's Voice section).
+- The spine reads 光の写本 (_hikari no shahon_, "manuscript of light"), Lokta's
+  own phrase, not the book's. It is the Japanese rendering of Bengali আলোর পুঁথি
+  (_alor puthi_), built on পুঁথি (_puthi_), the Bengali tradition of handwritten
+  manuscripts copied onto bark, palm leaf, and paper. The screen as a luminous
+  manuscript, tying the Japanese and Bengali threads in one line.
 - _Ranna Khaddo Pushti_, Professor Siddika Kabir (1931 to 2012), and the Bengali
   Pala manuscripts behind it: the peach grounds, the heritage dye palette, and
   the Bengali type in Anek Bangla.
