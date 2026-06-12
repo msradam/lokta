@@ -201,9 +201,10 @@ reproduction of any source. It ships no text, photography, or artwork from them.
 - **Nepali lokta paper.** The namesake: handmade bark paper of the Himalayas,
   used for a thousand years to carry Buddhist sacred texts. The Manuscript and
   Highland stocks, the fibre grain, and the deckle and palm-leaf motifs.
-- _Cuisine on Screen_, Sachiyo Harada (Prestel, 2024). The structural language:
-  the cream stock, the 映画の料理 spine, the hatched breath rules, the
-  right-aligned grotesk display, and marigold as the full-bleed ground.
+- _Cuisine on Screen_, Sachiyo Harada (Prestel, 2024), designed by Nicolas
+  Beaujouan. The structural language: the cream stock, the 映画の料理 spine, the
+  hatched breath rules, the right-aligned grotesk display, marigold as the
+  full-bleed ground, and the editorial voice (see the docs site's Voice section).
 - _Ranna Khaddo Pushti_, Professor Siddika Kabir (1931 to 2012), and the Bengali
   Pala manuscripts behind it: the peach grounds, the heritage dye palette, and
   the Bengali type in Anek Bangla.

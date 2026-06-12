@@ -8,6 +8,16 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- Voice and content guidelines, drawn from the source cookbook's editorial
+  grammar (Title Case headings with the Oxford comma, "and" spelled out,
+  sentence-case metadata labels, real fractions with imperial + metric,
+  imperative instructions, footnote asides, em dashes welcome, never marketed).
+  A docs-site Voice section documents it, and `validate/content.mjs` enforces
+  what is checkable: no marketing filler, inclusive language, descriptive link
+  text, and "and" over "&" in Lokta's own labels (proper-noun titles exempt).
+  Lokta's own "&" labels (Motion and data, the components nav groups) now spell
+  out "and". The book's designer, Nicolas Beaujouan, is credited on the site and
+  in the README.
 - A flat, accessibility-first motion layer in `@lokta/css` where reduced motion
   is the floor. Five primitives in `lokta-motion.css` (rule-in, set-in,
   leaf-turn, stamp, write-in), each flat by construction (no opacity fade, no

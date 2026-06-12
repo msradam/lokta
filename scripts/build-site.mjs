@@ -363,7 +363,8 @@ ${iconSprite}
     <a href="#install">Install</a>
     <a href="#customization">Customization</a>
     <a href="#foundations">Foundations</a>
-    <a href="#motion">Motion &amp; data</a>
+    <a href="#voice">Voice</a>
+    <a href="#motion">Motion and data</a>
     <a href="#components">Components</a>
     <a href="#templates">Templates</a>
     <a href="#diagrams">Diagrams</a>
@@ -489,8 +490,29 @@ npm install github:msradam/lokta-mermaid</pre>
     <div class="icon-row">${iconRow}</div>
   </section>
 
+  <section id="voice">
+    <h2 class="sec-h">Voice and content</h2>
+    <p class="muted">The screen is a printed page, so the words follow the source cookbook's editorial grammar (<em class="lk-serif">Cuisine on Screen</em>, Sachiyo Harada, Prestel). Precise, calm, and encouraging; instructive without being terse; international (imperial and metric, both); and never marketed. A deterministic linter (<code>validate/content.mjs</code>) holds the rules that can be checked.</p>
+
+    <h3 class="sub-h">The rules, from the book</h3>
+    <table class="lk-table" style="max-width:760px">
+      <thead><tr><th>Element</th><th>Rule</th><th>From the book</th></tr></thead>
+      <tbody>
+        <tr><td>Titles and headings</td><td>Title Case, minor words lower. Spell out "and", never "&". Oxford comma.</td><td><em class="lk-serif">Soups, Stews, and Noodles</em></td></tr>
+        <tr><td>Labels and metadata</td><td>Sentence case with a colon; units spelled out.</td><td><em class="lk-serif">Preparation time: 3 minutes</em></td></tr>
+        <tr><td>Quantities</td><td>Real fractions, imperial first with metric in parentheses, tabular figures (<a href="components.html#datatype">Datatype</a> and <code>.lk-frac</code>).</td><td><em class="lk-serif">2 1/2 cups (600 ml) water</em></td></tr>
+        <tr><td>Instructions and buttons</td><td>Imperative, verb first; calm and precise, with reassuring asides.</td><td><em class="lk-serif">Stir with a wet wooden spatula.</em></td></tr>
+        <tr><td>Asides and tips</td><td>Short footnotes, practical and warm. Em dashes are welcome.</td><td><em class="lk-serif">* Set a timer—it is practical.</em></td></tr>
+        <tr><td>Tone</td><td>Never sell, never hype. The gate bans the marketing words.</td><td>The book never markets a recipe.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub-h">Microcopy</h3>
+    <p class="muted">Errors state what happened and what to do, calmly and without blame, the way the recipe reassures ("it will be translucent at first"). Empty states name what will appear and the one action to fill it. Confirmations are quiet and specific. Link text says where it goes, never "click here". Inclusive terms throughout: allowlist and blocklist, primary and replica.</p>
+  </section>
+
   <section id="motion">
-    <h2 class="sec-h">Motion &amp; data</h2>
+    <h2 class="sec-h">Motion and data</h2>
     <p class="muted">Two additive layers that ship inside <code>lokta-css</code>. The motion layer is a flat, accessibility-first reveal vocabulary where reduced motion is the floor, not an afterthought. Datatype sets charts as type, inline in a sentence.</p>
 
     <h3 class="sub-h">Datatype · charts in the sentence</h3>
@@ -574,7 +596,7 @@ npm install github:msradam/lokta-mermaid</pre>
     )}
 
     ${component(
-      'Checkbox &amp; radio',
+      'Checkbox and radio',
       'Square caps; the radio reads with an inner filled square.',
       `
       <label class="lk-check"><input type="checkbox" checked> Checked</label>
@@ -742,7 +764,7 @@ npm install github:msradam/lokta-mermaid</pre>
       `
       <div style="display:grid;gap:14px;max-width:520px">
         <div class="lk-running-head"><span>Chapter · Stocks</span><span>p. 12</span></div>
-        <div class="lk-colophon"><span>Lokta</span><span>Set in Archivo &amp; Spline Sans Mono</span></div>
+        <div class="lk-colophon"><span>Lokta</span><span>Set in Archivo and Spline Sans Mono</span></div>
         <div class="lk-folio">012</div>
       </div>`,
     )}
@@ -815,7 +837,7 @@ npm install github:msradam/lokta-mermaid</pre>
 
 <footer class="colophon-foot">
   <div class="lk-measure"><span class="lk-measure-hatch"></span><span class="lk-measure-gap"></span><span class="lk-measure-line" style="width:120px"></span></div>
-  <p class="muted">Lokta · v0.2 · MIT. Named after Nepali lokta paper, drawn from one trans-Asian paper-and-manuscript tradition: <em class="lk-serif">Cuisine on Screen</em> by Sachiyo Harada (Prestel, 2024), Himalayan lokta, and the Bengali Pala manuscripts behind Professor Siddika Kabir's <em class="lk-serif">Ranna Khaddo Pushti</em>. An interpretation of their typography, with no text or imagery reproduced from any.</p>
+  <p class="muted">Lokta · v0.2 · MIT. Named after Nepali lokta paper, drawn from one trans-Asian paper-and-manuscript tradition: <em class="lk-serif">Cuisine on Screen</em> by Sachiyo Harada (Prestel, 2024), Himalayan lokta, and the Bengali Pala manuscripts behind Professor Siddika Kabir's <em class="lk-serif">Ranna Khaddo Pushti</em>. An interpretation of their typography (the <em class="lk-serif">Cuisine on Screen</em> layout is by Nicolas Beaujouan), with no text or imagery reproduced from any.</p>
   <p class="muted"><span class="lk-label">Credits</span> Fonts are SIL Open Font License 1.1, self-hosted, each with its licence and copyright notice in <a href="fonts/NOTICE.md">fonts/NOTICE.md</a>. Datatype is by <a href="https://github.com/franktisellano/datatype">Frank Tisellano</a> (and embeds IBM Plex Mono, Reserved Font Name "Plex"). The line-art tracing example is Utagawa Hiroshige, <em class="lk-serif">Blue Bird and Hibiscus</em>, <a href="https://www.metmuseum.org/art/collection/search/56698">The Metropolitan Museum of Art</a>, CC0. Tracing uses <a href="https://github.com/jankovicsandras/imagetracerjs">imagetracerjs</a> (MIT).</p>
 </footer>
 

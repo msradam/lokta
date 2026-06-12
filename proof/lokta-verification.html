@@ -249,7 +249,7 @@ function gridPanel(){
   const keys=Object.keys(TYPE), vals=Object.values(TYPE);
   let tr = keys.map((k,i)=>{ const ratio = i===0?',':(vals[i]/vals[i-1]).toFixed(2)+'×';
     return `<tr><td class="lbl">${k}</td><td class="num">${vals[i]}px</td><td class="num" style="color:var(--mut)">${ratio}</td></tr>`; }).join('');
-  return panel('03','Grid & scale', pc, `
+  return panel('03','Grid and scale', pc, `
     <div class="lbl" style="margin-bottom:6px;color:var(--ink)">SPACING · 8PX GRID, 4PX HALF-STEP</div>
     <table><tbody><tr>${sp}</tr></tbody></table>
     <div class="lbl" style="margin:18px 0 6px;color:var(--ink)">TYPE SCALE · STEP RATIOS</div>
